@@ -11,7 +11,7 @@ import { styled } from '@mui/material/styles'
 import { newsItems } from '~/apis/mockData'
 import NewsCard from './BlogList/BlogList'
 import BlogFilter from './BlogFilter/BlogFilter'
-
+import Footer from '~/components/Footer/Footer'
 const RedUnderline = styled(Box)(({ theme }) => ({
   height: '4px',
   width: '60px',
@@ -66,6 +66,7 @@ const BlogLayout = () => {
           <NewsCard item={newsItems} />
         </Grid>
       </Box>
+      <Footer/>
     </Box>
   )
 }
