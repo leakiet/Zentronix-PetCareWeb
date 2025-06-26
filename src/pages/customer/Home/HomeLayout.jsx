@@ -1,7 +1,7 @@
 import AppBar from '~/components/AppBar/AppBar'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-
+import Footer from '~/components/Footer/Footer'
 const HomeLayout = () => {
 
   return (
@@ -15,6 +15,7 @@ const HomeLayout = () => {
 
         </Box>
       </Box>
+      <Footer/>
     </Box>
   )
 }

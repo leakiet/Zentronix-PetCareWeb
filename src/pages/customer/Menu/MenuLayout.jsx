@@ -3,6 +3,7 @@ import AppBar from '~/components/AppBar/AppBar'
 import { mealPackages } from '~/apis/mockData'
 import theme from '~/theme'
 import MenuList from './MenuList/MenuList'
+import Footer from '~/components/Footer/Footer'
 function MenuLayout() {
   return (
     <Box sx={{ bgcolor: theme.palette.background.default, color: theme.palette.text.primary, minHeight: '100vh', fontFamily: '"Poppins", sans-serif' }}>
@@ -33,6 +34,7 @@ function MenuLayout() {
           <MenuList pkg={mealPackages} />
         </Box>
       </Box>
+      <Footer/>
     </Box>
   )
 }
