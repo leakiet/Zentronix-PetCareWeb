@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import LanguageIcon from '@mui/icons-material/Language'
-import en from '~/assets/Language/english.png'
-import vi from '~/assets/Language/vietnam.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentLanguage, updateCurrentLanguage } from '~/redux/translations/translationsSlice'
 import Box from '@mui/material/Box'
@@ -14,8 +12,8 @@ const LanguageSelect = () => {
   const dispatch = useDispatch()
   const currentLanguageCode = useSelector(selectCurrentLanguage)
   const languages = [
-    { code: 'en', name: 'EN', icon: en },
-    { code: 'vi', name: 'VI', icon: vi }
+    { code: 'en', name: 'EN' },
+    { code: 'vi', name: 'VI' }
   ]
 
   const currentLanguage = languages.find((lang) => lang.code === currentLanguageCode) || languages[1]

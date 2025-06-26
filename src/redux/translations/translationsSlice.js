@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
+// Lấy ngôn ngữ đã lưu từ localStorage hoặc sử dụng 'vi' làm mặc định
+const savedLanguage = localStorage.getItem('currentLanguage') || 'en'
 const initialState = {
-  currentLanguage: 'vi'
+  currentLanguage: savedLanguage
 }
 
 export const translationsSlice = createSlice({
@@ -10,6 +12,7 @@ export const translationsSlice = createSlice({
   reducers: {
     updateCurrentLanguage: (state, action) => {
       state.currentLanguage = action.payload
+      localStorage.setItem('currentLanguage', action.payload)
     }
   }
 })
