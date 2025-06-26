@@ -5,6 +5,7 @@ import TabCal from './Item/TabCal'
 import ChoiceCal from './Item/ChoiceCal'
 import ListCard from './Item/ListCard/ListCard'
 import { useState, useRef } from 'react'
+import Footer from '~/components/Footer/Footer'
 
 const CaloCalculatorLayout = () => {
   const [value, setValue] = useState(0)
@@ -129,6 +130,7 @@ const CaloCalculatorLayout = () => {
           </Box>
         </Box>
       </Box>
+      <Footer/>
     </Box>
   )
 }
