@@ -5,6 +5,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 import AppBar from '~/components/AppBar/AppBar'
+import Footer from '~/components/Footer/Footer'
 import theme from '~/theme'
 
 const AboutUs = () => {
@@ -454,6 +455,7 @@ const AboutUs = () => {
           </Grid>
         </Box>
       </Box>
+      <Footer/>
     </Box>
   )
 }

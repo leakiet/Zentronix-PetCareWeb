@@ -19,7 +19,7 @@ const Card = ({ image, label }) => {
   return (
     <Box
       sx={{
-        background: '#f6f0e3',
+        background: theme.palette.primary.card,
         borderRadius: 4,
         p: 4,
         display: 'flex',
@@ -29,12 +29,12 @@ const Card = ({ image, label }) => {
         maxWidth: 280,
         width: '100%',
         mb: 1,
-        border: '1.5px solid #e0c9b2',
+        border: '1.5px solid ' + theme.palette.primary.text,
         boxShadow: '0 2px 12px 0 rgba(122,35,51,0.07)',
         transition: 'box-shadow 0.2s, border-color 0.2s',
         '&:hover': {
-          boxShadow: '0 4px 16px 0 rgba(122,35,51,0.13)',
-          borderColor: '#7a2333'
+          boxShadow: '0 4px 16px 0 rgba(122,35,51,0.3)',
+          borderColor: theme.palette.primary.text
         }
       }}
     >
@@ -43,7 +43,7 @@ const Card = ({ image, label }) => {
           width: 120,
           height: 120,
           borderRadius: '50%',
-          background: theme.colorSchemes.light.palette.background.default,
+          background: theme.palette.primary.card,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -53,7 +53,7 @@ const Card = ({ image, label }) => {
         <img src={image} alt={label} style={{ width: 120, height: 120, objectFit: 'cover', borderRadius: '50%' }} />
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-        <IconButton size="small" onClick={handleDecrease} sx={{ border: '1px solid #e0c9b2', background: '#fff', mx: 0.5 }}>
+        <IconButton size="small" onClick={handleDecrease} sx={{ border: '1px solid ' + theme.palette.primary.text, background: theme.palette.primary.card, mx: 0.5 }}>
           <RemoveIcon fontSize="small" />
         </IconButton>
         <TextField
@@ -63,13 +63,13 @@ const Card = ({ image, label }) => {
             style: { textAlign: 'center', width: 32, padding: 4 },
             readOnly: true
           }}
-          sx={{ mx: 0.5, '& .MuiInputBase-root': { borderRadius: 2, background: '#fff' } }}
+          sx={{ mx: 0.5, '& .MuiInputBase-root': { borderRadius: 2, background: theme.palette.primary.card } }}
         />
-        <IconButton size="small" onClick={handleIncrease} sx={{ border: '1px solid #e0c9b2', background: '#fff', mx: 0.5 }}>
+        <IconButton size="small" onClick={handleIncrease} sx={{ border: '1px solid ' + theme.palette.primary.text, background: theme.palette.primary.card, mx: 0.5 }}>
           <AddIcon fontSize="small" />
         </IconButton>
       </Box>
-      <Typography sx={{ color: '#7a2333', fontWeight: 500, textAlign: 'center', fontSize: 16 }}>
+      <Typography sx={{ color: theme.palette.primary.text, fontWeight: 500, textAlign: 'center', fontSize: 16 }}>
         {label}
       </Typography>
     </Box>

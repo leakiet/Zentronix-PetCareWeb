@@ -20,6 +20,7 @@ const ListCard = ({ title, index }) => {
               alignItems: 'center',
               justifyContent: 'center',
               p: 1.7,
+              fontWeight: 900,
               color: 'white',
               backgroundColor: theme.colorSchemes.light.palette.text.primary
             }}>{index}</Typography>
@@ -33,11 +34,11 @@ const ListCard = ({ title, index }) => {
         sx={{ mt: { xs: 2, md: 3 } }}
       >
         {Array.from({ length: 10 }).map((_, index) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={index}>
+          <Grid size={{ xs: 6, sm: 6, md: 4, lg: 3 }} key={index}>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <Card
-                image="https://res.cloudinary.com/quyendev/image/upload/v1750412902/rddyt77xawppdjxywsc0.jpg"
-                label="Bánh mì"
+                image="https://res.cloudinary.com/quyendev/image/upload/v1750922086/Top-blade-beef-steak-300x300_fvv3fj.png"
+                label='banh mi'
               />
             </Box>
           </Grid>
