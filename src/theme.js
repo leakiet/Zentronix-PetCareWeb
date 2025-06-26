@@ -1,4 +1,4 @@
-import { deepOrange, orange, blueGrey, blue, grey } from '@mui/material/colors'
+import { deepOrange } from '@mui/material/colors'
 import { createTheme } from '@mui/material/styles'
 
 const APP_BAR_HEIGHT = '90px'
