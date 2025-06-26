@@ -1,14 +1,8 @@
-import React from 'react'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import theme from '~/theme'
 
-const TabCal = () => {
-  const [value, setValue] = React.useState(0)
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
+const TabCal = ({ value, handleChange }) => {
   return (
     <Tabs
       value={value}
@@ -50,10 +44,10 @@ const TabCal = () => {
         }
       }}
     >
-      <Tab label="Item One" hrefLang='#'/>
-      <Tab label="Item Two" hrefLang='#'/>
-      <Tab label="Item Three" hrefLang='#'/>
-      <Tab label="Item Four" hrefLang='#'/>
+      <Tab label="PROTEIN" hrefLang='#' />
+      <Tab label="CARBS" hrefLang='#' />
+      <Tab label="SIDE" hrefLang='#' />
+      <Tab label="SAUCE" hrefLang='#' />
     </Tabs>
   )
 }

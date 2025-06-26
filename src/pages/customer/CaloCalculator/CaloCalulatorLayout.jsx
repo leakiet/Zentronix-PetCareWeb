@@ -4,13 +4,22 @@ import theme from '~/theme'
 import TabCal from './Item/TabCal'
 import ChoiceCal from './Item/ChoiceCal'
 import ListCard from './Item/ListCard/ListCard'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 const CaloCalculatorLayout = () => {
   const [value, setValue] = useState(0)
 
+  const proteinRef = useRef(null)
+  const carbsRef = useRef(null)
+  const sideRef = useRef(null)
+  const sauceRef = useRef(null)
+
   const handleChange = (event, newValue) => {
     setValue(newValue)
+    const refs = [proteinRef, carbsRef, sideRef, sauceRef]
+    setTimeout(() => {
+      refs[newValue]?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 40)
   }
 
   return (
@@ -22,7 +31,7 @@ const CaloCalculatorLayout = () => {
           backgroundColor: theme.colorSchemes.light.palette.background.default,
           minHeight: '100vh',
           px: { xs: 1, sm: 2, md: 4 },
-          py: { xs: 1, sm: 2, md: 3 },
+          py: { xs: 1, sm: 2, md: 3 }
         }}
       >
         <Box
@@ -33,10 +42,9 @@ const CaloCalculatorLayout = () => {
             alignItems: 'flex-start',
             maxWidth: 1440,
             mx: 'auto',
-            width: '100%',
+            width: '100%'
           }}
         >
-          {/* Content + Grid */}
           <Box
             sx={{
               flex: 2,
@@ -44,10 +52,9 @@ const CaloCalculatorLayout = () => {
               width: '100%',
               maxWidth: { xs: '100%', md: 900 },
               mx: 'auto',
-              mb: { xs: 3, md: 0 },
+              mb: { xs: 3, md: 0 }
             }}
           >
-            {/* TabCal sticky trên desktop, scroll trên mobile */}
             <Box
               sx={{
                 position: { xs: 'static', md: 'sticky' },
@@ -56,24 +63,30 @@ const CaloCalculatorLayout = () => {
                 my: { xs: 2, md: 3 },
                 mx: 'auto',
                 width: '100%',
-                maxWidth: 600,
+                maxWidth: 540,
                 minWidth: 0,
                 p: { xs: 1, md: 2 },
                 boxShadow: 'none',
-                background: 'transparent',
+                background: 'transparent'
               }}
             >
-              <TabCal />
+              <TabCal value={value} handleChange={handleChange} />
             </Box>
-            {/* Grid món ăn */}
-            <Box>
-              <ListCard title="CHỌN LOẠI ĐẠM" index={1}/>
-              <ListCard title="CHỌN LOẠI ĐẠM" index={2}/>
-              <ListCard title="CHỌN LOẠI ĐẠM" index={3}/>
-              <ListCard title="CHỌN LOẠI ĐẠM" index={4}/>
+            <Box sx={{ mx: '15px' }}>
+              <Box ref={proteinRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 40px)` }}>
+                <ListCard title="SELECT PROTEIN" index={1} />
+              </Box>
+              <Box ref={carbsRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 40px)` }}>
+                <ListCard title="SELECT CARBS" index={2} />
+              </Box>
+              <Box ref={sideRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 40px)` }}>
+                <ListCard title="SELECT SIDE" index={3} />
+              </Box>
+              <Box ref={sauceRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 40px)` }}>
+                <ListCard title="SELECT SAUCE" index={4} />
+              </Box>
             </Box>
 
-            {/* Nút xem thực đơn */}
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: { xs: 2, md: 3 } }}>
               <button
                 style={{
@@ -88,21 +101,20 @@ const CaloCalculatorLayout = () => {
                   width: '100%',
                   maxWidth: 220,
                   boxShadow: '0 2px 12px 0 rgba(46,204,155,0.10)',
-                  transition: 'box-shadow 0.2s',
+                  transition: 'box-shadow 0.2s'
                 }}
               >
                 See Menu
               </button>
             </Box>
           </Box>
-          {/* Sidebar ChoiceCal */}
           <Box
             sx={{
               position: { xs: 'static', md: 'sticky' },
               top: { xs: 0, md: theme.fitbowl.appBarHeight },
               height: { xs: 'auto', md: '82vh' },
-              minWidth: { xs: '100%', md: 320 },
-              maxWidth: { xs: '100%', md: 340 },
+              minWidth: { xs: '100%', md: '30%' },
+              maxWidth: { xs: '100%', md: '30%' },
               flex: 1,
               borderRadius: { xs: 0, md: 4 },
               p: { xs: 0, md: 2 },
@@ -110,7 +122,7 @@ const CaloCalculatorLayout = () => {
               flexDirection: 'column',
               alignItems: 'center',
               overflowY: { xs: 'visible', md: 'auto' },
-              background: { xs: 'transparent', md: theme.colorSchemes.light.palette.background.default },
+              background: { xs: 'transparent', md: theme.colorSchemes.light.palette.background.default }
             }}
           >
             <ChoiceCal />
