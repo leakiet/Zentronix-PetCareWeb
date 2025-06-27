@@ -31,10 +31,12 @@ const Card = ({ image, label }) => {
         mb: 1,
         border: '1.5px solid ' + theme.palette.primary.text,
         boxShadow: '0 2px 12px 0 rgba(122,35,51,0.07)',
-        transition: 'box-shadow 0.2s, border-color 0.2s',
+        transition: 'all 0.2s ease-in-out',
+        backgroundColor: theme.palette.primary.card,
         '&:hover': {
-          boxShadow: '0 4px 16px 0 rgba(122,35,51,0.3)',
-          borderColor: theme.palette.primary.text
+          boxShadow: '0 4px 16px 0 rgba(122,35,51,0.1)',
+          background: '#00000010',
+          borderColor: theme.palette.primary.text,
         }
       }}
     >
