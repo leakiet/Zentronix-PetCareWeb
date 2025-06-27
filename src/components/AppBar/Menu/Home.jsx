@@ -16,6 +16,7 @@ const Home = ({ handleCloseNavMenu, t }) => {
           overflow: 'hidden',
           fontWeight: 400,
           fontSize: '1rem',
+          maxWidth: '300px',
           fontSmoothing: 'antialiased',
           transition: 'all 0.3s ease-in-out',
           padding: '0.5rem 1rem',
