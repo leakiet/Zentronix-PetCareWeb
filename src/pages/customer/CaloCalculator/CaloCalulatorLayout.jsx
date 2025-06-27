@@ -4,16 +4,29 @@ import theme from '~/theme'
 import TabCal from './Item/TabCal'
 import ChoiceCal from './Item/ChoiceCal'
 import ListCard from './Item/ListCard/ListCard'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Footer from '~/components/Footer/Footer'
 
 const CaloCalculatorLayout = () => {
   const [value, setValue] = useState(0)
-
   const proteinRef = useRef(null)
   const carbsRef = useRef(null)
   const sideRef = useRef(null)
   const sauceRef = useRef(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const refs = [proteinRef, carbsRef, sideRef, sauceRef]
+      const offsets = refs.map(ref => {
+        if (!ref.current) return Infinity
+        return Math.abs(ref.current.getBoundingClientRect().top - (parseInt(theme.fitbowl.appBarHeight) + 80))
+      })
+      const minIndex = offsets.indexOf(Math.min(...offsets))
+      if (minIndex !== value) setValue(minIndex)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [value])
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -74,16 +87,16 @@ const CaloCalculatorLayout = () => {
               <TabCal value={value} handleChange={handleChange} />
             </Box>
             <Box sx={{ mx: '15px' }}>
-              <Box ref={proteinRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 40px)` }}>
+              <Box ref={proteinRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 80px)` }}>
                 <ListCard title="SELECT PROTEIN" index={1} />
               </Box>
-              <Box ref={carbsRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 40px)` }}>
+              <Box ref={carbsRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 80px)` }}>
                 <ListCard title="SELECT CARBS" index={2} />
               </Box>
-              <Box ref={sideRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 40px)` }}>
+              <Box ref={sideRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 80px)` }}>
                 <ListCard title="SELECT SIDE" index={3} />
               </Box>
-              <Box ref={sauceRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 40px)` }}>
+              <Box ref={sauceRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 80px)` }}>
                 <ListCard title="SELECT SAUCE" index={4} />
               </Box>
             </Box>
@@ -113,9 +126,9 @@ const CaloCalculatorLayout = () => {
             sx={{
               position: { xs: 'static', md: 'sticky' },
               top: { xs: 0, md: theme.fitbowl.appBarHeight },
-              height: { xs: 'auto', md: '82vh' },
-              minWidth: { xs: '100%', md: '30%' },
-              maxWidth: { xs: '100%', md: '30%' },
+              height: { xs: 'auto', md: '88vh' },
+              minWidth: { xs: '100%', md: '40%' },
+              maxWidth: { xs: '100%', md: '40%' },
               flex: 1,
               borderRadius: { xs: 0, md: 4 },
               p: { xs: 0, md: 2 },
