@@ -10,6 +10,8 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { Provider } from 'react-redux'
 import store from '~/redux/store'
 import '~/customLibraries/i18n'
+import { Toaster } from 'react-hot-toast'
+
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <BrowserRouter>
@@ -28,7 +30,7 @@ createRoot(document.getElementById('root')).render(
           }} />
           <CssBaseline />
           <App />
-          {/* <ToastContainer position="bottom-right" /> */}
+          <Toaster />
         </ConfirmProvider>
       </ThemeProvider>
     </BrowserRouter>

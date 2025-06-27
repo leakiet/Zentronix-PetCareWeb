@@ -50,8 +50,7 @@ function ResponsiveAppBar() {
               letterSpacing: '.3rem',
               textTransform: 'uppercase',
               fontSize: '2rem',
-              textDecoration: 'none',
-              color: (theme) => theme.palette.primary.secondary
+              textDecoration: 'none'
             }}
           >
             {t('navBar.nameWebsite')}
@@ -76,7 +75,6 @@ function ResponsiveAppBar() {
                 fontFamily: 'Sacramento, cursive',
                 fontWeight: 700,
                 letterSpacing: '.3rem',
-                color: (theme) => theme.palette.primary.secondary,
                 justifyContent: 'start',
                 alignItems: 'center',
                 textDecoration: 'none'
