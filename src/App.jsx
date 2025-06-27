@@ -8,9 +8,11 @@ import MenuLayout from './pages/customer/Menu/MenuLayout'
 import MenuDetail from './pages/customer/Menu/MenuDetail/MenuDetail'
 import AboutUs from './pages/customer/AboutUs/AboutUs'
 import CaloCalculatorLayout from './pages/customer/CaloCalculator/CaloCalulatorLayout'
+import Auth from './pages/customer/Auth/Auth'
+import AccountVerification from './pages/customer/Auth/AccountVerification'
+import NotFound from './pages/customer/NotFound/NotFound'
 
 function App() {
-  // const [count, setCount] = useState(0)
 
   return (
     <>
@@ -22,6 +24,14 @@ function App() {
         <Route path="/menu/:slug" element={<MenuDetail />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/calo-calculator" element={<CaloCalculatorLayout />} />
+
+        {/* Authentication */}
+        <Route path="/login" element={<Auth />} />
+        <Route path="/register" element={<Auth />} />
+        <Route path="/verify-email" element={<AccountVerification /> }/>
+
+        {/* 404 Not Found */}
+        <Route path="*" element={<NotFound /> }/>
       </Routes>
       {/* <Footer /> */}
     </>
