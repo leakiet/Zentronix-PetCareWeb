@@ -8,7 +8,7 @@ function HealthyChoice() {
         background: theme.palette.primary.card,
         borderRadius: 4,
         p: 2,
-        minHeight: 500,
+        minHeight: 600,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -23,7 +23,7 @@ function HealthyChoice() {
       </Typography>
       <Box sx={{ width: '100%', borderBottom: '1px dashed ' + theme.palette.primary.text, mb: 3 }} />
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <Box component="img" src='https://res.cloudinary.com/quyendev/image/upload/v1750922086/Top-blade-beef-steak-300x300_fvv3fj.png' alt="empty bowl" sx={{ width: 180, opacity: 0.2, mb: 2 }} />
+        <Box component="img" src='https://res.cloudinary.com/quyendev/image/upload/v1750996461/icons8-vegetables-bag-100_1_qocndf.png' alt="empty bowl" sx={{ width: 180, opacity: 0.2, mb: 2 }} />
         <Typography sx={{ color: theme.colorSchemes.light.palette.text.primary, fontWeight: 500, textAlign: 'center' }}>
           Choose ingredients to calculate calories
         </Typography>
