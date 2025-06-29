@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import ChatBox from '~/components/AppBar/AIChat/ChatBox'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
@@ -198,6 +199,7 @@ const Footer = () => {
               </Link>
             ))}
           </Grid>
+          <ChatBox />
 
           {/* Hữu ích */}
           <Grid item xs={6} md={2}>
