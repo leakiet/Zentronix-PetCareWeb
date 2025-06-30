@@ -1,4 +1,3 @@
-import { useState } from 'react'
 // import Footer from './components/Footer/Footer'
 import BlogLayout from './pages/customer/Blogs/BlogLayout'
 import HomeLayout from './pages/customer/Home/HomeLayout'
@@ -28,6 +27,7 @@ function App() {
         {/* Authentication */}
         <Route path="/login" element={<Auth />} />
         <Route path="/register" element={<Auth />} />
+        <Route path="/reset-password" element={<Auth />} />
         <Route path="/verify-email" element={<AccountVerification /> }/>
 
         {/* 404 Not Found */}
