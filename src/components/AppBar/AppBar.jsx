@@ -31,7 +31,8 @@ function ResponsiveAppBar() {
   }
   return (
     <AppBar sx={{
-      backgroundColor: (theme) => theme.palette.primary.main, height: (theme) => theme.fitbowl.appBarHeight,
+      backgroundColor: '#F5EDD8',
+      height: (theme) => theme.fitbowl.appBarHeight,
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center'
@@ -50,7 +51,8 @@ function ResponsiveAppBar() {
               letterSpacing: '.3rem',
               textTransform: 'uppercase',
               fontSize: '2rem',
-              textDecoration: 'none'
+              textDecoration: 'none',
+              color: (theme) => theme.palette.text.primary
             }}
           >
             {t('navBar.nameWebsite')}
@@ -77,7 +79,8 @@ function ResponsiveAppBar() {
                 letterSpacing: '.3rem',
                 justifyContent: 'start',
                 alignItems: 'center',
-                textDecoration: 'none'
+                textDecoration: 'none',
+                color: (theme) => theme.palette.text.primary
               }}
             >
               {t('navBar.nameWebsite')}

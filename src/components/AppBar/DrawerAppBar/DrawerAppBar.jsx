@@ -33,7 +33,7 @@ const DrawerAppBar = ({
           paddingX: 2,
           paddingY: 4,
           color: 'white',
-          backgroundColor: (theme) => theme.palette.primary.main,
+          backgroundColor: '#F5EDD8',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between'
