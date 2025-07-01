@@ -21,5 +21,5 @@ export const getSuggestedMeals = (customTotal, mealPackages) => {
       return { ...meal, diff }
     })
     .sort((a, b) => a.diff - b.diff)
-    .slice(0, 3)
+    .slice(0, 5)
 }
