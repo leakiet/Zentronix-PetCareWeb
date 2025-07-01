@@ -2,17 +2,20 @@ import Box from '@mui/material/Box'
 import AppBar from '~/components/AppBar/AppBar'
 import theme from '~/theme'
 import TabCal from './Item/TabCal'
-import ChoiceCal from './Item/ChoiceCal'
+import ChoiceCal from './Item/HealthyChoice/HealthyChoice'
 import ListCard from './Item/ListCard/ListCard'
 import { useState, useRef, useEffect } from 'react'
 import Footer from '~/components/Footer/Footer'
+import { ItemHealthy } from '~/apis/mockData'
 
-const CaloCalculatorLayout = () => {
+const SmartMealLayout = () => {
   const [value, setValue] = useState(0)
+  const itemHealthy = ItemHealthy
   const proteinRef = useRef(null)
   const carbsRef = useRef(null)
   const sideRef = useRef(null)
   const sauceRef = useRef(null)
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,7 +47,7 @@ const CaloCalculatorLayout = () => {
           mt: theme.fitbowl.appBarHeight,
           backgroundColor: theme.colorSchemes.light.palette.background.default,
           minHeight: '100vh',
-          px: { xs: 1, sm: 2, md: 4 },
+          px: { xs: 1, sm: 2, md: 2 },
           py: { xs: 1, sm: 2, md: 3 }
         }}
       >
@@ -54,7 +57,7 @@ const CaloCalculatorLayout = () => {
             flexDirection: { xs: 'column', md: 'row' },
             gap: { xs: 2, md: 4 },
             alignItems: 'flex-start',
-            maxWidth: 1440,
+            maxWidth: '90vw',
             mx: 'auto',
             width: '100%'
           }}
@@ -64,7 +67,7 @@ const CaloCalculatorLayout = () => {
               flex: 2,
               minWidth: 0,
               width: '100%',
-              maxWidth: { xs: '100%', md: 900 },
+              maxWidth: { xs: '100%', md: '90vw' },
               mx: 'auto',
               mb: { xs: 3, md: 0 }
             }}
@@ -88,45 +91,43 @@ const CaloCalculatorLayout = () => {
             </Box>
             <Box sx={{ mx: '15px' }}>
               <Box ref={proteinRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 80px)` }}>
-                <ListCard title="SELECT PROTEIN" index={1} />
+                <ListCard title="SELECT PROTEIN" index={1} type="protein" cards={itemHealthy?.protein} />
               </Box>
               <Box ref={carbsRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 80px)` }}>
-                <ListCard title="SELECT CARBS" index={2} />
+                <ListCard title="SELECT CARBS" index={2} type="carbs" cards={itemHealthy?.carbs} />
               </Box>
               <Box ref={sideRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 80px)` }}>
-                <ListCard title="SELECT SIDE" index={3} />
+                <ListCard title="SELECT SIDE" index={3} type="side" cards={itemHealthy?.side} />
               </Box>
               <Box ref={sauceRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 80px)` }}>
-                <ListCard title="SELECT SAUCE" index={4} />
+                <ListCard title="SELECT SAUCE" index={4} type="sauce" cards={itemHealthy?.sauce} />
               </Box>
             </Box>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: { xs: 2, md: 3 } }}>
-              <button
-                style={{
-                  background: '#2ecc9b',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: 8,
-                  padding: '10px 24px',
-                  fontWeight: 600,
-                  fontSize: 16,
-                  cursor: 'pointer',
-                  width: '100%',
-                  maxWidth: 220,
-                  boxShadow: '0 2px 12px 0 rgba(46,204,155,0.10)',
-                  transition: 'box-shadow 0.2s'
-                }}
-              >
-                See Menu
-              </button>
+              <Box sx={{
+                py: 1,
+                px: 4,
+                borderRadius: 5,
+                maxWidth: 'fit-content',
+                cursor: 'pointer',
+                color: 'white',
+                bgcolor: theme.palette.primary.secondary,
+                fontWeight: 400,
+                fontSize: '1rem',
+                '&:hover': {
+                  bgcolor: 'rgba(0, 99, 76, 0.8)'
+                }
+              }}>
+                Suggest Foods
+              </Box>
             </Box>
           </Box>
           <Box
             sx={{
               position: { xs: 'static', md: 'sticky' },
               top: { xs: 0, md: theme.fitbowl.appBarHeight },
-              height: { xs: 'auto', md: '88vh' },
+              height: { xs: 'auto', md: '85vh' },
               minWidth: { xs: '100%', md: '40%' },
               maxWidth: { xs: '100%', md: '40%' },
               flex: 1,
@@ -143,9 +144,9 @@ const CaloCalculatorLayout = () => {
           </Box>
         </Box>
       </Box>
-      <Footer/>
+      <Footer />
     </Box>
   )
 }
 
-export default CaloCalculatorLayout
+export default SmartMealLayout
