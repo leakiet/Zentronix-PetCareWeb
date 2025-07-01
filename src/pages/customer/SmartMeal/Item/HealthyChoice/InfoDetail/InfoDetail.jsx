@@ -107,11 +107,16 @@ const InfoDetail = () => {
         anchor="bottom"
         open={openDrawer}
         onClose={handleCloseDrawer}
+        ModalProps={{
+          keepMounted: true
+        }}
+        PaperProps={{
+          role: 'dialog',
+          'aria-labelledby': 'drawer-title',
+          sx: { overflow: 'auto' }
+        }}
       >
-        <DrawerInfo
-          selectedItems={items}
-          onClose={handleCloseDrawer}
-        />
+        <DrawerInfo selectedItems={items} onClose={handleCloseDrawer} />
       </Drawer>
     </Box>
   )

@@ -140,6 +140,15 @@ export const mealPackages = [
     slug: 'fit-3-package'
   },
   {
+    id: 'fit-3-package',
+    title: 'FIT 3 Package',
+    description: 'Lunch - Dinner Package. Weight loss',
+    price: '650,000đ',
+    image: 'https://storage.googleapis.com/a1aa/image/90d96b02-9e0e-4225-b651-42d553a5558f.jpg',
+    alt: 'Fit3 Meal Package with shrimp and vegetables in black containers on red background',
+    slug: 'fit-3-package'
+  },
+  {
     id: 'lunch-package',
     title: 'LUNCH Package',
     description: '1 lunch meal package. Delivered hot',
