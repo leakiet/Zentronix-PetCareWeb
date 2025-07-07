@@ -19,9 +19,12 @@ import PageviewIcon from '@mui/icons-material/Pageview'
 import SuggestFood from './SuggestFood'
 import SelectedFood from './SelectedFood'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { useDispatch } from 'react-redux'
+import { clearCart } from '~/redux/meal/mealSlice'
 
-const DrawerInfo = ({ onClose }) => {
-  const [isReviewing, setIsReviewing] = useState(false)
+const DrawerInfoMobile = ({ onClose }) => {
+  const [isReviewing, setIsReviewing] = useState(true)
+  const dispatch = useDispatch()
   const theme = useTheme()
   const selected = useSelector(selectCurrentMeal)
   const customTotal = calcCustomTotal(selected)
@@ -33,6 +36,10 @@ const DrawerInfo = ({ onClose }) => {
 
   const handleOrderCustom = () => {
     alert('You have successfully ordered a custom meal!')
+  }
+
+  const handleClearSelections = () => {
+    dispatch(clearCart())
   }
 
   const handleSaveCustom = () => {
@@ -57,7 +64,7 @@ const DrawerInfo = ({ onClose }) => {
       aria-labelledby="drawer-title"
     >
       {/* Header */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 5 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <SearchIcon sx={{ color: theme.palette.primary.secondary }} />
@@ -92,7 +99,7 @@ const DrawerInfo = ({ onClose }) => {
       </Box>
 
       {/* Scrollable Content */}
-      <Box sx={{ flex: 1, overflowY: 'auto', mx: 2, mb: 2 }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', mx: 2, mb: 2, pt: 2 }}>
         {isReviewing ? (
           // --- REVIEW VIEW ---
           <>
@@ -155,45 +162,66 @@ const DrawerInfo = ({ onClose }) => {
       {/* Sticky Custom Meal Section */}
       <Box
         sx={{
-          p: 2,
           borderRadius: 2,
           position: 'sticky',
           bottom: 0,
-          zIndex: 1
+          zIndex: 1,
+          bgcolor: theme.palette.background.default
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 1.5 }}>
           {isReviewing && (
-            <Button
-              variant="outlined"
-              startIcon={<ArrowBackIcon />}
-              onClick={() => setIsReviewing(false)}
-              sx={{ borderRadius: 5, color: theme.palette.text.primary, p: 1 }}
-              aria-label="Back to Builder"
-            >
+            <>
+              <Button
+                variant="outlined"
+                startIcon={<ArrowBackIcon />}
+                onClick={() => setIsReviewing(false)}
+                sx={{ borderRadius: 5, color: theme.palette.text.primary }}
+                aria-label="Back to Builder"
+              >
               Back to Builder
-            </Button>
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleClearSelections}
+                sx={{
+                  borderRadius: 5,
+                  color: theme.palette.text.primary,
+                  borderColor: theme.palette.text.primary,
+                  fontWeight: 400,
+                  '&:hover': {
+                    bgcolor: '#00000010'
+                  }
+                }}
+                aria-label="Clear selections"
+              >
+              Clear Selections
+              </Button>
+            </>
           )}
         </Box>
         <Box
           sx={{
-            width: '90%',
+            width: '10rem',
             height: '0.2rem',
             mx: 'auto',
-            mb: 2,
+            mb: 1.5,
             bgcolor: theme.palette.text.primary,
             borderRadius: 2
           }}
         />
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 1.5 }}>
           <LocalOfferIcon sx={{ color: theme.palette.primary.secondary }} />
           <Typography variant="h5" sx={{ fontWeight: 'medium' }}>
             Or order your custom meal
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 1.5 }}>
           <TrendingUpIcon sx={{ color: theme.palette.primary.secondary }} />
-          <Typography variant="body1" sx={{ textAlign: 'center' }}>
+          <Typography
+            variant="body1"
+            sx={{ textAlign: 'center', fontSize: { xs: '0.875rem', sm: '1rem' }, whiteSpace: 'nowrap' }}
+          >
             Calories: {Math.round(customTotal.calories)} kcal | Protein: {Math.round(customTotal.protein)}g | Carbs:{' '}
             {Math.round(customTotal.carbs)}g | Fat: {Math.round(customTotal.fat)}g
           </Typography>
@@ -203,21 +231,21 @@ const DrawerInfo = ({ onClose }) => {
             variant="contained"
             color="success"
             startIcon={<ShoppingCart />}
-            sx={{ mt: 2, borderRadius: 5 }}
+            sx={{ borderRadius: 5 }}
             onClick={handleOrderCustom}
             aria-label="Order custom meal"
           >
-            Order custom meal
+            Order meal
           </Button>
           <Button
             variant="outlined"
             color="success"
             startIcon={<SaveIcon />}
-            sx={{ mt: 2, borderRadius: 5 }}
+            sx={{ borderRadius: 5 }}
             onClick={handleSaveCustom}
             aria-label="Save custom meal"
           >
-            Save custom meal
+            Save meal
           </Button>
         </Box>
       </Box>
@@ -225,4 +253,4 @@ const DrawerInfo = ({ onClose }) => {
   )
 }
 
-export default DrawerInfo
+export default DrawerInfoMobile

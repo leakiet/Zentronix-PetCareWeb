@@ -1,13 +1,16 @@
 import Box from '@mui/material/Box'
 import AppBar from '~/components/AppBar/AppBar'
 import theme from '~/theme'
-import TabCal from './Item/TabCal'
+import TabCal from './Item/TabCal/TabCal'
 import ChoiceCal from './Item/HealthyChoice/HealthyChoice'
 import ListCard from './Item/ListCard/ListCard'
 import { useState, useRef, useEffect } from 'react'
 import Footer from '~/components/Footer/Footer'
 import { ItemHealthy } from '~/apis/mockData'
-
+import TabCalMobile from './Item/TabCal/TabCalMobile'
+import { useSelector } from 'react-redux'
+import { selectCurrentMeal } from '~/redux/meal/mealSlice'
+import HealthyChoiceMobile from './Item/HealthyChoice/HealthyChoiceMobile'
 const SmartMealLayout = () => {
   const [value, setValue] = useState(0)
   const itemHealthy = ItemHealthy
@@ -15,6 +18,7 @@ const SmartMealLayout = () => {
   const carbsRef = useRef(null)
   const sideRef = useRef(null)
   const sauceRef = useRef(null)
+  const selectedItems = useSelector(selectCurrentMeal)
 
 
   useEffect(() => {
@@ -47,7 +51,7 @@ const SmartMealLayout = () => {
           mt: theme.fitbowl.appBarHeight,
           backgroundColor: theme.colorSchemes.light.palette.background.default,
           minHeight: '100vh',
-          px: { xs: 1, sm: 2, md: 2 },
+          px: { xs: 0, sm: 0, md: 2 },
           py: { xs: 1, sm: 2, md: 3 }
         }}
       >
@@ -74,8 +78,8 @@ const SmartMealLayout = () => {
           >
             <Box
               sx={{
-                position: { xs: 'static', md: 'sticky' },
-                top: { md: theme.fitbowl.appBarHeight },
+                position: 'sticky',
+                top: theme.fitbowl.appBarHeight,
                 zIndex: 10,
                 my: { xs: 2, md: 3 },
                 mx: 'auto',
@@ -87,7 +91,20 @@ const SmartMealLayout = () => {
                 background: 'transparent'
               }}
             >
-              <TabCal value={value} handleChange={handleChange} />
+              <Box
+                sx={{
+                  display: { xs: 'none', md: 'block' }
+                }}
+              >
+                <TabCal value={value} handleChange={handleChange} />
+              </Box>
+              <Box
+                sx={{
+                  display: { xs: 'block', md: 'none' }
+                }}
+              >
+                <TabCalMobile value={value} handleChange={handleChange} />
+              </Box>
             </Box>
             <Box sx={{ mx: '15px' }}>
               <Box ref={proteinRef} sx={{ scrollMarginTop: `calc(${theme.fitbowl.appBarHeight} + 80px)` }}>
@@ -104,44 +121,46 @@ const SmartMealLayout = () => {
               </Box>
             </Box>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: { xs: 2, md: 3 } }}>
-              <Box sx={{
-                py: 1,
-                px: 4,
-                borderRadius: 5,
-                maxWidth: 'fit-content',
-                cursor: 'pointer',
-                color: 'white',
-                bgcolor: theme.palette.primary.secondary,
-                fontWeight: 400,
-                fontSize: '1rem',
-                '&:hover': {
-                  bgcolor: 'rgba(0, 99, 76, 0.8)'
-                }
-              }}>
-                Suggest Foods
-              </Box>
-            </Box>
+
           </Box>
           <Box
             sx={{
-              position: { xs: 'static', md: 'sticky' },
-              top: { xs: 0, md: theme.fitbowl.appBarHeight },
-              height: { xs: 'auto', md: '85vh' },
-              minWidth: { xs: '100%', md: '40%' },
-              maxWidth: { xs: '100%', md: '40%' },
+              position: 'sticky',
+              top: theme.fitbowl.appBarHeight,
+              height: '85vh',
+              minWidth: '40%',
+              maxWidth: '40%',
               flex: 1,
-              borderRadius: { xs: 0, md: 4 },
-              p: { xs: 0, md: 2 },
-              display: 'flex',
+              borderRadius: 4,
+              p: 2,
+              display: { xs: 'none', md: 'flex' },
               flexDirection: 'column',
               alignItems: 'center',
-              overflowY: { xs: 'visible', md: 'auto' },
-              background: { xs: 'transparent', md: theme.colorSchemes.light.palette.background.default }
+              overflowY: 'auto',
+              background: theme.colorSchemes.light.palette.background.default
             }}
           >
             <ChoiceCal />
           </Box>
+        </Box>
+        <Box sx={{
+          display: { xs: 'block', md: 'none' },
+          position: 'sticky',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 20,
+          width: '100%',
+          marginTop: 'auto'
+        }}>
+          {selectedItems.protein.length === 0 &&
+            selectedItems.carbs.length === 0 &&
+            selectedItems.side.length === 0 &&
+            selectedItems.sauce.length === 0 ? (
+              <Box></Box>
+            ) : (
+              <HealthyChoiceMobile />
+            )}
         </Box>
       </Box>
       <Footer />
