@@ -3,7 +3,7 @@ import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { useLocation } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import CalculateIcon from '@mui/icons-material/Calculate'
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu'
@@ -12,11 +12,13 @@ import { Link } from 'react-router-dom'
 import React from 'react'
 import theme from '~/theme'
 
+
 const ROUTES = {
   SMART_MEAL_PLANNER: '/smart-meal-planner',
   CALORIE_CALCULATOR: '/calo-calculator'
 }
-// StyledMenu
+
+// StyledMenu với transition mượt mà hơn
 const StyledMenu = styled((props) => (
   <Menu
     elevation={8}
@@ -28,6 +30,8 @@ const StyledMenu = styled((props) => (
       vertical: 'top',
       horizontal: 'center'
     }}
+    transitionDuration={200}
+    disableAutoFocusItem
     {...props}
   />
 ))(({ theme }) => ({
@@ -74,6 +78,24 @@ const CaloCalculator = ({ label, t }) => {
   const location = useLocation()
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
+  const menuRef = useRef(null)
+  const buttonRef = useRef(null)
+
+  // Tự động đóng menu khi di chuyển chuột ra khỏi menu
+  useEffect(() => {
+    const handleMouseLeave = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.relatedTarget)) {
+        setAnchorEl(null)
+      }
+    }
+
+    if (open) {
+      document.addEventListener('mouseleave', handleMouseLeave)
+      return () => {
+        document.removeEventListener('mouseleave', handleMouseLeave)
+      }
+    }
+  }, [open])
 
   const menuItems = [
     {
@@ -95,60 +117,76 @@ const CaloCalculator = ({ label, t }) => {
       location.pathname === item.path || location.pathname.startsWith(`${item.path}/`)
   )
 
-  const handleClick = (event) => {
+  const handleMouseEnter = (event) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose = () => {
-    setAnchorEl(null)
+  const handleMouseLeave = (event) => {
+    // Chỉ đóng menu nếu chuột không di chuyển vào menu
+    if (menuRef.current && !menuRef.current.contains(event.relatedTarget)) {
+      setAnchorEl(null)
+    }
+  }
+
+  const handleMenuMouseLeave = (event) => {
+    // Đóng menu nếu chuột rời khỏi menu và không di chuyển vào button
+    if (buttonRef.current && !buttonRef.current.contains(event.relatedTarget)) {
+      setAnchorEl(null)
+    }
   }
 
   return (
-    <>
-      <Box>
-        <Button
-          endIcon={<KeyboardArrowDownIcon />}
-          onClick={handleClick}
-          sx={{
-            my: 2,
-            color: theme.palette.text.primary,
-            display: 'flex',
-            alignItems: 'center',
-            fontWeight: 400,
-            fontSize: '0.9375rem',
-            textTransform: 'none',
-            padding: '8px 16px',
-            backgroundColor: isActive ? theme.palette.text.hover : 'transparent',
-            borderRadius: '50px',
-            transition: 'all 0.2s ease-in-out',
-            '&:hover': {
-              backgroundColor: theme.palette.text.hover,
-              borderRadius: '50px'
-            },
-            '& .MuiButton-endIcon': {
-              marginLeft: '4px',
-              transition: 'transform 0.2s',
-              '& svg': {
-                fontSize: '1.1rem'
-              }
-            },
-            '&:hover .MuiButton-endIcon': {
-              transform: 'translateY(1px)'
+    <Box
+      onMouseLeave={handleMouseLeave}
+      sx={{ position: 'relative', display: 'inline-block' }}
+    >
+      <Button
+        ref={buttonRef}
+        endIcon={<KeyboardArrowDownIcon />}
+        onMouseEnter={handleMouseEnter}
+        sx={{
+          my: 2,
+          color: theme.palette.text.primary,
+          display: 'flex',
+          alignItems: 'center',
+          fontWeight: 400,
+          fontSize: '0.9375rem',
+          textTransform: 'none',
+          padding: '8px 16px',
+          backgroundColor: isActive || open ? theme.palette.text.hover : 'transparent',
+          borderRadius: '50px',
+          transition: 'all 0.2s ease-in-out',
+          '&:hover': {
+            backgroundColor: theme.palette.text.hover,
+            borderRadius: '50px'
+          },
+          '& .MuiButton-endIcon': {
+            marginLeft: '4px',
+            transition: 'transform 0.2s',
+            '& svg': {
+              fontSize: '1.1rem'
             }
-          }}
-        >
-          {t(`navBar.${label}`)}
-        </Button>
-      </Box>
+          },
+          '&:hover .MuiButton-endIcon': {
+            transform: 'translateY(1px)'
+          }
+        }}
+      >
+        {t(`navBar.${label}`)}
+      </Button>
+
       <StyledMenu
+        ref={menuRef}
         id="calo-calculator-menu"
         anchorEl={anchorEl}
         open={open}
-        onClose={handleClose}
+        onClose={() => setAnchorEl(null)}
         MenuListProps={{
+          onMouseLeave: handleMenuMouseLeave,
           'aria-labelledby': 'calo-calculator-button'
         }}
         disableScrollLock
+        keepMounted
       >
         {menuItems.map((item) => {
           const isItemActive =
@@ -159,7 +197,6 @@ const CaloCalculator = ({ label, t }) => {
               key={item.path}
               component={Link}
               to={item.path}
-              onClick={handleClose}
               selected={isItemActive}
               sx={{
                 '&.Mui-selected': {
@@ -186,7 +223,7 @@ const CaloCalculator = ({ label, t }) => {
           )
         })}
       </StyledMenu>
-    </>
+    </Box>
   )
 }
 
