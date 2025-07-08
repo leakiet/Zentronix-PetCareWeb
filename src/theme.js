@@ -22,6 +22,7 @@ const theme = createTheme({
           main: deepOrange[500]
         },
         background: {
+          main: '#F5EDD8',
           default: '#FAF5E8'
         },
         text: {
