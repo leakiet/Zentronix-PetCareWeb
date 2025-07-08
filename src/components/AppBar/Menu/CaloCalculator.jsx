@@ -53,13 +53,13 @@ const StyledMenu = styled((props) => (
         marginBottom: '4px'
       },
       '&:hover': {
-        backgroundColor: alpha(theme.palette.primary.main, 0.08),
+        backgroundColor: alpha(theme.palette.background.main, 0.08),
         transform: 'translateX(2px)'
       },
       '&.Mui-selected': {
-        backgroundColor: alpha(theme.palette.primary.main, 0.5),
+        backgroundColor: alpha(theme.palette.background.main, 0.5),
         '&:hover': {
-          backgroundColor: alpha(theme.palette.primary.main, 0.7)
+          backgroundColor: alpha(theme.palette.background.main, 0.7)
         },
         '& .MuiSvgIcon-root': {
           color: theme.palette.primary.secondary

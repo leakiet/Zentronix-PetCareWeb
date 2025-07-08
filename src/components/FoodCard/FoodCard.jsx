@@ -84,7 +84,7 @@ const FoodCard = ({ card }) => {
           flexShrink: 0,
           overflow: 'hidden',
           border: '2px solid',
-          borderColor: count > 0 ? theme.palette.primary.main : 'transparent',
+          borderColor: count > 0 ? theme.palette.background.main : 'transparent',
           transition: 'all 0.3s ease'
         }}
       >

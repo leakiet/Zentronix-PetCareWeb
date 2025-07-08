@@ -33,7 +33,7 @@ function ResponsiveAppBar() {
   }
   return (
     <AppBar sx={{
-      backgroundColor: (theme) => theme.palette.primary.main, height: (theme) => theme.fitbowl.appBarHeight,
+      backgroundColor: (theme) => theme.palette.background.main, height: (theme) => theme.fitbowl.appBarHeight,
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center'
