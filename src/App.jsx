@@ -1,7 +1,7 @@
 // import Footer from './components/Footer/Footer'
 import BlogLayout from './pages/customer/Blogs/BlogLayout'
 import HomeLayout from './pages/customer/Home/HomeLayout'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import BlogDetail from './pages/customer/Blogs/BlogDetail/BlogDetail'
 import MenuLayout from './pages/customer/Menu/MenuLayout'
 import MenuDetail from './pages/customer/Menu/MenuDetail/MenuDetail'
@@ -10,6 +10,7 @@ import CaloCalculatorLayout from './pages/customer/CaloCalculator/CaloCalulatorL
 import Auth from './pages/customer/Auth/Auth'
 import AccountVerification from './pages/customer/Auth/AccountVerification'
 import NotFound from './pages/customer/NotFound/NotFound'
+import Profile from './pages/customer/Profile/Profile'
 
 function App() {
 
@@ -29,6 +30,14 @@ function App() {
         <Route path="/register" element={<Auth />} />
         <Route path="/reset-password" element={<Auth />} />
         <Route path="/verify-email" element={<AccountVerification /> }/>
+
+        {/* Customer Profile */}
+        <Route path="/profile" element={<Navigate to="/profile/overview" replace />} />
+        <Route path="/profile/overview" element={<Profile />} />
+        <Route path="/profile/account" element={<Profile />} />
+        <Route path="/profile/membership" element={<Profile />} />
+        <Route path="/profile/order-history" element={<Profile />} />
+        <Route path="/profile/health-profile" element={<Profile />} />
 
         {/* 404 Not Found */}
         <Route path="*" element={<NotFound /> }/>
