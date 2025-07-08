@@ -1,3 +1,4 @@
+
 import BlogLayout from './pages/customer/Blogs/BlogLayout'
 import HomeLayout from './pages/customer/Home/HomeLayout'
 import { Routes, Route } from 'react-router-dom'
@@ -28,6 +29,7 @@ function App() {
         {/* Authentication */}
         <Route path="/login" element={<Auth />} />
         <Route path="/register" element={<Auth />} />
+        <Route path="/reset-password" element={<Auth />} />
         <Route path="/verify-email" element={<AccountVerification /> }/>
 
         {/* 404 Not Found */}

@@ -81,7 +81,8 @@ function ResponsiveAppBar() {
                 color: (theme) => theme.palette.primary.secondary,
                 justifyContent: 'start',
                 alignItems: 'center',
-                textDecoration: 'none'
+                textDecoration: 'none',
+                color: (theme) => theme.palette.text.primary
               }}
             >
               {t('navBar.nameWebsite')}
