@@ -2,14 +2,17 @@ import Box from '@mui/material/Box'
 import AppBar from '~/components/AppBar/AppBar'
 import Footer from '~/components/Footer/Footer'
 import theme from '~/theme'
+import CaloInfo from './CaloInfo/CaloInfo'
 
-const CaloCalculator = () => {
+const CaloCalculatorLayout = () => {
   return (
     <>
       <Box>
         <AppBar/>
         <Box sx={{ mt: theme.fitbowl.appBarHeight }}>
-          calo calculator
+          <Box sx={{ py: 5 }}>
+            <CaloInfo/>
+          </Box>
         </Box>
         <Footer/>
       </Box>
@@ -17,4 +20,4 @@ const CaloCalculator = () => {
   )
 }
 
-export default CaloCalculator
+export default CaloCalculatorLayout

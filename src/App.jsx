@@ -9,7 +9,7 @@ import SmartMealLayout from './pages/customer/SmartMeal/SmartMealLayout'
 import Auth from './pages/customer/Auth/Auth'
 import AccountVerification from './pages/customer/Auth/AccountVerification'
 import NotFound from './pages/customer/NotFound/NotFound'
-import CaloCalculator from './pages/customer/CaloCalculator/CaloCalculator'
+import CaloCalculatorLayout from './pages/customer/CaloCalculator/CaloCalculatorLayout'
 
 function App() {
 
@@ -23,7 +23,7 @@ function App() {
         <Route path="/menu/:slug" element={<MenuDetail />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/smart-meal-planner" element={<SmartMealLayout />} />
-        <Route path="/calo-calculator" element={<CaloCalculator />} />
+        <Route path="/calo-calculator" element={<CaloCalculatorLayout />} />
 
         {/* Authentication */}
         <Route path="/login" element={<Auth />} />

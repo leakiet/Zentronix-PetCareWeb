@@ -45,7 +45,7 @@ const DrawerAppBar = ({ drawerOpen, toggleDrawer, t }) => {
           paddingX: 2,
           paddingY: 4,
           color: 'white',
-          backgroundColor: (theme) => theme.palette.primary.main,
+          backgroundColor: (theme) => theme.palette.background.main,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between'
