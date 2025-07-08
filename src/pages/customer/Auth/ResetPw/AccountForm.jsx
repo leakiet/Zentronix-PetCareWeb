@@ -29,10 +29,7 @@ function AccountForm({ onNext }) {
         success: 'OTP code sent successfully!'
       }
     ).then(res => {
-      console.log(res)
-      //Đoạn này phải kiểm tra không có lỗi mới redirect về route /
       if (!res.error) {
-        // navigate('/account/reset-password/otp', { state: { userId } })
         onNext(email)
       }
     })

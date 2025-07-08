@@ -42,13 +42,11 @@ function ResponsiveAppBar() {
         <Toolbar disableGutters>
           <Typography
             variant="h5"
-            noWrap
             component={Link}
             to="/"
             sx={{
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'Sacramento, cursive',
-              fontWeight: 800,
+              fontWeight: 700,
               letterSpacing: '.3rem',
               textTransform: 'uppercase',
               fontSize: '2rem',

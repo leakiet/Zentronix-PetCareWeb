@@ -47,8 +47,8 @@ function LoginForm() {
     const { email, password } = data
     toast.promise(
       dispatch(loginCustomerApi({ email, password })), {
-        pending: 'Logging in...'
-      }
+      pending: 'Logging in...'
+    }
     ).then(res => {
       if (res.error?.message?.includes('not active')) {
         setResendEmail(email)
@@ -64,8 +64,8 @@ function LoginForm() {
   const handleResend = () => {
     toast.promise(
       resendVerifyEmailApi({ resendEmail }), {
-      pending: 'Resending verification email...'
-    }
+        pending: 'Resending verification email...'
+      }
     ).then(() => {
       setOpenResendVerifyPanel(false)
       setResendEmail('')
@@ -208,7 +208,7 @@ function LoginForm() {
             </Box>
 
             {/* Sign up link */}
-            <Box sx={{ 
+            <Box sx={{
               padding: '0 1em 1em 1em',
               textAlign: 'center',
               display: 'flex',
