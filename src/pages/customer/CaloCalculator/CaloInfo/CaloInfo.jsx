@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -6,13 +6,14 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import Typography from '@mui/material/Typography'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import Chip from '@mui/material/Chip'
 import theme from '~/theme'
+import { useForm, Controller } from 'react-hook-form'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 
 const exerciseLevels = [
   'Không tập luyện',
@@ -44,16 +45,16 @@ const styleInput = {
     borderRadius: '8px',
     '& .MuiOutlinedInput-notchedOutline': {
       borderColor: theme.colorSchemes.light.palette.text.primary,
-      borderRadius: '8px',
+      borderRadius: '8px'
     },
     '&:hover .MuiOutlinedInput-notchedOutline': {
       borderColor: theme.colorSchemes.light.palette.text.primary,
-      borderRadius: '8px',
+      borderRadius: '8px'
     },
     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
       borderColor: theme.colorSchemes.light.palette.text.primary,
       borderWidth: '2px',
-      borderRadius: '8px',
+      borderRadius: '8px'
     }
   },
   '& .MuiInputBase-input': {
@@ -72,8 +73,8 @@ const styleInput = {
     fontSize: { xs: '1rem', sm: '0.875rem' },
     color: theme.colorSchemes.light.palette.text.primary,
     '&.Mui-focused': {
-      color: `${theme.colorSchemes.light.palette.text.primary} !important`,
-    },
+      color: `${theme.colorSchemes.light.palette.text.primary} !important`
+    }
   }
 }
 
@@ -82,80 +83,52 @@ const styleSelect = {
     color: theme.colorSchemes.light.palette.text.primary,
     borderRadius: '8px',
     '&:focus': {
-      backgroundColor: 'transparent',
-    },
+      backgroundColor: 'transparent'
+    }
   },
   '& .MuiInputLabel-root': {
     color: theme.colorSchemes.light.palette.text.primary,
     '&.Mui-focused': {
-      color: `${theme.colorSchemes.light.palette.text.primary} !important`,
-    },
+      color: `${theme.colorSchemes.light.palette.text.primary} !important`
+    }
   },
   '& .MuiOutlinedInput-notchedOutline': {
     borderColor: theme.colorSchemes.light.palette.text.primary,
-    borderRadius: '8px',
+    borderRadius: '8px'
   },
   '&:hover .MuiOutlinedInput-notchedOutline': {
     borderColor: theme.colorSchemes.light.palette.text.primary,
-    borderRadius: '8px',
+    borderRadius: '8px'
   },
   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
     borderColor: theme.colorSchemes.light.palette.text.primary,
     borderWidth: '2px',
-    borderRadius: '8px',
+    borderRadius: '8px'
   },
   '& .MuiSelect-icon': {
-    color: theme.colorSchemes.light.palette.text.primary,
+    color: theme.colorSchemes.light.palette.text.primary
   },
   '& .MuiChip-root': {
     borderRadius: '4px',
-    margin: '2px',
+    margin: '2px'
   },
   '& .MuiButton-root': {
-    borderRadius: '8px',
+    borderRadius: '8px'
   },
   '& .MuiPaper-root': {
-    borderRadius: '8px',
+    borderRadius: '8px'
   }
 }
 
 const CaloInfo = () => {
-  const [formData, setFormData] = useState({
-    gender: '',
-    age: '',
-    weight: '',
-    height: '',
-    exerciseLevel: '',
-    goal: '',
-    allergies: []
-  })
-
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
-  const handleAllergiesChange = (event) => {
-    const {
-      target: { value }
-    } = event
-    setFormData(prev => ({
-      ...prev,
-      allergies: typeof value === 'string' ? value.split(',') : value
-    }))
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('Form submitted:', formData)
-    // Xử lý dữ liệu form ở đây
-  }
-
-  const handleClear = () => {
-    setFormData({
+  const navigate = useNavigate()
+  const { 
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm({
+    defaultValues: {
       gender: '',
       age: '',
       weight: '',
@@ -163,7 +136,17 @@ const CaloInfo = () => {
       exerciseLevel: '',
       goal: '',
       allergies: []
-    })
+    }
+  })
+
+  const onSubmit = (data) => {
+    console.log('Form submitted:', data)
+    const path = createSearchParams(data)
+    navigate(`/calo-calculator/suggest?${path.toString()}`)
+  }
+
+  const handleClear = () => {
+    reset()
   }
 
   return (
@@ -172,138 +155,200 @@ const CaloInfo = () => {
         <Typography variant="h5" component="h2" gutterBottom color="text.primary" sx={{ mb: 4, fontWeight: 'bold' }}>
           Thông tin cá nhân
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)} method='get' >
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, sm: 6, md: 6 }}>
               <FormControl fullWidth margin="normal">
                 <InputLabel id="gender-label">Giới tính</InputLabel>
-                <Select
-                  sx={styleSelect}
-                  labelId="gender-label"
+                <Controller
                   name="gender"
-                  value={formData.gender}
-                  onChange={handleChange}
-                  label="Giới tính"
-                  required
-                >
-                  <MenuItem value="male">Nam</MenuItem>
-                  <MenuItem value="female">Nữ</MenuItem>
-                </Select>
+                  control={control}
+                  rules={{ required: 'Vui lòng chọn giới tính' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      sx={styleSelect}
+                      labelId="gender-label"
+                      label="Giới tính"
+                      error={!!errors.gender}
+                    >
+                      <MenuItem value="male">Nam</MenuItem>
+                      <MenuItem value="female">Nữ</MenuItem>
+                    </Select>
+                  )}
+                />
+                {errors.gender && (
+                  <Typography color="error" variant="caption">
+                    {errors.gender.message}
+                  </Typography>
+                )}
               </FormControl>
             </Grid>
 
             <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-              <TextField
-                sx={styleInput}
-                fullWidth
-                margin="normal"
+              <Controller
                 name="age"
-                label="Tuổi"
-                type="number"
-                inputProps={{ min: 18, max: 80 }}
-                value={formData.age}
-                onChange={handleChange}
-                required
+                control={control}
+                rules={{
+                  required: 'Vui lòng nhập tuổi',
+                  min: { value: 1, message: 'Tuổi phải lớn hơn 0' },
+                  max: { value: 120, message: 'Tuổi không hợp lệ' }
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    sx={styleInput}
+                    fullWidth
+                    margin="normal"
+                    label="Tuổi"
+                    type="number"
+                    error={!!errors.age}
+                    helperText={errors.age?.message}
+                  />
+                )}
               />
             </Grid>
 
             <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-              <TextField
-                sx={styleInput}
-                fullWidth
-                margin="normal"
+              <Controller
                 name="weight"
-                label="Cân nặng (kg)"
-                type="number"
-                inputProps={{ min: 30, step: 0.1 }}
-                value={formData.weight}
-                onChange={handleChange}
-                required
+                control={control}
+                rules={{
+                  required: 'Vui lòng nhập cân nặng',
+                  min: { value: 20, message: 'Cân nặng không hợp lệ' },
+                  max: { value: 300, message: 'Cân nặng không hợp lệ' }
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    sx={styleInput}
+                    fullWidth
+                    margin="normal"
+                    label="Cân nặng (kg)"
+                    type="number"
+                    error={!!errors.weight}
+                    helperText={errors.weight?.message}
+                  />
+                )}
               />
             </Grid>
 
             <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-              <TextField
-                sx={styleInput}
-                fullWidth
-                margin="normal"
+              <Controller
                 name="height"
-                label="Chiều cao (cm)"
-                type="number"
-                inputProps={{ min: 100, max: 250 }}
-                value={formData.height}
-                onChange={handleChange}
-                required
+                control={control}
+                rules={{
+                  required: 'Vui lòng nhập chiều cao',
+                  min: { value: 100, message: 'Chiều cao không hợp lệ' },
+                  max: { value: 250, message: 'Chiều cao không hợp lệ' }
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    sx={styleInput}
+                    fullWidth
+                    margin="normal"
+                    label="Chiều cao (cm)"
+                    type="number"
+                    error={!!errors.height}
+                    helperText={errors.height?.message}
+                  />
+                )}
               />
             </Grid>
 
             <Grid size={{ xs: 12 }}>
               <FormControl fullWidth margin="normal">
-                <InputLabel id="exercise-level-label">Mức độ tập luyện</InputLabel>
-                <Select
-                  sx={styleSelect}
-                  labelId="exercise-level-label"
+                <InputLabel id="exercise-level-label">Mức độ vận động</InputLabel>
+                <Controller
                   name="exerciseLevel"
-                  value={formData.exerciseLevel}
-                  onChange={handleChange}
-                  label="Mức độ tập luyện"
-                  required
-                >
-                  {exerciseLevels.map((level, index) => (
-                    <MenuItem key={index} value={level}>
-                      {level}
-                    </MenuItem>
-                  ))}
-                </Select>
+                  control={control}
+                  rules={{ required: 'Vui lòng chọn mức độ vận động' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      sx={styleSelect}
+                      labelId="exercise-level-label"
+                      label="Mức độ vận động"
+                      error={!!errors.exerciseLevel}
+                    >
+                      {exerciseLevels.map((level, index) => (
+                        <MenuItem key={index} value={level}>
+                          {level}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                />
+                {errors.exerciseLevel && (
+                  <Typography color="error" variant="caption">
+                    {errors.exerciseLevel.message}
+                  </Typography>
+                )}
               </FormControl>
             </Grid>
 
             <Grid size={{ xs: 12 }}>
               <FormControl fullWidth margin="normal">
                 <InputLabel id="goal-label">Mục tiêu</InputLabel>
-                <Select
-                  sx={styleSelect}
-                  labelId="goal-label"
+                <Controller
                   name="goal"
-                  value={formData.goal}
-                  onChange={handleChange}
-                  label="Mục tiêu"
-                  required
-                >
-                  {goals.map((goal, index) => (
-                    <MenuItem key={index} value={goal}>
-                      {goal}
-                    </MenuItem>
-                  ))}
-                </Select>
+                  control={control}
+                  rules={{ required: 'Vui lòng chọn mục tiêu' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      sx={styleSelect}
+                      labelId="goal-label"
+                      label="Mục tiêu"
+                      error={!!errors.goal}
+                    >
+                      {goals.map((goal, index) => (
+                        <MenuItem key={index} value={goal}>
+                          {goal}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                />
+                {errors.goal && (
+                  <Typography color="error" variant="caption">
+                    {errors.goal.message}
+                  </Typography>
+                )}
               </FormControl>
             </Grid>
 
             <Grid size={{ xs: 12 }}>
               <FormControl fullWidth margin="normal">
-                <InputLabel id="allergies-label">Dị ứng với</InputLabel>
-                <Select
-                  sx={styleSelect}
-                  labelId="allergies-label"
+                <InputLabel id="allergies-label">Dị ứng thực phẩm (nếu có)</InputLabel>
+                <Controller
                   name="allergies"
-                  multiple
-                  value={formData.allergies}
-                  onChange={handleAllergiesChange}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      multiple
+                      sx={styleSelect}
+                      labelId="allergies-label"
+                      label="Dị ứng thực phẩm (nếu có)"
+                      renderValue={(selected) => (
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                          {selected.map((value) => (
+                            <Chip key={value} label={value} />
+                          ))}
+                        </Box>
+                      )}
+                    >
+                      {allergies.map((allergy) => (
+                        <MenuItem key={allergy} value={allergy}>
+                          <Checkbox checked={field.value?.includes(allergy)} />
+                          {allergy}
+                        </MenuItem>
                       ))}
-                    </Box>
+                    </Select>
                   )}
-                >
-                  {allergies.map((allergy) => (
-                    <MenuItem key={allergy} value={allergy}>
-                      <Checkbox checked={formData.allergies.indexOf(allergy) > -1} />
-                      {allergy}
-                    </MenuItem>
-                  ))}
-                </Select>
+                />
               </FormControl>
             </Grid>
 
@@ -312,29 +357,28 @@ const CaloInfo = () => {
                 variant="outlined"
                 onClick={handleClear}
                 sx={{
-                  color: theme.palette.text.primary,
-                  borderColor: theme.palette.primary.secondary,
+                  color: theme.colorSchemes.light.palette.text.primary,
+                  borderColor: theme.colorSchemes.light.palette.text.primary,
                   '&:hover': {
-                    borderColor: theme.palette.primary.secondary,
-                    backgroundColor: `${theme.palette.primary.secondary}20`
+                    borderColor: theme.colorSchemes.light.palette.text.primary,
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)'
                   }
                 }}
               >
-                Xóa dữ liệu
+                Xóa hết
               </Button>
               <Button
                 type="submit"
                 variant="contained"
                 sx={{
-                  backgroundColor: theme.palette.primary.secondary,
+                  backgroundColor: theme.colorSchemes.light.palette.primary.main,
                   color: 'white',
                   '&:hover': {
-                    backgroundColor: theme.palette.primary.secondary,
-                    opacity: 0.9
+                    backgroundColor: theme.colorSchemes.light.palette.primary.dark
                   }
                 }}
               >
-                Tính toán
+                Xác nhận
               </Button>
             </Grid>
           </Grid>
