@@ -134,7 +134,7 @@ export default function HealthProfileTab() {
 
   const handleCalculateTDEE = () => {
     const { weight, height, age, gender, activityLevel } = currentRecord
-    
+
     if (!weight || !height || !age) {
       alert('Vui lòng nhập đầy đủ cân nặng, chiều cao và tuổi')
       return

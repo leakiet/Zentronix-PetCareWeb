@@ -122,7 +122,7 @@ const styleSelect = {
 
 const CaloInfo = () => {
   const navigate = useNavigate()
-  const { 
+  const {
     control,
     handleSubmit,
     formState: { errors },

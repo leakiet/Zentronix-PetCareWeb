@@ -23,7 +23,7 @@ function RegisterForm() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { register, handleSubmit, formState: { errors }, getValues } = useForm()
-  
+
   const submitRegister = (data) => {
     const { email, password } = data
     toast.promise(registerCustomerAPI({ email, password }), {

@@ -85,9 +85,9 @@ export default function MembershipTab() {
     if (!membershipData) return 0
     const currentTier = getCurrentTierInfo()
     const nextTier = membershipTiers.find(tier => tier.minSpending > membershipData.yearlySpending)
-    
+
     if (!nextTier) return 100 // Already at highest tier
-    
+
     const progress = ((membershipData.yearlySpending - currentTier.minSpending) /
                      (nextTier.minSpending - currentTier.minSpending)) * 100
     return Math.min(progress, 100)
@@ -173,7 +173,7 @@ export default function MembershipTab() {
                 <Typography variant="body2" sx={{ opacity: 0.8 }}>
                   điểm
                 </Typography>
-                
+
                 {/* Points Action Buttons */}
                 <Box sx={{ mt: 2, display: 'flex', gap: 1, flexDirection: { xs: 'column', md: 'row' } }}>
                   <Button
@@ -270,7 +270,7 @@ export default function MembershipTab() {
               <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#2e7d32' }}>
                 Thông tin điểm thưởng
               </Typography>
-              
+
               <Grid container spacing={2}>
                 <Grid size={6}>
                   <Box sx={{ textAlign: 'center', p: 2, backgroundColor: '#f8f9fa', borderRadius: 2 }}>
@@ -295,7 +295,7 @@ export default function MembershipTab() {
               </Grid>
 
               <Divider sx={{ my: 2 }} />
-              
+
               <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
                 1 điểm = 1,000 VND khi thanh toán
               </Typography>
@@ -310,7 +310,7 @@ export default function MembershipTab() {
               <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#2e7d32' }}>
                 Quyền lợi hiện tại
               </Typography>
-              
+
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                 {currentTierInfo.benefits.map((benefit, index) => (
                   <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -337,7 +337,7 @@ export default function MembershipTab() {
               <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#2e7d32' }}>
                 Chính sách thành viên
               </Typography>
-              
+
               <Grid container spacing={2}>
                 {membershipTiers.map((tier) => (
                   <Grid key={tier.tier} size={{ xs: 12, md: 4 }}>
@@ -379,7 +379,7 @@ export default function MembershipTab() {
                           />
                         )}
                       </Box>
-                      
+
                       <CardContent sx={{ p: 2, flex: 1, display: 'flex', flexDirection: 'column' }}>
                         <Typography variant="body2" sx={{ mb: 2, fontWeight: 600, color: tier.color }}>
                           {tier.maxSpending === Infinity
@@ -387,7 +387,7 @@ export default function MembershipTab() {
                             : `${formatCurrency(tier.minSpending)} - ${formatCurrency(tier.maxSpending)}`
                           }
                         </Typography>
-                        
+
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, flex: 1 }}>
                           {tier.benefits.map((benefit, index) => (
                             <Typography key={index} variant="body2" sx={{ fontSize: '0.75rem' }}>
