@@ -13,6 +13,7 @@ import NotFound from '~/pages/customer/NotFound/NotFound'
 import Profile from '~/pages/customer/Profile/Profile'
 import CaloCalculatorLayout from '~/pages/customer/CaloCalculator/CaloCalculatorLayout'
 import SuggestMenuLayout from '~/pages/customer/CaloCalculator/SuggestMenu/SuggestMenuLayout'
+import CartLayout from '~/pages/customer/Cart/CardLayout'
 function App() {
 
   return (
@@ -27,6 +28,8 @@ function App() {
         <Route path="/smart-meal-planner" element={<SmartMealLayout />} />
         <Route path="/calo-calculator" element={<CaloCalculatorLayout />} />
         <Route path="/calo-calculator/suggest" element={<SuggestMenuLayout />} />
+        <Route path="/cart" element={<CartLayout />} />
+
 
         {/* Authentication */}
         <Route path="/login" element={<Auth />} />

@@ -424,3 +424,126 @@ export const menuSuggest = [
     description: 'Sous vide duck breast, Baked baby potato, Cold soba, French bean, Wasabi mayos'
   }
 ]
+
+export const itemCart = [
+  {
+    id: 1,
+    mealItem: {
+      protein: [
+        {
+          id: 1,
+          title: 'Grilled Chicken Breast',
+          image: 'https://res.cloudinary.com/quyendev/image/upload/v1750922086/Top-blade-beef-steak-300x300_fvv3fj.png',
+          calories: 165,
+          protein: 31,
+          carbs: 0,
+          fat: 3.6,
+          type: 'protein'
+        }
+      ],
+      carbs: [
+        {
+          id: 5,
+          title: 'Quinoa Bowl',
+          image: 'https://res.cloudinary.com/quyendev/image/upload/v1751107724/Donburi-white-rice--300x300_nszum2.png',
+          calories: 222,
+          protein: 8,
+          carbs: 39,
+          fat: 4,
+          type: 'carbs'
+        }
+      ],
+      side: [
+        {
+          id: 11,
+          title: 'Roasted Vegetables',
+          image: 'https://res.cloudinary.com/quyendev/image/upload/v1751107724/Salad-and-nuts-300x300_rqk6ub.png',
+          calories: 80,
+          protein: 3,
+          carbs: 12,
+          fat: 3,
+          type: 'side'
+        }
+      ],
+      sauce: [
+        {
+          id: 15,
+          title: 'Pesto',
+          image: 'https://res.cloudinary.com/quyendev/image/upload/v1751107724/Cilantro-lime-300x300_sf78nk.png',
+          calories: 80,
+          protein: 2,
+          carbs: 2,
+          fat: 8,
+          type: 'sauce'
+        }
+      ]
+    },
+    customer: {
+      id: 1,
+      name: 'Nguyen Van A',
+      email: '0Vn0u@example.com'
+    },
+    quantity: 1,
+    totalPrice: 1200
+  },
+  {
+    id: 2,
+    mealItem: {
+      protein: [
+        {
+          id: 1,
+          title: 'Grilled Chicken Breast',
+          image: 'https://res.cloudinary.com/quyendev/image/upload/v1750922086/Top-blade-beef-steak-300x300_fvv3fj.png',
+          calories: 165,
+          protein: 31,
+          carbs: 0,
+          fat: 3.6,
+          type: 'protein'
+        }
+      ],
+      carbs: [
+        {
+          id: 5,
+          title: 'Quinoa Bowl',
+          image: 'https://res.cloudinary.com/quyendev/image/upload/v1751107724/Donburi-white-rice--300x300_nszum2.png',
+          calories: 222,
+          protein: 8,
+          carbs: 39,
+          fat: 4,
+          type: 'carbs'
+        }
+      ],
+      side: [
+        {
+          id: 11,
+          title: 'Roasted Vegetables',
+          image: 'https://res.cloudinary.com/quyendev/image/upload/v1751107724/Salad-and-nuts-300x300_rqk6ub.png',
+          calories: 80,
+          protein: 3,
+          carbs: 12,
+          fat: 3,
+          type: 'side'
+        }
+      ],
+      sauce: [
+        {
+          id: 15,
+          title: 'Pesto',
+          image: 'https://res.cloudinary.com/quyendev/image/upload/v1751107724/Cilantro-lime-300x300_sf78nk.png',
+          calories: 80,
+          protein: 2,
+          carbs: 2,
+          fat: 8,
+          type: 'sauce'
+        }
+      ]
+    },
+    customer: {
+      id: 1,
+      name: 'Nguyen Van A',
+      email: '0Vn0u@example.com'
+    },
+    quantity: 2,
+    totalPrice: 1200
+  }
+]
