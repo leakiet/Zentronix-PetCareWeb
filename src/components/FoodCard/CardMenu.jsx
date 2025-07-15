@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid'
 
 const CardMenu = ({ item, sizeIndex }) => {
   const navigate = useNavigate()
+  
   const handleNavigateToDetail = (slug) => {
     navigate(`/menu/${slug}`)
   }
@@ -36,8 +37,7 @@ const CardMenu = ({ item, sizeIndex }) => {
     size: getSizeShort(item.size)
   }
 
-  // Tạo nhãn: l1, l2, b1, b2, ...
-  const label = `${itemFilter.size.toLowerCase()}${(sizeIndex ?? 0) + 1}`
+  const label = `${itemFilter.size.toUpperCase()}${(sizeIndex ?? 0) + 1}`
 
   return (
     <>
@@ -71,7 +71,7 @@ const CardMenu = ({ item, sizeIndex }) => {
             position: 'absolute',
             height: '40px',
             width: '40px',
-            display: 'flex',
+            display: { xs: 'flex', md: 'none' },
             justifyContent: 'center',
             alignItems: 'center',
             fontSize: '0.9rem',
@@ -124,7 +124,7 @@ const CardMenu = ({ item, sizeIndex }) => {
               color: theme.palette.text.primary,
               cursor: 'pointer'
             }} onClick={() => handleNavigateToDetail(itemFilter.slug)}>
-              {itemFilter.size}1
+              {label}
             </Typography>
             <Box>
               <Box sx={{

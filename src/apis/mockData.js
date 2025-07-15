@@ -131,7 +131,7 @@ export const relatedNews = [
 
 export const mealPackages = [
   {
-    id: '1-fit-1-package',
+    id: 'fit-3-package',
     title: 'Half beef steak, sweet potato, cauliflower, pickles',
     price: '650,000đ',
     image: 'https://res.cloudinary.com/quyendev/image/upload/v1752552841/L1-300x300_mgdje8.png',
@@ -143,7 +143,7 @@ export const mealPackages = [
     size: 'low'
   },
   {
-    id: '2fit-3-package',
+    id: 'fit-3-package',
     title: 'Half beef steak, sweet potato, cauliflower, pickles',
     price: '650,000đ',
     image: 'https://res.cloudinary.com/quyendev/image/upload/v1752552841/L1-300x300_mgdje8.png',
@@ -155,7 +155,7 @@ export const mealPackages = [
     size: 'high'
   },
   {
-    id: '3fit-3-package',
+    id: 'fit-3-package',
     title: 'Half beef steak, sweet potato, cauliflower, pickles',
     price: '650,000đ',
     image: 'https://res.cloudinary.com/quyendev/image/upload/v1752552841/L1-300x300_mgdje8.png',
@@ -167,7 +167,7 @@ export const mealPackages = [
     size: 'balance'
   },
   {
-    id: '4fit-3-package',
+    id: 'fit-3-package',
     title: 'Half beef steak, sweet potato, cauliflower, pickles',
     price: '650,000đ',
     image: 'https://res.cloudinary.com/quyendev/image/upload/v1752552841/L1-300x300_mgdje8.png',
@@ -179,7 +179,7 @@ export const mealPackages = [
     size: 'vegetarian'
   },
   {
-    id: '5fit-3-package',
+    id: 'fit-3-package',
     title: 'Half beef steak, sweet potato, cauliflower, pickles',
     price: '650,000đ',
     image: 'https://res.cloudinary.com/quyendev/image/upload/v1752552841/L1-300x300_mgdje8.png',
@@ -191,7 +191,7 @@ export const mealPackages = [
     size: 'low'
   },
   {
-    id: '6fit-3-package',
+    id: 'fit-3-package',
     title: 'Half beef steak, sweet potato, cauliflower, pickles',
     price: '650,000đ',
     image: 'https://res.cloudinary.com/quyendev/image/upload/v1752552841/L1-300x300_mgdje8.png',
