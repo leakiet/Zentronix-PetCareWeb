@@ -131,49 +131,76 @@ export const relatedNews = [
 
 export const mealPackages = [
   {
-    id: 'fit-3-package',
-    title: 'FIT 3 Package',
-    description: 'Lunch - Dinner Package. Weight loss',
+    id: '1-fit-1-package',
+    title: 'Half beef steak, sweet potato, cauliflower, pickles',
     price: '650,000đ',
-    image: 'https://storage.googleapis.com/a1aa/image/90d96b02-9e0e-4225-b651-42d553a5558f.jpg',
-    alt: 'Fit3 Meal Package with shrimp and vegetables in black containers on red background',
-    slug: 'fit-3-package'
+    image: 'https://res.cloudinary.com/quyendev/image/upload/v1752552841/L1-300x300_mgdje8.png',
+    calories: 650,
+    protein: 40,
+    carbs: 50,
+    fat: 20,
+    slug: 'fit-3-package',
+    size: 'low'
   },
   {
-    id: 'fit-3-package',
-    title: 'FIT 3 Package',
-    description: 'Lunch - Dinner Package. Weight loss',
+    id: '2fit-3-package',
+    title: 'Half beef steak, sweet potato, cauliflower, pickles',
     price: '650,000đ',
-    image: 'https://storage.googleapis.com/a1aa/image/90d96b02-9e0e-4225-b651-42d553a5558f.jpg',
-    alt: 'Fit3 Meal Package with shrimp and vegetables in black containers on red background',
-    slug: 'fit-3-package'
+    image: 'https://res.cloudinary.com/quyendev/image/upload/v1752552841/L1-300x300_mgdje8.png',
+    calories: 650,
+    protein: 40,
+    carbs: 50,
+    fat: 20,
+    slug: 'fit-3-package',
+    size: 'high'
   },
   {
-    id: 'lunch-package',
-    title: 'LUNCH Package',
-    description: '1 lunch meal package. Delivered hot',
-    price: '349,000đ',
-    image: 'https://storage.googleapis.com/a1aa/image/c9e5d67d-de94-4423-2a25-3833ccbe8158.jpg',
-    alt: 'Lunch Meal Package with broccoli and detox drink in white container on red background',
-    slug: 'lunch-package'
+    id: '3fit-3-package',
+    title: 'Half beef steak, sweet potato, cauliflower, pickles',
+    price: '650,000đ',
+    image: 'https://res.cloudinary.com/quyendev/image/upload/v1752552841/L1-300x300_mgdje8.png',
+    calories: 650,
+    protein: 40,
+    carbs: 50,
+    fat: 20,
+    slug: 'fit-3-package',
+    size: 'balance'
   },
   {
-    id: 'slim-package',
-    title: 'SLIM Package (*NO STARCH)',
-    description: 'Double vegetables, NO starch',
-    price: '600,000đ',
-    image: 'https://storage.googleapis.com/a1aa/image/7b07eae7-bee1-410e-9a2a-b8b6942699d0.jpg',
-    alt: 'Slim Meal Package with double vegetables no starch in black containers on green background',
-    slug: 'slim-package'
+    id: '4fit-3-package',
+    title: 'Half beef steak, sweet potato, cauliflower, pickles',
+    price: '650,000đ',
+    image: 'https://res.cloudinary.com/quyendev/image/upload/v1752552841/L1-300x300_mgdje8.png',
+    calories: 650,
+    protein: 40,
+    carbs: 50,
+    fat: 20,
+    slug: 'fit-3-package',
+    size: 'vegetarian'
   },
   {
-    id: 'full-package',
-    title: 'FULL Package',
-    description: '3 meals/day package. Healthy weight maintenance',
-    price: '825,000đ',
-    image: 'https://storage.googleapis.com/a1aa/image/3eefa773-af94-4cdd-4789-974b1d6d0970.jpg',
-    alt: 'Full Meal Package with three black containers of vegetables and protein on red background',
-    slug: 'full-package'
+    id: '5fit-3-package',
+    title: 'Half beef steak, sweet potato, cauliflower, pickles',
+    price: '650,000đ',
+    image: 'https://res.cloudinary.com/quyendev/image/upload/v1752552841/L1-300x300_mgdje8.png',
+    calories: 650,
+    protein: 40,
+    carbs: 50,
+    fat: 20,
+    slug: 'fit-3-package',
+    size: 'low'
+  },
+  {
+    id: '6fit-3-package',
+    title: 'Half beef steak, sweet potato, cauliflower, pickles',
+    price: '650,000đ',
+    image: 'https://res.cloudinary.com/quyendev/image/upload/v1752552841/L1-300x300_mgdje8.png',
+    calories: 650,
+    protein: 40,
+    carbs: 50,
+    fat: 20,
+    slug: 'fit-3-package',
+    size: 'low'
   }
 ]
 
