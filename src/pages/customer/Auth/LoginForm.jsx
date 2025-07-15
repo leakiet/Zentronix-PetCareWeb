@@ -47,8 +47,8 @@ function LoginForm() {
     const { email, password } = data
     toast.promise(
       dispatch(loginCustomerApi({ email, password })), {
-      pending: 'Logging in...'
-    }
+        pending: 'Logging in...'
+      }
     ).then(res => {
       if (res.error?.message?.includes('not active')) {
         setResendEmail(email)

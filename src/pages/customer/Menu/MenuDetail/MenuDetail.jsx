@@ -95,10 +95,11 @@ const MenuDetail = () => {
                 overflow: 'hidden'
               }}
             >
-              <CardMedia
+              <Box
                 component="img"
-                height="450"
-                image={meal.image}
+                height="100%"
+                width="100%"
+                src={meal.image}
                 alt={meal.alt}
                 sx={{ objectFit: 'cover' }}
               />
