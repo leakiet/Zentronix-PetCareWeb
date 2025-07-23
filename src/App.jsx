@@ -12,39 +12,51 @@ import AccountVerification from './pages/customer/Auth/AccountVerification'
 import NotFound from './pages/customer/NotFound/NotFound'
 import Profile from './pages/customer/Profile/Profile'
 import CaloCalculatorLayout from './pages/customer/CaloCalculator/CaloCalculatorLayout'
+import { selectCurrentCustomer } from './redux/user/customerSlice'
+import { useSelector } from 'react-redux'
+import { Outlet } from 'react-router-dom'
+
+
+const ProtectedRoute = ({ user }) => {
+  if (!user) return <Navigate to='/login' replace={true} />
+  return <Outlet />
+}
 
 function App() {
+  const currentCustomer = useSelector(selectCurrentCustomer)
 
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<HomeLayout />} />
-        <Route path="/blogs" element={<BlogLayout />} />
-        <Route path="/blogs/:id" element={<BlogDetail />} />
-        <Route path="/menu" element={<MenuLayout />} />
-        <Route path="/menu/:slug" element={<MenuDetail />} />
-        <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/smart-meal-planner" element={<SmartMealLayout />} />
-        <Route path="/calo-calculator" element={<CaloCalculatorLayout />} />
 
-        {/* Authentication */}
-        <Route path="/login" element={<Auth />} />
-        <Route path="/register" element={<Auth />} />
-        <Route path="/reset-password" element={<Auth />} />
-        <Route path="/verify-email" element={<AccountVerification /> }/>
+    <Routes>
+      <Route path="/" element={<HomeLayout />} />
+      <Route path="/blogs" element={<BlogLayout />} />
+      <Route path="/blogs/:id" element={<BlogDetail />} />
+      <Route path="/menu" element={<MenuLayout />} />
+      <Route path="/menu/:slug" element={<MenuDetail />} />
+      <Route path="/about-us" element={<AboutUs />} />
+      <Route path="/smart-meal-planner" element={<SmartMealLayout />} />
+      <Route path="/calo-calculator" element={<CaloCalculatorLayout />} />
 
-        {/* Customer Profile */}
+      {/* Authentication */}
+      <Route path="/login" element={<Auth />} />
+      <Route path="/register" element={<Auth />} />
+      <Route path="/reset-password" element={<Auth />} />
+      <Route path="/verify-email" element={<AccountVerification />} />
+
+      {/* Customer Profile */}
+      <Route element={<ProtectedRoute user={currentCustomer} />}>
         <Route path="/profile" element={<Navigate to="/profile/overview" replace />} />
         <Route path="/profile/overview" element={<Profile />} />
         <Route path="/profile/account" element={<Profile />} />
         <Route path="/profile/membership" element={<Profile />} />
         <Route path="/profile/order-history" element={<Profile />} />
         <Route path="/profile/health-profile" element={<Profile />} />
+      </Route>
 
-        {/* 404 Not Found */}
-        <Route path="*" element={<NotFound /> }/>
-      </Routes>
-    </>
+      {/* 404 Not Found */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+
   )
 }
 
