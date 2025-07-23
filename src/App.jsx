@@ -11,7 +11,7 @@ import CaloCalculatorLayout from './pages/customer/CaloCalculator/CaloCalulatorL
 import Auth from './pages/customer/Auth/Auth'
 import AccountVerification from './pages/customer/Auth/AccountVerification'
 import NotFound from './pages/customer/NotFound/NotFound'
-
+import Chat from './pages/Employee/Chat/Chat'
 function App() {
 
   return (
@@ -29,6 +29,9 @@ function App() {
         <Route path="/login" element={<Auth />} />
         <Route path="/register" element={<Auth />} />
         <Route path="/verify-email" element={<AccountVerification /> }/>
+
+        {/* Employee Chat */}
+        <Route path="/chat-employee" element={<Chat />} />
 
         {/* 404 Not Found */}
         <Route path="*" element={<NotFound /> }/>

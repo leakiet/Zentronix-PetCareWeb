@@ -146,4 +146,13 @@ export async function fetchMessagesPaged(conversationId, page = 0, size = 20) {
   return data
 }
 
-
+/**
+ * Đánh dấu tất cả tin nhắn chưa đọc của CUSTOMER trong một conversation là đã đọc
+ */
+export async function markConversationRead(conversationId) {
+  return authorizedAxiosInstance.post(
+    `${CHAT_URL}/mark-read`,
+    null, // Không cần body
+    { params: { conversationId } }
+  )
+}
