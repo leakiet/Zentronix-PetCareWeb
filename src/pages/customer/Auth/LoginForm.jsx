@@ -49,7 +49,7 @@ function LoginForm() {
   const submitLogIn = (data) => {
     const { email, password } = data
     toast.promise(
-      dispatch(loginCustomerApi({ email, password, rememberMe })), {
+      dispatch(loginCustomerApi({ email, password })), {
         pending: 'Logging in...'
       }
     ).then(res => {

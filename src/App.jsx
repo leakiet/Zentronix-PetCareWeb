@@ -1,6 +1,6 @@
 
-import BlogLayout from './pages/customer/Blogs/BlogLayout'
-import HomeLayout from './pages/customer/Home/HomeLayout'
+import BlogLayout from '~/pages/customer/Blogs/BlogLayout'
+import HomeLayout from '~/pages/customer/Home/HomeLayout'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import BlogDetail from './pages/customer/Blogs/BlogDetail/BlogDetail'
 import MenuLayout from './pages/customer/Menu/MenuLayout'
@@ -26,7 +26,6 @@ function App() {
   const currentCustomer = useSelector(selectCurrentCustomer)
 
   return (
-
     <Routes>
       <Route path="/" element={<HomeLayout />} />
       <Route path="/blogs" element={<BlogLayout />} />

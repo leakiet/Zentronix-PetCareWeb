@@ -66,4 +66,9 @@ export const selectCurrentCustomer = (state) => {
   return state.customer.currentCustomer
 }
 
+//selectIsCustomerLoggedIn: là 1 hàm selector giúp cho các component biết xem người dùng có đang đăng nhập hay không
+export const selectIsCustomerLoggedIn = (state) => !!state.customer.currentCustomer
+//selectCustomerName: là 1 hàm selector giúp cho các component biết tên của người dùng
+//nếu người dùng chưa đăng nhập (currentCustomer === null) thì sẽ trả về chuỗi 'Guest'
+export const selectCustomerName = (state) => state.customer.currentCustomer?.name || 'Guest'
 export const customerReducer = customerSlice.reducer

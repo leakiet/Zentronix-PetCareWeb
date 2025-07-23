@@ -93,7 +93,7 @@ function ResponsiveAppBar() {
                 onClick={toggleDrawer(true)}
                 color="inherit"
               >
-                <MenuIcon />
+                <MenuIcon sx={{ color: (theme) => theme.palette.primary.main }} />
               </IconButton>
             </Box>
           </Box>
