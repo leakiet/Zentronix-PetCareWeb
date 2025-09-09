@@ -1,6 +1,6 @@
 const vi = {
   navBar: {
-    nameWebsite: 'Green kitchen',
+    nameWebsite: 'Pet Care',
     home: 'TRANG CHỦ',
     menu: 'THỰC ĐƠN',
     orderChecking: 'KIỂM TRA ĐƠN HÀNG',

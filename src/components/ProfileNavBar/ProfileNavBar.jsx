@@ -61,7 +61,7 @@ function ProfileNavBar() {
           to="/"
           sx={{ textDecoration: 'none', color: 'inherit', fontWeight: 700 }}
         >
-          Green Kitchen
+          Pet Care
         </Typography>
       </Box>
 

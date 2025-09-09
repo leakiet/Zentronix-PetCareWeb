@@ -225,7 +225,7 @@ function LoginForm() {
               justifyContent: 'center',
               gap: 2
             }}>
-              <Typography>New to Green Kitchen?</Typography>
+              <Typography>New to Pet Care?</Typography>
               <Link to="/register" style={{ textDecoration: 'none' }}>
                 <Typography sx={{ fontWeight: 'bold', color: 'primary.main', '&:hover': { color: '#ffbb39' } }}>Sign up now!</Typography>
               </Link>

@@ -64,7 +64,7 @@ const VideoTop = () => {
             position: 'relative'
           }}
         >
-          GREEN KITCHEN EXPERIENCE
+          PET CARE EXPERIENCE
         </Typography>
         <Typography
           sx={{

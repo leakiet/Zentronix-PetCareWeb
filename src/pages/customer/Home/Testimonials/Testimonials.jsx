@@ -20,7 +20,7 @@ const Testimonials = () => {
             color: theme.palette.primary.main
           }}
         >
-          What do customers say about Green Kitchen?
+          What do customers say about Pet Care?
         </Typography>
 
         <Grid container spacing={4}>
