@@ -236,7 +236,7 @@ const ChatBox = () => {
               </Avatar>
               <Box>
                 <Typography variant='h6' sx={{ fontWeight: 'bold' }}>
-                  AI Green Kitchen
+                  AI Pet Care
                 </Typography>
                 <Typography variant='caption' sx={{ opacity: 0.9 }}>
                   Luôn sẵn sàng hỗ trợ bạn

@@ -45,7 +45,7 @@ const HomeLayout = () => {
               color: theme.palette.primary.main
             }}
           >
-            SERVICES FOR GREEN KITCHEN
+            SERVICES FOR PET CARE
           </Typography>
 
           <Grid container spacing={4}>
@@ -75,7 +75,7 @@ const HomeLayout = () => {
                   Dine-in
                 </Typography>
                 <Typography sx={{ mb: 3, color: theme.palette.text.textSub }}>
-                  Enjoy delicious and healthy meals in Green Kitchen&apos;s fresh and green space.
+                  Enjoy delicious and healthy meals in Pet Care&apos;s fresh and green space.
                 </Typography>
                 <Button
                   variant="outlined"
@@ -212,7 +212,7 @@ const HomeLayout = () => {
               fontWeight: 'bold'
             }}
           >
-            Still hesitating? Let Green Kitchen take care of it.
+            Still hesitating? Let Pet Care take care of it.
           </Typography>
           <Typography
             variant="h5"
@@ -232,8 +232,8 @@ const HomeLayout = () => {
               px: 4,
               py: 1.5,
               fontSize: '1.1rem',
-              fontWeight: 'bold'
-              , '&:hover': {
+              fontWeight: 'bold',
+              '&:hover': {
                 bgcolor: 'rgba(255,255,255,0.9)',
                 color: theme.palette.primary.main
               },
@@ -280,7 +280,7 @@ const HomeLayout = () => {
                 }}
               >
                 Through well-balanced, nutritious dishes carefully prepared for you,
-                Green Kitchen hopes to accompany you in cherishing your health and
+                Pet Care hopes to accompany you in cherishing your health and
                 starting your journey of healthy eating – green living.
               </Typography>
               <Typography
@@ -317,7 +317,7 @@ const HomeLayout = () => {
               <Box
                 component="img"
                 src="https://images.unsplash.com/photo-1543353071-873f17a7a088?q=80&w=2070&auto=format&fit=crop"
-                alt="About Green Kitchen"
+                alt="About Pet Care"
                 sx={{
                   width: '100%',
                   height: 'auto',

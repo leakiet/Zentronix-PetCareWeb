@@ -1,6 +1,6 @@
 const en = {
   navBar: {
-    nameWebsite: 'Green kitchen',
+    nameWebsite: 'Pet Care',
     home: 'HOME',
     menu: 'MENU',
     orderChecking: 'ORDER CHECKING',

@@ -58,7 +58,7 @@ const Footer = () => {
             letterSpacing: '0.5px'
           }}
         >
-          Kết nối với Green Kitchen trên mạng xã hội:
+          Kết nối với Pet Care trên mạng xã hội:
         </Typography>
         <Box>
           {[
@@ -90,7 +90,7 @@ const Footer = () => {
       {/* Main Content */}
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={{ xs: 3, md: 5 }}>
-          {/* Green Kitchen Info */}
+          {/* Pet Care Info */}
           <Grid size={{ xs: 12, md: 4 }}>
             <Typography
               variant="h6"
@@ -101,7 +101,7 @@ const Footer = () => {
                 letterSpacing: '1px'
               }}
             >
-              Green Kitchen
+              Pet Care
             </Typography>
             <Typography
               variant="body2"
@@ -256,8 +256,8 @@ const Footer = () => {
               </Typography>
               <Typography variant="body2" sx={{ mb: 1 }}>
                 Email:{' '}
-                <Link href="mailto:support@greenkitchen.vn" color="inherit">
-                  support@greenkitchen.vn
+                <Link href="mailto:support@petcare.vn" color="inherit">
+                  support@petcare.vn
                 </Link>
               </Typography>
               <Typography variant="body2">
@@ -288,7 +288,7 @@ const Footer = () => {
             fontSize: '0.875rem'
           }}
         >
-          © {new Date().getFullYear()} Green Kitchen. All rights reserved.
+          © {new Date().getFullYear()} Pet Care. All rights reserved.
         </Typography>
       </Box>
     </Box>

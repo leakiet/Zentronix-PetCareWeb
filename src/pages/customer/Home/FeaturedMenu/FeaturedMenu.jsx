@@ -24,7 +24,7 @@ const FeaturedMenu = () => {
             color: theme.palette.primary.main
           }}
         >
-          Green-made bowls
+          Pet Care bowls
         </Typography>
 
         <Grid container spacing={4}>
