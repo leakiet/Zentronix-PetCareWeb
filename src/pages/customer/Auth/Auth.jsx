@@ -39,7 +39,7 @@ function Auth() {
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        height: '100vh',
+        minHeight: '100vh',
         alignItems: 'center',
         justifyContent: 'center'
       }}>

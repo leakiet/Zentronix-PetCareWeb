@@ -7,21 +7,21 @@ import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import { Link, useLocation } from 'react-router-dom'
 import AccountTab from './AccountTab/AccountTab'
-import MembershipTab from './MembershipTab'
+import AppointmentTab from './AppointmentTab'
 import OverviewTab from './OverviewTab'
 import ProfileNavBar from '~/components/ProfileNavBar/ProfileNavBar'
 import OrderHistoryTab from './OrderHistoryTab'
-import HealthProfileTab from './HealthProfileTab'
+import PetProfileTab from './PetProfileTab'
 import { useSelector } from 'react-redux'
 import { selectCurrentCustomer } from '~/redux/user/customerSlice'
 
 // Khai báo đống tabs ra biến const để dùng lại cho gọn
 const TABS = {
   ACCOUNT: 'account',
-  MEMBERSHIP: 'membership',
+  APPOINTMENT: 'appointment',
   OVERVIEW: 'overview',
   ORDERHISTORY: 'order-history',
-  HEALTHPROFILE: 'health-profile'
+  PETHPROFILE: 'pet-profile'
 }
 
 function Profile() {
@@ -29,9 +29,9 @@ function Profile() {
   const currentCustomer = useSelector(selectCurrentCustomer)
   // Function đơn giản có nhiệm vụ lấy ra cái tab mặc định dựa theo url.
   const getDefaultTab = () => {
-    if (location.pathname.includes(TABS.MEMBERSHIP)) return TABS.MEMBERSHIP
+    if (location.pathname.includes(TABS.APPOINTMENT)) return TABS.APPOINTMENT
     if (location.pathname.includes(TABS.ACCOUNT)) return TABS.ACCOUNT
-    if (location.pathname.includes(TABS.HEALTHPROFILE)) return TABS.HEALTHPROFILE
+    if (location.pathname.includes(TABS.PETHPROFILE)) return TABS.PETHPROFILE
     if (location.pathname.includes(TABS.ORDERHISTORY)) return TABS.ORDERHISTORY
     return TABS.OVERVIEW
   }
@@ -96,11 +96,11 @@ function Profile() {
               component={Link}
               to="/profile/account" />
             <Tab
-              label="Membership"
-              value={TABS.MEMBERSHIP}
+              label="Appointment"
+              value={TABS.APPOINTMENT}
               iconPosition="start"
               component={Link}
-              to="/profile/membership" />
+              to="/profile/appointment" />
             <Tab
               label="Order History"
               value={TABS.ORDERHISTORY}
@@ -108,18 +108,18 @@ function Profile() {
               component={Link}
               to="/profile/order-history" />
             <Tab
-              label="Health Profile"
-              value={TABS.HEALTHPROFILE}
+              label="Pet Health Profile"
+              value={TABS.PETHPROFILE}
               iconPosition="start"
               component={Link}
-              to="/profile/health-profile" />
+              to="/profile/pet-health-profile" />
           </TabList>
           <Box sx={{ flex: 1 }}>
             <TabPanel value={TABS.OVERVIEW}><OverviewTab /></TabPanel>
             <TabPanel value={TABS.ACCOUNT}><AccountTab /></TabPanel>
-            <TabPanel value={TABS.MEMBERSHIP}><MembershipTab /></TabPanel>
+            <TabPanel value={TABS.APPOINTMENT}><AppointmentTab /></TabPanel>
             <TabPanel value={TABS.ORDERHISTORY}><OrderHistoryTab /></TabPanel>
-            <TabPanel value={TABS.HEALTHPROFILE}><HealthProfileTab /></TabPanel>
+            <TabPanel value={TABS.PETHPROFILE}><PetProfileTab /></TabPanel>
           </Box>
         </TabContext>
       </Box>
