@@ -53,7 +53,7 @@ export const verifyCustomerAPI = async (data) => {
 }
 
 export const resendVerifyEmailApi = async (data) => {
-  const response = await authorizedAxiosInstance.put(`${API_ROOT}/auth/resendVerifyEmail`, data)
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/auth/resend-verifyEmail`, data)
   return response.data
 }
 
