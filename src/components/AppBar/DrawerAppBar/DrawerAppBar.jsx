@@ -15,7 +15,7 @@ import Collapse from '@mui/material/Collapse'
 import { Link } from 'react-router-dom'
 import ListItem from '@mui/material/ListItem'
 
-const DrawerAppBar = ({ drawerOpen, toggleDrawer, t }) => {
+const DrawerAppBar = ({ drawerOpen, toggleDrawer }) => {
   const navItemStyle = {
     position: 'relative',
     overflow: 'hidden',
@@ -52,7 +52,6 @@ const DrawerAppBar = ({ drawerOpen, toggleDrawer, t }) => {
         }}
         role="presentation"
       >
-        {/* Profile */}
         <List>
           <Box sx={{ mb: 4 }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -65,35 +64,26 @@ const DrawerAppBar = ({ drawerOpen, toggleDrawer, t }) => {
             </Box>
           </Box>
 
-          {/* Navigation Items */}
           <DrawerAppBarItem
             toggleDrawer={toggleDrawer}
             navItemStyle={navItemStyle}
-            t={t}
-            label="home"
+            label="Home"
             path="/"
           />
 
           <DrawerAppBarItem
             toggleDrawer={toggleDrawer}
             navItemStyle={navItemStyle}
-            t={t}
-            label="menu"
+            label="Menu"
             path="/menu"
           />
 
-          {/* <ListItemButton >
-            <ListItemIcon>
-              {t('navBar.Calculator')}
-            </ListItemIcon>
-            {open ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton> */}
           <ListItem disablePadding >
             <ListItemButton
               onClick={handleClick}
               sx={navItemStyle}
             >
-              <ListItemText sx={{ color: (theme) => theme.palette.text.primary }} primary={t('navBar.Calculator')} />
+              <ListItemText sx={{ color: (theme) => theme.palette.text.primary }} primary="Calculator" />
               {open ? <ExpandLess sx={{ color: (theme) => theme.palette.text.primary }}/> : <ExpandMore sx={{ color: (theme) => theme.palette.text.primary }} />}
             </ListItemButton>
           </ListItem>
@@ -106,7 +96,7 @@ const DrawerAppBar = ({ drawerOpen, toggleDrawer, t }) => {
                   onClick={toggleDrawer(false)}
                   sx={navItemStyle}
                 >
-                  <ListItemText sx={{ color: (theme) => theme.palette.text.primary }} primary={t('navBar.caloCalculator.0.title')} />
+                  <ListItemText sx={{ color: (theme) => theme.palette.text.primary }} primary="Smart Meal Planner" />
                 </ListItemButton>
               </ListItem>
 
@@ -117,54 +107,35 @@ const DrawerAppBar = ({ drawerOpen, toggleDrawer, t }) => {
                   onClick={toggleDrawer(false)}
                   sx={navItemStyle}
                 >
-                  <ListItemText sx={{ color: (theme) => theme.palette.text.primary }} primary={t('navBar.caloCalculator.1.title')} />
+                  <ListItemText sx={{ color: (theme) => theme.palette.text.primary }} primary="Calo Calculator" />
                 </ListItemButton>
               </ListItem>
             </List>
           </Collapse>
-          {/* <DrawerAppBarItem
-            toggleDrawer={toggleDrawer}
-            navItemStyle={navItemStyle}
-            t={t}
-            label="smartMealPlanner"
-            path="/smart-meal-planner"
-          />
 
           <DrawerAppBarItem
             toggleDrawer={toggleDrawer}
             navItemStyle={navItemStyle}
-            t={t}
-            label="caloCalculator"
-            path="/calo-calculator"
-          /> */}
-
-          <DrawerAppBarItem
-            toggleDrawer={toggleDrawer}
-            navItemStyle={navItemStyle}
-            t={t}
-            label="orderChecking"
+            label="Order Checking"
             path="/order-checking"
           />
 
           <DrawerAppBarItem
             toggleDrawer={toggleDrawer}
             navItemStyle={navItemStyle}
-            t={t}
-            label="catering"
+            label="Catering"
             path="/catering"
           />
 
           <DrawerAppBarItem
             toggleDrawer={toggleDrawer}
             navItemStyle={navItemStyle}
-            t={t}
-            label="blog"
+            label="Blog"
             path="/blog"
           />
 
         </List>
 
-        {/* Logout Button */}
         <Box>
           <Box
             sx={{
@@ -181,7 +152,7 @@ const DrawerAppBar = ({ drawerOpen, toggleDrawer, t }) => {
           >
             <LogoutIcon sx={{ color: (theme) => theme.palette.text.primary, mt: 1 }} />
             <Typography variant="body1" sx={{ color: (theme) => theme.palette.text.primary, mt: 1 }}>
-              {t('logout')}
+              Logout
             </Typography>
           </Box>
         </Box>

@@ -6,7 +6,7 @@ const MenuList = ({ pkg }) => {
     <Box>
       <Grid container spacing={2}>
         {pkg.map((item, index) => (
-          <Grid size={{ xs: 12, sm: 6, md: 3 }} key={item.id}>
+          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={item.id}>
             <CardMenu item={item} sizeIndex={index}/>
           </Grid>
         ))}

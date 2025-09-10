@@ -14,20 +14,27 @@ const theme = createTheme({
     light: {
       palette: {
         primary: {
-          main: '#4C082A',
-          secondary: '#00B389',
-          card: '#ffffff'
+          secondary: '#d81b60',
+          sub: '#d9376e',
+          card: '#ffffff',
+          light: '#df487f',
+          main: '#d81b60',
+          dark: '#971243',
+          contrastText: '#fff'
         },
         secondary: {
-          main: deepOrange[500]
+          light: '#64b5f6',
+          main: '#8bd3dd',
+          dark: '#1976d2',
+          contrastText: '#fff'
         },
         background: {
-          main: '#F5EDD8',
-          default: '#FAF5E8'
+          main: '#eff0f3',
+          default: '#eff0f3'
         },
         text: {
-          primary: '#4C082A',
-          secondary: '#4C082A',
+          primary: '#2a2a2a',
+          secondary: '#2a2a2a',
           textSub: '#5f6c7b',
           hover: '#00000020'
         }

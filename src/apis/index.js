@@ -90,3 +90,28 @@ export const deleteAddressAPI = async (id) => {
   const response = await authorizedAxiosInstance.delete(`${API_ROOT}/addresses/delete/${id}`)
   return response.data
 }
+
+
+// Products
+export const fetchProductsAPI = async (params) => {
+  let url = `${API_ROOT}/apis/v1/products?page=${params.page || 0}&size=${params.size || 10}`
+  if (params.searchTerm) url += `&searchTerm=${encodeURIComponent(params.searchTerm)}`
+  if (params.categoryIds && params.categoryIds.length > 0) url += `&categoryIds=${encodeURIComponent(params.categoryIds.join(','))}`
+  if (params.brandIds && params.brandIds.length > 0) url += `&brandIds=${encodeURIComponent(params.brandIds.join(','))}`
+  if (params.minPrice !== undefined) url += `&minPrice=${encodeURIComponent(params.minPrice)}`
+  if (params.maxPrice !== undefined) url += `&maxPrice=${encodeURIComponent(params.maxPrice)}`
+  if (params.sortBy) url += `&sortBy=${encodeURIComponent(params.sortBy)}`
+  if (params.sortDir) url += `&sortDir=${encodeURIComponent(params.sortDir)}`
+  const response = await authorizedAxiosInstance.get(url)
+  return response.data
+}
+
+export const fetchCategoriesAPI = async () => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/products/categories`)
+  return response.data
+}
+
+export const fetchBrandsAPI = async () => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/products/brands`)
+  return response.data
+}
