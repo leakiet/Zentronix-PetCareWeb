@@ -59,7 +59,7 @@ function LoginForm() {
       }
       if (!res.error) {
         toast.success('Login successfully!')
-        navigate('/')
+        navigate('/proifile')
       }
     })
   }
@@ -88,7 +88,7 @@ function LoginForm() {
     ).then(response => {
       if (!response.error) {
         // Update Redux state with user information
-        navigate('/')
+        navigate('/profile')
       }
     })
   }
@@ -206,7 +206,7 @@ function LoginForm() {
             </Box>
 
             {/* Google Login Button */}
-            <Box sx={{ padding: '1em', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ width: '100%', padding: '1em', display: 'flex', justifyContent: 'center' }}>
               <GoogleLogin
                 onSuccess={handleGoogleLoginSuccess}
                 onError={handleGoogleLoginError}
