@@ -14,14 +14,14 @@ import Rating from '@mui/material/Rating'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import { ShoppingCart, Add, Remove, ArrowBack } from '@mui/icons-material'
 import theme from '~/theme'
-import { mealPackages } from '~/apis/mockData'
+import { products } from '~/apis/mockData'
 import CardContent from '@mui/material/CardContent'
 import AppBar from '~/components/AppBar/AppBar'
-
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 const MenuDetail = () => {
   const { slug } = useParams()
   const navigate = useNavigate()
-  const meal = mealPackages.find((item) => item.slug === slug)
+  const product = products.find((item) => item.slug === slug)
   const [quantity, setQuantity] = useState(1)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [rating, setRating] = useState(0)
@@ -39,35 +39,38 @@ const MenuDetail = () => {
     setQuantity((prev) => Math.max(1, prev + delta))
   }
 
-  // Handle comment submission
   const handleCommentSubmit = () => {
     setComment('')
     setRating(0)
     setSnackbarOpen(true)
   }
 
-  if (!meal) {
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)
+  }
+
+  if (!product) {
     return (
       <Box sx={{ bgcolor: theme.palette.background.main, minHeight: '100vh', fontFamily: '"Poppins", sans-serif', py: 6 }}>
         <Box sx={{ maxWidth: '1280px', mx: 'auto', px: 2 }}>
           <Typography variant="h5" color="error" align="center">
-            Meal package not found!
+            Product not found!
           </Typography>
           <Button
             variant="contained"
             sx={{ mt: 4, mx: 'auto', display: 'block', bgcolor: theme.palette.primary.secondary, color: 'black' }}
             onClick={() => navigate('/menu')}
           >
-            Back to menu list
+            Back to list
           </Button>
         </Box>
       </Box>
     )
   }
 
-  // Related meals (random 3 meals)
-  const relatedMeals = mealPackages
-    .filter((item) => item.slug !== slug)
+  // Related products (random 3 products)
+  const relatedProducts = products
+    .filter((item) => item.slug !== slug) // So sánh slug
     .slice(0, 3)
 
   return (
@@ -83,7 +86,7 @@ const MenuDetail = () => {
           }}
           onClick={() => navigate('/menu')}
         >
-          Back to menu list
+          Back to list
         </Button>
 
         <Grid container spacing={12}>
@@ -99,8 +102,8 @@ const MenuDetail = () => {
                 component="img"
                 height="100%"
                 width="100%"
-                src={meal.image}
-                alt={meal.alt}
+                src={product.image}
+                alt={product.name}
                 sx={{ objectFit: 'cover' }}
               />
             </Card>
@@ -118,28 +121,50 @@ const MenuDetail = () => {
                 wordBreak: 'break-word'
               }}
             >
-              {meal.title}
+              {product.name}
             </Typography>
             <Box sx={{ width: '6rem', height: '0.4rem', bgcolor: theme.palette.primary.secondary, mb: 4 }} />
-            <Typography variant="body1" sx={{ mb: 4, color: theme.palette.text.textSub, fontSize: { xs: '1rem', md: '1.15rem' } }}>
-              {meal.description}
-            </Typography>
             <Typography variant="h5" sx={{ fontWeight: 800, color: theme.palette.text.primary, mb: 2 }}>
-              Price: {meal.price}
+              Price: {formatPrice(product.price)}
             </Typography>
 
-            <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.text.primary, mb: 1 }}>
-              Ingredients
-            </Typography>
-            <Typography variant="body2" sx={{ mb: 4, color: theme.palette.text.textSub }}>
-              {meal.ingredients || 'Grilled chicken, fresh greens, quinoa, homemade sauce.'}
+            {/* <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.text.primary, mb: 1 }}>
+              Stock quantity
+            </Typography> */}
+            <Typography variant="body1" sx={{ mb: 3, color: theme.palette.text.textSub, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box>
+                <ArrowForwardIosIcon sx={{ mr: 1, color: theme.palette.primary.secondary }} />
+              </Box>
+              <Box>
+                Stock quantity: {product.stock}
+              </Box>
             </Typography>
 
-            <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.text.primary, mb: 1 }}>
-              Nutritional Information
+            <Typography variant="body1" sx={{ mb: 3, color: theme.palette.text.textSub, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box>
+                <ArrowForwardIosIcon sx={{ mr: 1, color: theme.palette.primary.secondary }} />
+              </Box>
+              <Box>
+                Category: {product.category}
+              </Box>
             </Typography>
-            <Typography variant="body2" sx={{ mb: 4, color: theme.palette.text.textSub }}>
-              {meal.nutritionalInfo || 'Calories: 500kcal, Protein: 30g, Carbs: 45g, Fat: 20g'}
+
+            <Typography variant="body1" sx={{ mb: 3, color: theme.palette.text.textSub, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box>
+                <ArrowForwardIosIcon sx={{ mr: 1, color: theme.palette.primary.secondary }} />
+              </Box>
+              <Box>
+                Brand: {product.brand}
+              </Box>
+            </Typography>
+
+            <Typography variant="body1" sx={{ mb: 3, color: theme.palette.text.textSub, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box>
+                <ArrowForwardIosIcon sx={{ mr: 1, color: theme.palette.primary.secondary }} />
+              </Box>
+              <Box>
+                Weight: {product.weight} kg
+              </Box>
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
@@ -206,11 +231,10 @@ const MenuDetail = () => {
         {/* Detailed description */}
         <Box sx={{ mt: 6 }}>
           <Typography variant="h5" sx={{ fontWeight: 700, color: theme.palette.text.primary, mb: 2 }}>
-            About This Dish
+            About This Product
           </Typography>
           <Typography variant="body1" sx={{ color: theme.palette.text.textSub, fontSize: { xs: '1rem', md: '1.15rem' } }}>
-            {meal.detailedDescription ||
-              'This dish is prepared with fresh ingredients, combining the rich flavor of grilled chicken with the nutritious benefits of quinoa. Each portion is designed to provide balanced nutrition, perfect for a healthy lifestyle.'}
+            {product.description} This product is designed to meet the needs of your pet, ensuring quality and safety.
           </Typography>
         </Box>
 
@@ -269,12 +293,12 @@ const MenuDetail = () => {
               {
                 user: 'John Doe',
                 rating: 4.5,
-                comment: 'The dish is delicious, healthy, and perfect for my diet!'
+                comment: 'The product is great, my pet loves it!'
               },
               {
                 user: 'Jane Smith',
                 rating: 5,
-                comment: 'Soft quinoa, flavorful grilled chicken, definitely worth trying!'
+                comment: 'High quality and fast delivery!'
               }
             ].map((item, index) => (
               <Box
@@ -299,13 +323,13 @@ const MenuDetail = () => {
           </Box>
         </Box>
 
-        {/* Related meals */}
+        {/* Related products */}
         <Box sx={{ mt: 8 }}>
           <Typography variant="h5" sx={{ fontWeight: 700, color: theme.palette.text.primary, mb: 4 }}>
-            Suggested Related Dishes
+            Suggested Related Products
           </Typography>
           <Grid container spacing={2}>
-            {relatedMeals.map((item, index) => (
+            {relatedProducts.map((item, index) => (
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
                 <Card
                   sx={{
@@ -327,7 +351,7 @@ const MenuDetail = () => {
                     component="img"
                     height="150"
                     image={item.image}
-                    alt={item.alt}
+                    alt={item.name}
                     sx={{ objectFit: 'cover', cursor: 'pointer' }}
                     onClick={() => navigate(`/menu/${item.slug}`)}
                   />
@@ -337,13 +361,13 @@ const MenuDetail = () => {
                       sx={{ fontWeight: 700, mb: 1, color: theme.palette.text.primary, cursor: 'pointer' }}
                       onClick={() => navigate(`/menu/${item.slug}`)}
                     >
-                      {item.title}
+                      {item.name}
                     </Typography>
                     <Typography variant="body2" sx={{ mb: 2, color: theme.palette.text.textSub }}>
                       {item.description}
                     </Typography>
                     <Typography variant="h6" sx={{ fontWeight: 800, color: theme.palette.text.textSub }}>
-                      {item.price}
+                      {formatPrice(item.price)}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -361,7 +385,7 @@ const MenuDetail = () => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
-          {comment ? 'Comment submitted!' : `Added ${quantity} ${meal.title} to cart!`}
+          {comment ? 'Comment submitted!' : `Added ${quantity} ${product.name} to cart!`}
         </Alert>
       </Snackbar>
     </Box>

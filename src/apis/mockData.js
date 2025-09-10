@@ -574,3 +574,235 @@ export const itemCart = [
     totalPrice: 1200
   }
 ]
+
+export const products = [
+  {
+    id: 1,
+    name: 'Royal Canin Adult Dog Food',
+    brand: 'Royal Canin',
+    category: 'Food',
+    price: 450000,
+    description: 'Nutritious food for adult dogs, supports digestion and skin health.',
+    stock: 50,
+    sku: 'RC-ADULT-001',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'royal-canin-adult-dog-food',
+    weight: 1
+  },
+  {
+    id: 2,
+    name: 'Nylon Dog Leash Accessory',
+    brand: 'Generic',
+    category: 'Accessory',
+    price: 150000,
+    description: 'Durable and comfortable leash for pets, various colors.',
+    stock: 30,
+    sku: 'LEASH-NYLON-002',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'nylon-dog-leash-accessory',
+    weight: 0.5
+  },
+  {
+    id: 3,
+    name: 'Multi-functional Cat Cage',
+    brand: 'Generic',
+    category: 'Cage',
+    price: 800000,
+    description: 'Safe and easy-to-clean cat cage, medium size.',
+    stock: 20,
+    sku: 'CAGE-CAT-003',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'multi-functional-cat-cage',
+    weight: 5
+  },
+  {
+    id: 4,
+    name: 'Comprehensive Vitamin for Cats',
+    brand: 'Generic',
+    category: 'Supplement',
+    price: 200000,
+    description: 'Vitamins to support overall cat health, boost immunity.',
+    stock: 40,
+    sku: 'VITAMIN-CAT-004',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'comprehensive-vitamin-for-cats',
+    weight: 0.2
+  },
+  {
+    id: 5,
+    name: 'Rubber Ball Toy for Dogs',
+    brand: 'Kong',
+    category: 'Toy',
+    price: 50000,
+    description: 'Durable and safe toy to help dogs exercise and have fun.',
+    stock: 100,
+    sku: 'TOY-BALL-005',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'rubber-ball-toy-for-dogs',
+    weight: 0.1
+  },
+  {
+    id: 6,
+    name: 'Pedigree Puppy Dog Food',
+    brand: 'Pedigree',
+    category: 'Food',
+    price: 350000,
+    description: 'Balanced nutrition for puppies, promotes healthy growth.',
+    stock: 60,
+    sku: 'PED-PUPPY-006',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'pedigree-puppy-dog-food',
+    weight: 2
+  },
+  {
+    id: 7,
+    name: 'Whiskas Adult Cat Food',
+    brand: 'Whiskas',
+    category: 'Food',
+    price: 250000,
+    description: 'Tasty and nutritious food for adult cats, with essential vitamins.',
+    stock: 45,
+    sku: 'WHISKAS-ADULT-007',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'whiskas-adult-cat-food',
+    weight: 1.5
+  },
+  {
+    id: 8,
+    name: 'Kong Classic Dog Toy',
+    brand: 'Kong',
+    category: 'Toy',
+    price: 120000,
+    description: 'Classic rubber toy for dogs, durable and fun for chewing.',
+    stock: 80,
+    sku: 'KONG-CLASSIC-008',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'kong-classic-dog-toy',
+    weight: 0.15
+  },
+  {
+    id: 9,
+    name: 'Purina Pro Plan Sensitive Skin Dog Food',
+    brand: 'Purina',
+    category: 'Food',
+    price: 500000,
+    description: 'Specialized food for dogs with sensitive skin, hypoallergenic formula.',
+    stock: 35,
+    sku: 'PURINA-SKIN-009',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'purina-pro-plan-sensitive-skin-dog-food',
+    weight: 3
+  },
+  {
+    id: 10,
+    name: 'Friskies Cat Treats',
+    brand: 'Friskies',
+    category: 'Treat',
+    price: 80000,
+    description: 'Delicious treats for cats, available in various flavors.',
+    stock: 70,
+    sku: 'FRISKIES-TREAT-010',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'friskies-cat-treats',
+    weight: 0.5
+  },
+  {
+    id: 11,
+    name: 'Hill\'s Science Diet Adult Dog Food',
+    brand: 'Hill\'s',
+    category: 'Food',
+    price: 600000,
+    description: 'Science-based nutrition for adult dogs, supports overall health.',
+    stock: 25,
+    sku: 'HILLS-ADULT-011',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'hills-science-diet-adult-dog-food',
+    weight: 2.5
+  },
+  {
+    id: 12,
+    name: 'Iams Proactive Health Cat Food',
+    brand: 'Iams',
+    category: 'Food',
+    price: 400000,
+    description: 'Nutritious food for cats, promotes healthy digestion and coat.',
+    stock: 55,
+    sku: 'IAMS-CAT-012',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'iams-proactive-health-cat-food',
+    weight: 1.8
+  },
+  {
+    id: 13,
+    name: 'PetSafe Automatic Feeder',
+    brand: 'PetSafe',
+    category: 'Accessory',
+    price: 900000,
+    description: 'Automatic feeder for pets, programmable portions.',
+    stock: 15,
+    sku: 'PETSAFE-FEEDER-013',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'petsafe-automatic-feeder',
+    weight: 2
+  },
+  {
+    id: 14,
+    name: 'Blue Buffalo Wilderness Dog Food',
+    brand: 'Blue Buffalo',
+    category: 'Food',
+    price: 550000,
+    description: 'Grain-free food for dogs, high protein from natural sources.',
+    stock: 40,
+    sku: 'BLUE-WILDERNESS-014',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'blue-buffalo-wilderness-dog-food',
+    weight: 2.7
+  },
+  {
+    id: 15,
+    name: 'Fancy Feast Gourmet Cat Food',
+    brand: 'Fancy Feast',
+    category: 'Food',
+    price: 300000,
+    description: 'Gourmet wet food for cats, variety of flavors.',
+    stock: 50,
+    sku: 'FANCY-FEAST-015',
+    image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+    slug: 'fancy-feast-gourmet-cat-food',
+    weight: 1.2
+  }
+]
+
+export const mockCart = {
+  totalItems: 3,
+  totalAmount: 1000000,
+  cartItems: [
+    {
+      id: 1,
+      menuMealId: null,
+      customMealId: null,
+      title: 'Royal Canin Adult Dog Food',
+      image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+      quantity: 1,
+      totalPrice: 450000
+    },
+    {
+      id: 2,
+      menuMealId: null,
+      customMealId: null,
+      title: 'Nylon Dog Leash Accessory',
+      image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+      quantity: 2,
+      totalPrice: 300000
+    },
+    {
+      id: 3,
+      menuMealId: null,
+      customMealId: null,
+      title: 'Multi-functional Cat Cage',
+      image: 'https://www.petmart.vn/wp-content/uploads/2023/04/sot-thit-cuu-ham-lua-mach-rau-cu-cho-cho-jerhigh-lamb-stew-with-barley-rice-vegetable-400x400.jpg',
+      quantity: 1,
+      totalPrice: 250000
+    }
+  ]
+}
