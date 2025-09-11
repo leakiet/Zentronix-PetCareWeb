@@ -8,7 +8,7 @@ export const refreshTokenEmployeeAPI = async () => {
 }
 
 export const refreshTokenCustomerAPI = async () => {
-  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/Customers/RefreshToken`)
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/users/RefreshToken`)
   return response.data
 }
 
@@ -18,17 +18,17 @@ export const resetPasswordAPI = async (data) => {
 }
 
 export const changePasswordAPI = async (data) => {
-  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/customers/updatePassword`, data)
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/users/updatePassword`, data)
   return response.data
 }
 
 export const unlinkGoogleAPI = async (data) => {
-  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/customers/unlinkGoogle`, data)
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/users/unlinkGoogle`, data)
   return response.data
 }
 
 export const linkGoogleAPI = async (data) => {
-  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/customers/linkGoogle`, data)
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/users/linkGoogle`, data)
   return response.data
 }
 
@@ -59,17 +59,17 @@ export const resendVerifyEmailApi = async (data) => {
 
 //Customer
 export const fetchCustomerDetails = async (email) => {
-  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/customers/email/${email}`)
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/users/email/${email}`)
   return response.data
 }
 
 export const updateCustomerInfo = async (data) => {
-  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/customers/update`, data)
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/users/update`, data)
   return response.data
 }
 
 export const updateCustomerPassword = async (data) => {
-  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/customers/updatePassword`, data)
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/users/updatePassword`, data)
   return response.data
 }
 
