@@ -45,9 +45,9 @@ function AccountForm({ onNext }) {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            gap: 1
+            gap: 2
           }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Avatar sx={{ bgcolor: 'primary.main' }}><LockResetIcon /></Avatar>
               <Typography variant="h4" align="center">RESET PASSWORD</Typography>
             </Box>
@@ -89,10 +89,10 @@ function AccountForm({ onNext }) {
           </CardActions>
 
           <BackToLoginConfirm
-            stepName="quá trình nhập email để đặt lại mật khẩu"
-            customMessage="Bạn có chắc chắn muốn quay lại trang đăng nhập?
+            stepName="email entry process for password reset"
+            customMessage="Are you sure you want to go back to the login page?
 
-Thông tin email đã nhập sẽ bị mất và bạn sẽ cần phải bắt đầu lại quá trình đặt lại mật khẩu."
+The email information you entered will be lost and you will need to start the password reset process again."
           />
         </MuiCard>
       </Zoom>

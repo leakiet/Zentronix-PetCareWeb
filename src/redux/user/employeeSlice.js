@@ -13,7 +13,7 @@ const initialState = {
 export const loginEmployeeApi = createAsyncThunk(
   'employee/loginEmployeeApi',
   async (data) => {
-    const response = await authorizedAxiosInstance.post(`${API_ROOT}/employees/login`, data)
+    const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/employees/login`, data)
     return response.data
   }
 )
@@ -21,7 +21,7 @@ export const loginEmployeeApi = createAsyncThunk(
 export const logoutEmployeeApi = createAsyncThunk(
   'employee/logoutEmployeeApi',
   async (showSuccessMessage = true) => {
-    const response = await authorizedAxiosInstance.delete(`${API_ROOT}/employees/logout`)
+    const response = await authorizedAxiosInstance.delete(`${API_ROOT}/apis/v1/employees/logout`)
     if (showSuccessMessage) {
       toast.success('Logout successfully')
     }

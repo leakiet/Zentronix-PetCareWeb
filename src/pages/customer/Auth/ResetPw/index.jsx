@@ -52,41 +52,17 @@ const ResetPw = () => {
     }}>
       <Box sx={{
         fontSize: '1.5rem',
-        width: { xs: '100%', sm: '85%', md: '70%' }
+        width: '100%'
       }}>
-        <Stepper
-          activeStep={activeStep}
-          sx={{
-            '& .MuiStepConnector-line': {
-              borderColor: theme.palette.primary.main,
-              borderTopWidth: 2,
-              borderRadius: '2px'
-            },
-            '& .MuiStepConnector-root.Mui-completed .MuiStepConnector-line': {
-              borderColor: theme.palette.success.main,
-              borderTopWidth: 2
-            },
-            '& .MuiStepConnector-root.Mui-active .MuiStepConnector-line': {
-              borderColor: theme.palette.primary.dark,
-              borderTopWidth: 2
-            }
-          }}
-        >
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>
-                <Box sx={{
-                  border: '1px solid',
-                  backgroundColor: 'white',
-                  padding: '0.5rem',
-                  borderRadius: '0.5rem'
-                }}>
-                  {label}
-                </Box>
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+        <Box sx={{ mt: 4, mb: 4 }}>
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Box>
         <Box sx={{ mt: 6, display: 'flex', justifyContent: 'center' }}>
           {getStepContent(activeStep)}
         </Box>
