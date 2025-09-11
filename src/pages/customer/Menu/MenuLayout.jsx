@@ -1,4 +1,4 @@
-import { Box, Typography, TextField, Select, MenuItem, FormControl, InputLabel, Grid, Drawer, IconButton, Checkbox, FormGroup, FormControlLabel, Collapse, Slider, Button } from '@mui/material'
+import { Box, Typography, TextField, Select, MenuItem, FormControl, InputLabel, Grid, Drawer, IconButton, Checkbox, FormGroup, FormControlLabel, Collapse, Slider, Button, CircularProgress } from '@mui/material'
 import { useState, useEffect } from 'react'
 import AppBar from '~/components/AppBar/AppBar'
 import theme from '~/theme'
@@ -251,9 +251,9 @@ function MenuLayout() {
                 </Box>
               </Box>
               {loading ? (
-                <Typography variant="h6" align="center" sx={{ mt: 4, color: theme.palette.text.primary }}>
-                  Loading...
-                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                  <CircularProgress />
+                </Box>
               ) : products.length === 0 ? (
                 <Typography variant="h6" align="center" sx={{ mt: 4, color: theme.palette.text.primary }}>
                   No products found.
@@ -264,12 +264,11 @@ function MenuLayout() {
                   {hasMore && (
                     <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                       <Button
-                        variant="contained"
                         onClick={loadMore}
                         disabled={loadingMore}
                         sx={{ bgcolor: theme.palette.primary.main, color: 'white' }}
                       >
-                        {loadingMore ? 'Loading...' : 'Xem thêm'}
+                        {loadingMore ? <CircularProgress size={20} color="white" /> : 'Load More'}
                       </Button>
                     </Box>
                   )}

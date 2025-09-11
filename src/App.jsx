@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import MenuLayout from './pages/customer/Menu/MenuLayout'
 import MenuDetail from './pages/customer/Menu/MenuDetail/MenuDetail'
 import AboutUs from './pages/customer/AboutUs/AboutUs'
-import SmartMealLayout from './pages/customer/SmartMeal/SmartMealLayout'
 import Auth from './pages/customer/Auth/Auth'
 import AccountVerification from './pages/customer/Auth/AccountVerification'
 import NotFound from './pages/customer/NotFound/NotFound'
@@ -11,6 +10,8 @@ import Unauthorized from './pages/customer/Unauthorized/Unauthorized'
 import Profile from './pages/customer/Profile/Profile'
 import VetSettings from './pages/customer/VetSettings/VetSettings'
 import ShelterSettings from './pages/customer/ShelterSettings/ShelterSettings'
+
+import CartLayout from '~/pages/customer/Cart/CardLayout'
 import { selectCurrentCustomer } from './redux/user/customerSlice'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
@@ -44,7 +45,7 @@ function App() {
       <Route path="/menu" element={<MenuLayout />} />
       <Route path="/menu/:slug" element={<MenuDetail />} />
       <Route path="/about-us" element={<AboutUs />} />
-      <Route path="/smart-meal-planner" element={<SmartMealLayout />} />
+      <Route path="/cart" element={<CartLayout />} />
 
       {/* Authentication */}
       <Route path="/login" element={<Auth />} />

@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
 import Menu from '@mui/material/Menu'
@@ -16,19 +15,19 @@ import Button from '@mui/material/Button'
 import CloseIcon from '@mui/icons-material/Close'
 import Divider from '@mui/material/Divider'
 import ConfirmModal from '~/components/Modals/ComfirmModal/ComfirmModal'
-import { mockCart } from '~/apis/mockData'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectCartItems, selectCartTotalQuantity, selectCartTotalPrice, selectCartTotalItems, removeFromCart } from '~/redux/cart/cartSlice'
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
     backgroundColor: theme.palette.secondary.main,
-    // color: theme.palette.secondary.main
   }
 }))
 
 const CartItem = ({ item, onItemClick, onRemoveItem }) => {
   return (
     <MenuItem
-      key={item.menuMealId || item.customMealId}
+      key={item.cartId}
       onClick={onItemClick}
       sx={{
         px: 2,
@@ -44,7 +43,7 @@ const CartItem = ({ item, onItemClick, onRemoveItem }) => {
           size="small"
           onClick={(e) => {
             e.stopPropagation()
-            onRemoveItem(item.menuMealId || item.customMealId || item.id)
+            onRemoveItem(item.cartId)
           }}
           sx={{
             position: 'absolute',
@@ -62,7 +61,7 @@ const CartItem = ({ item, onItemClick, onRemoveItem }) => {
 
         <Avatar
           src={item.image}
-          alt={item.title}
+          alt={item.name}
           sx={{ width: 60, height: 60, borderRadius: 1, flexShrink: 0 }}
         />
         <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -73,7 +72,7 @@ const CartItem = ({ item, onItemClick, onRemoveItem }) => {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap'
           }}>
-            {item.title}
+            {item.name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
             {item.totalPrice.toLocaleString()} VND
@@ -96,12 +95,13 @@ const Cart = () => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
   const [itemToRemove, setItemToRemove] = useState(null)
-  const [cartItems, setCartItems] = useState(mockCart.cartItems)
 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const totalItems = cartItems.length
-  const totalAmount = cartItems.reduce((sum, item) => sum + item.totalPrice, 0)
+  const cartItems = useSelector(selectCartItems)
+  const totalItems = useSelector(selectCartTotalItems)
+  const totalAmount = useSelector(selectCartTotalPrice)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
@@ -121,14 +121,14 @@ const Cart = () => {
     navigate('/cart')
   }
 
-  const handleRemoveItem = (cartItemId) => {
-    setItemToRemove(cartItemId)
+  const handleRemoveItem = (cartId) => {
+    setItemToRemove(cartId)
     setConfirmDialogOpen(true)
   }
 
   const handleConfirmRemove = () => {
     if (itemToRemove) {
-      setCartItems(prev => prev.filter(item => (item.menuMealId || item.customMealId || item.id) !== itemToRemove))
+      dispatch(removeFromCart(itemToRemove))
     }
     setConfirmDialogOpen(false)
     setItemToRemove(null)
@@ -243,7 +243,7 @@ const Cart = () => {
           }}>
             {cartItems.map((item) => (
               <CartItem
-                key={item.menuMealId || item.customMealId}
+                key={item.cartId}
                 item={item}
                 onItemClick={handleItemClick}
                 onRemoveItem={handleRemoveItem}
