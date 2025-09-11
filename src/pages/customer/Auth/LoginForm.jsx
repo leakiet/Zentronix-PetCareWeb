@@ -20,6 +20,7 @@ import {
 } from '~/utils/validators'
 import { useDispatch } from 'react-redux'
 import { loginCustomerApi, googleLoginAPI } from '~/redux/user/customerSlice'
+import { USER_ROLE } from '~/utils/constants'
 import { resendVerifyEmailApi } from '~/apis'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { toast } from 'react-toastify'
@@ -46,6 +47,21 @@ function LoginForm() {
   const [resendEmail, setResendEmail] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
 
+  const getRedirectPath = (user) => {
+    if (!user) return '/login'
+
+    switch (user.role) {
+    case USER_ROLE.PET_OWNER:
+      return '/profile'
+    case USER_ROLE.VET:
+      return '/vet-settings'
+    case USER_ROLE.SHELTER:
+      return '/shelter-settings'
+    default:
+      return '/profile'
+    }
+  }
+
   const submitLogIn = (data) => {
     const { email, password } = data
     toast.promise(
@@ -59,7 +75,10 @@ function LoginForm() {
       }
       if (!res.error) {
         toast.success('Login successfully!')
-        navigate('/proifile')
+        // Get user from Redux state after login
+        const user = res.payload
+        const redirectPath = getRedirectPath(user)
+        navigate(redirectPath)
       }
     })
   }
@@ -87,8 +106,10 @@ function LoginForm() {
       }
     ).then(response => {
       if (!response.error) {
-        // Update Redux state with user information
-        navigate('/profile')
+        // Get user from Redux state after login
+        const user = response.payload
+        const redirectPath = getRedirectPath(user)
+        navigate(redirectPath)
       }
     })
   }

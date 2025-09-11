@@ -50,9 +50,9 @@ function ResetPwForm({ onSubmit, email }) {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            gap: 1
+            gap: 2
           }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Avatar sx={{ bgcolor: 'primary.main' }}><VpnKeyIcon /></Avatar>
               <Typography variant="h4" align="center">NEW PASSWORD</Typography>
             </Box>
@@ -110,10 +110,10 @@ function ResetPwForm({ onSubmit, email }) {
           </CardActions>
 
           <BackToLoginConfirm
-            stepName="quá trình đặt lại mật khẩu mới"
-            customMessage="Bạn có chắc chắn muốn quay lại trang đăng nhập?
+            stepName="new password reset process"
+            customMessage="Are you sure you want to go back to the login page?
 
-Mật khẩu mới bạn đã nhập sẽ không được lưu và bạn sẽ cần phải bắt đầu lại toàn bộ quá trình đặt lại mật khẩu từ đầu."
+The new password you entered will not be saved and you will need to start the entire password reset process from the beginning."
           />
         </MuiCard>
       </Zoom>

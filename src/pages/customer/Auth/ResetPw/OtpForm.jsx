@@ -64,7 +64,7 @@ function OtpForm({ onNext, email }) {
 
   const submitLogIn = (data) => {
     if (isExpired) {
-      toast.error('OTP đã hết hạn. Vui lòng yêu cầu mã OTP mới.')
+      toast.error('OTP has expired. Please request a new OTP code.')
       return
     }
 
@@ -99,9 +99,9 @@ function OtpForm({ onNext, email }) {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            gap: 1
+            gap: 2
           }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Avatar sx={{ bgcolor: 'primary.main' }}><SecurityIcon /></Avatar>
               <Typography variant="h4" align="center">VERIFY OTP</Typography>
             </Box>
@@ -133,12 +133,12 @@ function OtpForm({ onNext, email }) {
                     color: isExpired ? '#f44336' : '#4caf50'
                   }}
                 >
-                  {isExpired ? 'OTP đã hết hạn' : `Thời gian còn lại: ${formatTime(timeLeft)}`}
+                  {isExpired ? 'OTP has expired' : `Time remaining: ${formatTime(timeLeft)}`}
                 </Typography>
               </Box>
               {isExpired && (
                 <Typography variant="caption" color="error" sx={{ mt: 0.5, display: 'block' }}>
-                  Vui lòng yêu cầu mã OTP mới
+                  Please request a new OTP code
                 </Typography>
               )}
             </Box>
@@ -181,15 +181,15 @@ function OtpForm({ onNext, email }) {
                 }
               }}
             >
-              {isExpired ? 'OTP đã hết hạn' : 'Proceed'}
+              {isExpired ? 'OTP has expired' : 'Proceed'}
             </Button>
           </CardActions>
 
           <BackToLoginConfirm
-            stepName="quá trình xác thực OTP"
-            customMessage="Bạn có chắc chắn muốn quay lại trang đăng nhập?
+            stepName="OTP verification process"
+            customMessage="Are you sure you want to go back to the login page?
 
-Mã OTP hiện tại sẽ hết hiệu lực và bạn sẽ cần phải yêu cầu mã OTP mới để đặt lại mật khẩu."
+The current OTP code will expire and you will need to request a new OTP code to reset your password."
           />
         </MuiCard>
       </Zoom>
