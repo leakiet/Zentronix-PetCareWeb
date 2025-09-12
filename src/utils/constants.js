@@ -14,3 +14,30 @@ export const PET_SPECIES = {
   CAT: 'CAT',
   BIRD: 'BIRD'
 }
+
+export const RECORD_TYPE = {
+  CHECKUP: 'CHECKUP',
+  TREATMENT: 'TREATMENT',
+  SURGERY: 'SURGERY',
+  MEDICATION: 'MEDICATION',
+  ALLERGY: 'ALLERGY',
+  ILLNESS: 'ILLNESS',
+  INJURY: 'INJURY',
+  DENTAL: 'DENTAL',
+  GROOMING: 'GROOMING',
+  OTHER: 'OTHER'
+}
+
+export const VACCINE_TYPE = {
+  RABIES: 'RABIES',
+  DHPP: 'DHPP',
+  FVRCP: 'FVRCP',
+  OTHER: 'OTHER'
+}
+
+export const VACCINATION_STATUS = {
+  COMPLETED: 'Completed',
+  DUE_SOON: 'Due Soon',
+  OVERDUE: 'Overdue',
+  UPCOMING: 'Upcoming'
+}

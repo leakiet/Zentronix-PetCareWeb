@@ -86,11 +86,6 @@ export const updateAddressAPI = async (data) => {
   return response.data
 }
 
-export const deleteAddressAPI = async (id) => {
-  const response = await authorizedAxiosInstance.delete(`${API_ROOT}/apis/v1/addresses/delete/${id}`)
-  return response.data
-}
-
 
 // Products
 export const fetchProductsAPI = async (params) => {
@@ -149,3 +144,61 @@ export const updatePetAPI = async (petId, data) => {
   const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/pets/update/${petId}`, data)
   return response.data
 }
+
+export const deletePetAPI = async (petId) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/pets/delete/${petId}`)
+  return response.data
+}
+
+//health records
+export const createHealthRecordAPI = async (data) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/health-records/create`, data)
+  return response.data
+}
+
+export const updateHealthRecordAPI = async (recordId, data) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/health-records/update/${recordId}`, data)
+  return response.data
+}
+
+export const deleteHealthRecordAPI = async (recordId) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/health-records/delete/${recordId}`)
+  return response.data
+}
+
+export const fetchHealthRecordsByPetIdAPI = async (petId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/health-records/pet/${petId}`)
+  return response.data
+}
+
+export const fetchHealthRecordByIdAPI = async (recordId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/health-records/${recordId}`)
+  return response.data
+}
+
+export const fetchAllHealthRecordsAPI = async () => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/health-records/all`)
+  return response.data
+}
+
+// Pet Vaccination APIs
+export const createPetVaccinationAPI = async (data) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/pet-vaccinations`, data)
+  return response.data
+}
+
+export const updatePetVaccinationAPI = async (id, data) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/pet-vaccinations/${id}`, data)
+  return response.data
+}
+
+export const deletePetVaccinationAPI = async (id) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/pet-vaccinations/delete/${id}`)
+  return response.data
+}
+
+export const fetchPetVaccinationsByPetIdAPI = async (petId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/pet-vaccinations/pet/${petId}`)
+  return response.data
+}
+

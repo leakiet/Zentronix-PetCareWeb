@@ -52,7 +52,7 @@ const Testimonials = () => {
                 </Avatar>
                 <Box>
                   <Typography variant="h6" fontWeight="bold">
-                    Nguyễn Chí Quyễn
+                    Nguyen Chi Quyen
                   </Typography>
                   <Rating value={5} size="small" readOnly />
                 </Box>
@@ -72,7 +72,7 @@ const Testimonials = () => {
                 </Avatar>
                 <Box>
                   <Typography variant="h6" fontWeight="bold">
-                    Trần Yến Nhi
+                    Tran Yen Nhi
                   </Typography>
                   <Rating value={5} size="small" readOnly />
                 </Box>
