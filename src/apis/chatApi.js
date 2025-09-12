@@ -3,7 +3,7 @@ import {
   API_ROOT
 } from '~/utils/constants'
 
-const CHAT_URL = `${API_ROOT}/chat`
+const CHAT_URL = `${API_ROOT}/apis/v1/chat`
 
 /**
  * Lấy tin nhắn theo conversationId, có hỗ trợ phân trang
@@ -26,16 +26,12 @@ export async function fetchAllMessages (conversationId, limit, before) {
  * Gửi tin nhắn (cho AI hoặc EMP)
  * @param {Object} args
  * @param {number|string} args.conversationId
- * @param {'CUSTOMER'|'EMP'} args.senderRole
+ * @param {'PET_OWNER'|'EMP'} args.senderRole
  * @param {string} args.content
  * @param {string} [args.lang]
  * @param {string} [args.idempotencyKey]
- * @param {number} [args.customerId]
+ * @param {string} [args.email]
  * @param {number} [args.employeeId]
- *  * Lấy phân trang tin nhắn (mặc định page=0, size=20)
- * @param {number} conversationId
- * @param {number} page - trang, mặc định 0 (tin mới nhất)
- * @param {number} size - số tin nhắn/trang, mặc định 20
  */
 export async function sendMessage({
   conversationId,
@@ -43,19 +39,29 @@ export async function sendMessage({
   content,
   lang,
   idempotencyKey,
-  customerId,
+  email,
   employeeId
 }) {
+  // Validation
+  if (!content || content.trim() === '') {
+    throw new Error('Message cannot be empty')
+  }
+  if (!senderRole) {
+    throw new Error('SenderRole is required')
+  }
+
   const url = new URL(`${CHAT_URL}/send`)
-  if (senderRole === 'CUSTOMER' && customerId) url.searchParams.append('customerId', customerId)
-  if (senderRole === 'EMP' && employeeId) url.searchParams.append('employeeId', employeeId)
+  if (email) url.searchParams.append('email', email)
+  if (employeeId) url.searchParams.append('employeeId', employeeId)
+
   const body = {
     conversationId,
     senderRole,
-    content,
+    message: content.trim(),
     lang,
     idempotencyKey: idempotencyKey || `${Date.now()}-${Math.random()}`
   }
+
   const {
     data
   } = await authorizedAxiosInstance.post(url.toString(), body)
@@ -101,11 +107,18 @@ export const chatApis = {
 
 
   // Customer chat
-  sendCustomerMessage: async ({ conversationId, content, customerId, senderRole = 'CUSTOMER', lang = 'vi' }) => {
-    const response = await authorizedAxiosInstance.post(`${API_ROOT}/chat/send`, {
+  sendCustomerMessage: async ({ conversationId, content, email, senderRole = 'PET_OWNER', lang = 'vi' }) => {
+    // Validation
+    if (!content || content.trim() === '') {
+      throw new Error('Message cannot be empty')
+    }
+
+    const url = new URL(`${API_ROOT}/chat/send`)
+    if (email) url.searchParams.append('email', email)
+
+    const response = await authorizedAxiosInstance.post(url.toString(), {
       conversationId,
-      content,
-      customerId,
+      message: content.trim(),
       senderRole,
       lang
     })
@@ -114,10 +127,17 @@ export const chatApis = {
 
   // Employee chat
   sendEmployeeMessage: async ({ conversationId, content, employeeId, senderRole = 'EMP', lang = 'vi' }) => {
-    const response = await authorizedAxiosInstance.post(`${API_ROOT}/chat/send`, {
+    // Validation
+    if (!content || content.trim() === '') {
+      throw new Error('Message cannot be empty')
+    }
+
+    const url = new URL(`${API_ROOT}/chat/send`)
+    if (employeeId) url.searchParams.append('employeeId', employeeId)
+
+    const response = await authorizedAxiosInstance.post(url.toString(), {
       conversationId,
-      content,
-      employeeId,
+      message: content.trim(),
       senderRole,
       lang
     })
