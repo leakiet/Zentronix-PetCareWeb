@@ -73,7 +73,7 @@ const Profile = () => {
         }}
       >
         {!currentCustomer ? (
-          <>
+          <Box>
             <Link to='/login' style={{ color: 'inherit', textDecoration: 'none' }}>
               <MenuItem sx={{ '&:hover': { color: 'primary.main' } }}>
                 <ListItemIcon>
@@ -91,9 +91,9 @@ const Profile = () => {
                 Register
               </MenuItem>
             </Link>
-          </>
+          </Box>
         ) : (
-          <>
+          <Box>
             <Link to='/profile' style={{ color: 'inherit', textDecoration: 'none' }}>
               <MenuItem sx={{ '&:hover': { color: 'success.light' } }}>
                 <ListItemIcon>
@@ -118,7 +118,7 @@ const Profile = () => {
               </ListItemIcon>
               Logout
             </MenuItem>
-          </>
+          </Box>
         )}
       </Menu>
     </Box>

@@ -11,7 +11,9 @@ import AccountVerification from './pages/customer/Auth/AccountVerification'
 import NotFound from './pages/customer/NotFound/NotFound'
 import Profile from './pages/customer/Profile/Profile'
 import CartLayout from '~/pages/customer/Cart/CardLayout'
+import AdoptionLayout from '~/pages/customer/Adoption/AdoptionLayout'
 import { selectCurrentCustomer } from './redux/user/customerSlice'
+import AdoptionDetail from '~/pages/customer/Adoption/AdoptionDetail'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 
@@ -33,6 +35,8 @@ function App() {
       <Route path="/menu/:slug" element={<MenuDetail />} />
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/cart" element={<CartLayout />} />
+      <Route path="/adoption" element={<AdoptionLayout />} />
+      <Route path="/adoption/:id" element={<AdoptionDetail />} />
 
       {/* Authentication */}
       <Route path="/login" element={<Auth />} />

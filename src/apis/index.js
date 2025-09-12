@@ -115,3 +115,21 @@ export const fetchBrandsAPI = async () => {
   const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/products/brands`)
   return response.data
 }
+
+// Adoption Listings
+export const fetchBreedsAPI = async () => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-listings/breeds`)
+  return response.data
+}
+
+export const fetchAdoptionListingsAPI = async (params = {}) => {
+  let url = `${API_ROOT}/apis/v1/adoption-listings?page=${params.page || 0}&size=${params.size || 10}&sortField=${params.sortField || 'id'}&sortDir=${params.sortDir || 'asc'}`
+  if (params.species) url += `&species=${encodeURIComponent(params.species)}`
+  if (params.breedId) url += `&breedId=${encodeURIComponent(params.breedId)}`
+  if (params.gender) url += `&gender=${encodeURIComponent(params.gender)}`
+  if (params.minAge !== undefined) url += `&minAge=${encodeURIComponent(params.minAge)}`
+  if (params.maxAge !== undefined) url += `&maxAge=${encodeURIComponent(params.maxAge)}`
+  const response = await authorizedAxiosInstance.get(url)
+  return response.data
+}
+
