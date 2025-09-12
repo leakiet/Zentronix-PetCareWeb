@@ -18,7 +18,7 @@ import {
 import { toast } from 'react-toastify'
 import { verifyOtpCodeAPI } from '~/apis'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
-import BackToLoginConfirm from '~/components/BackToLoginConfirm/BackToLoginConfirm'
+import BackToLoginConfirm from '~/components/Modals/BackToLoginConfirm/BackToLoginConfirm'
 
 function OtpForm({ onNext, email }) {
   const { register, handleSubmit, formState: { errors } } = useForm()

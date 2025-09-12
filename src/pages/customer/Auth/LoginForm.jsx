@@ -57,6 +57,8 @@ function LoginForm() {
       return '/vet-settings'
     case USER_ROLE.SHELTER:
       return '/shelter-settings'
+    case USER_ROLE.UNDEFINED:
+      return '/onboarding'
     default:
       return '/profile'
     }
@@ -108,8 +110,12 @@ function LoginForm() {
       if (!response.error) {
         // Get user from Redux state after login
         const user = response.payload
-        const redirectPath = getRedirectPath(user)
-        navigate(redirectPath)
+        if (user.role === USER_ROLE.UNDEFINED) {
+          navigate('/onboarding')
+        } else {
+          const redirectPath = getRedirectPath(user)
+          navigate(redirectPath)
+        }
       }
     })
   }

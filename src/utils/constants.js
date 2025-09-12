@@ -5,5 +5,6 @@ export const API_ROOT = 'http://localhost:8080'
 export const USER_ROLE = {
   PET_OWNER: 'PET_OWNER',
   VET: 'VET',
-  SHELTER: 'SHELTER'
+  SHELTER: 'SHELTER',
+  UNDEFINED: 'UNDEFINED'
 }

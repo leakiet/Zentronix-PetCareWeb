@@ -11,7 +11,6 @@ import Profile from '~/components/AppBar/Menu/Profile'
 import Cart from '~/components/AppBar/Cart/Cart'
 import NavItem from '~/components/AppBar/Menu/NavItem'
 import { Link } from 'react-router-dom'
-import CaloCalculator from '~/components/AppBar/Menu/CaloCalculator'
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null)

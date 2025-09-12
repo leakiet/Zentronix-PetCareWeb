@@ -4,6 +4,7 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import Autocomplete from '@mui/material/Autocomplete'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
@@ -29,14 +30,15 @@ function VetShelterRegisterForm() {
   const [isLoadingCoords, setIsLoadingCoords] = useState(false)
   const [step, setStep] = useState(0) // 0: Personal, 1: Address, 2: Security
 
-  // Address states
+    // Address states
   const [provinces, setProvinces] = useState([])
-  const [districts, setDistricts] = useState([])
   const [wards, setWards] = useState([])
-  const [selectedProvince, setSelectedProvince] = useState('')
-  const [selectedDistrict, setSelectedDistrict] = useState('')
-  const [selectedWard, setSelectedWard] = useState('')
+  const [selectedProvince, setSelectedProvince] = useState(null) // Changed to object
+  const [selectedWard, setSelectedWard] = useState(null) // Changed to object
   const [isLoadingAddress, setIsLoadingAddress] = useState(false)
+
+  // Address verification states
+  const [addressVerificationStatus, setAddressVerificationStatus] = useState('') // '', 'verifying', 'verified', 'failed'
 
   // Validation states
   const [stepErrors, setStepErrors] = useState({})
@@ -87,14 +89,17 @@ function VetShelterRegisterForm() {
       if (!selectedProvince) {
         newErrors.province = 'Please select a province/city'
       }
-      if (!selectedDistrict) {
-        newErrors.district = 'Please select a district'
-      }
       if (!selectedWard) {
         newErrors.ward = 'Please select a ward'
       }
       if (!currentValues.street?.trim()) {
         newErrors.street = 'Street address is required'
+      }
+      if (addressVerificationStatus === 'failed') {
+        newErrors.address = 'Incorrect address, please try again'
+      }
+      if (addressVerificationStatus !== 'verified') {
+        newErrors.address = 'Please wait for address verification to complete'
       }
     } else if (step === 2) {
       // Validate Security Information
@@ -125,7 +130,7 @@ function VetShelterRegisterForm() {
   const fetchProvinces = async () => {
     try {
       setIsLoadingAddress(true)
-      const response = await fetch('https://provinces.open-api.vn/api/p/')
+      const response = await fetch('https://provinces.open-api.vn/api/v2/p')
       if (!response.ok) throw new Error('Failed to fetch provinces')
       const data = await response.json()
       setProvinces(data)
@@ -137,25 +142,10 @@ function VetShelterRegisterForm() {
     }
   }
 
-  const fetchDistricts = async (provinceCode) => {
+  const fetchWards = async (provinceCode) => {
     try {
       setIsLoadingAddress(true)
-      const response = await fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`)
-      if (!response.ok) throw new Error('Failed to fetch districts')
-      const data = await response.json()
-      setDistricts(data.districts || [])
-    } catch (error) {
-      console.error('Error fetching districts:', error)
-      toast.error('Failed to load districts')
-    } finally {
-      setIsLoadingAddress(false)
-    }
-  }
-
-  const fetchWards = async (districtCode) => {
-    try {
-      setIsLoadingAddress(true)
-      const response = await fetch(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`)
+      const response = await fetch(`https://provinces.open-api.vn/api/v2/p/${provinceCode}?depth=2`)
       if (!response.ok) throw new Error('Failed to fetch wards')
       const data = await response.json()
       setWards(data.wards || [])
@@ -165,33 +155,19 @@ function VetShelterRegisterForm() {
     } finally {
       setIsLoadingAddress(false)
     }
-  }
-
-  // Handle province change
-  const handleProvinceChange = (provinceCode) => {
-    setSelectedProvince(provinceCode)
-    setSelectedDistrict('')
-    setSelectedWard('')
-    setDistricts([])
+  }  // Handle province change
+  const handleProvinceChange = (event, newValue) => {
+    setSelectedProvince(newValue)
+    setSelectedWard(null)
     setWards([])
-    if (provinceCode) {
-      fetchDistricts(provinceCode)
-    }
-  }
-
-  // Handle district change
-  const handleDistrictChange = (districtCode) => {
-    setSelectedDistrict(districtCode)
-    setSelectedWard('')
-    setWards([])
-    if (districtCode) {
-      fetchWards(districtCode)
+    if (newValue) {
+      fetchWards(newValue.code)
     }
   }
 
   // Handle ward change
-  const handleWardChange = (wardCode) => {
-    setSelectedWard(wardCode)
+  const handleWardChange = (event, newValue) => {
+    setSelectedWard(newValue)
   }
 
   // Load provinces on component mount
@@ -207,12 +183,14 @@ function VetShelterRegisterForm() {
   }
 
   // Function to get coordinates from OpenStreetMap
-  const getCoordinatesFromAddress = async (street, wardName, districtName, provinceName) => {
+  const getCoordinatesFromAddress = async (street, wardName, provinceName) => {
     if (!street || !provinceName) return
 
     setIsLoadingCoords(true)
+    setAddressVerificationStatus('verifying')
+
     try {
-      const address = `${street}, ${wardName}, ${districtName}, ${provinceName}, Vietnam`
+      const address = `${street}, ${wardName}, ${provinceName}, Vietnam`
       const encodedAddress = encodeURIComponent(address)
       const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodedAddress}&limit=1`)
 
@@ -228,13 +206,14 @@ function VetShelterRegisterForm() {
           latitude: parseFloat(lat),
           longitude: parseFloat(lon)
         })
-        toast.success('Coordinates retrieved successfully!')
+        setAddressVerificationStatus('verified')
       } else {
-        toast.warning('Could not find coordinates for this address')
+        setAddressVerificationStatus('failed')
         setCoordinates({ latitude: null, longitude: null })
       }
-    } catch {
-      toast.error('Failed to get coordinates. Please check your address.')
+    } catch (error) {
+      console.error('Error fetching coordinates:', error)
+      setAddressVerificationStatus('failed')
       setCoordinates({ latitude: null, longitude: null })
     } finally {
       setIsLoadingCoords(false)
@@ -243,30 +222,28 @@ function VetShelterRegisterForm() {
 
   // Auto-fetch coordinates when address fields change
   useEffect(() => {
-    const selectedProvinceData = provinces.find(p => p.code === selectedProvince)
-    const selectedDistrictData = districts.find(d => d.code === selectedDistrict)
-    const selectedWardData = wards.find(w => w.code === selectedWard)
+    if (watchStreet && selectedProvince) {
+      // Reset verification status when address changes
+      setAddressVerificationStatus('')
+      setCoordinates({ latitude: null, longitude: null })
 
-    if (watchStreet && selectedProvinceData) {
       const timeoutId = setTimeout(() => {
         getCoordinatesFromAddress(
           watchStreet,
-          selectedWardData?.name || '',
-          selectedDistrictData?.name || '',
-          selectedProvinceData.name
+          selectedWard?.name || '',
+          selectedProvince.name
         )
       }, 1000) // Debounce for 1 second
 
       return () => clearTimeout(timeoutId)
+    } else {
+      // Reset status if required fields are missing
+      setAddressVerificationStatus('')
+      setCoordinates({ latitude: null, longitude: null })
     }
-  }, [watchStreet, selectedProvince, selectedDistrict, selectedWard, provinces, districts, wards])
+  }, [watchStreet, selectedProvince, selectedWard, provinces, wards])
 
   const submitRegister = (data) => {
-    // Get selected address names
-    const selectedProvinceData = provinces.find(p => p.code === selectedProvince)
-    const selectedDistrictData = districts.find(d => d.code === selectedDistrict)
-    const selectedWardData = wards.find(w => w.code === selectedWard)
-
     const {
       role,
       companyName,
@@ -281,9 +258,8 @@ function VetShelterRegisterForm() {
     // Prepare address data
     const address = {
       street: street || '',
-      ward: selectedWardData?.name || '',
-      district: selectedDistrictData?.name || '',
-      city: selectedProvinceData?.name || '',
+      ward: selectedWard?.name || '',
+      city: selectedProvince?.name || '',
       latitude: coordinates.latitude,
       longitude: coordinates.longitude
     }
@@ -507,83 +483,43 @@ function VetShelterRegisterForm() {
 
                 {/* Province/City Selection */}
                 <Box sx={{ marginTop: '1em' }}>
-                  <FormControl fullWidth error={!!stepErrors.province}>
-                    <InputLabel>Province/City</InputLabel>
-                    <Select
-                      value={selectedProvince}
-                      label="Province/City"
-                      onChange={(e) => handleProvinceChange(e.target.value)}
-                      disabled={isLoadingAddress}
-                    >
-                      {provinces.map((province) => (
-                        <MenuItem key={province.code} value={province.code}>
-                          {province.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  {stepErrors.province && (
-                    <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '0.5em' }}>
-                      <ErrorOutlineIcon sx={{ color: 'error.main', fontSize: '0.75rem', mr: '0.25em' }} />
-                      <Typography variant="caption" color="error">
-                        {stepErrors.province}
-                      </Typography>
-                    </Box>
-                  )}
-                </Box>
-
-                {/* District Selection */}
-                <Box sx={{ marginTop: '1em' }}>
-                  <FormControl fullWidth disabled={!selectedProvince} error={!!stepErrors.district}>
-                    <InputLabel>District</InputLabel>
-                    <Select
-                      value={selectedDistrict}
-                      label="District"
-                      onChange={(e) => handleDistrictChange(e.target.value)}
-                      disabled={isLoadingAddress || !selectedProvince}
-                    >
-                      {districts.map((district) => (
-                        <MenuItem key={district.code} value={district.code}>
-                          {district.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  {stepErrors.district && (
-                    <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '0.5em' }}>
-                      <ErrorOutlineIcon sx={{ color: 'error.main', fontSize: '0.75rem', mr: '0.25em' }} />
-                      <Typography variant="caption" color="error">
-                        {stepErrors.district}
-                      </Typography>
-                    </Box>
-                  )}
+                  <Autocomplete
+                    value={selectedProvince}
+                    onChange={handleProvinceChange}
+                    options={provinces}
+                    getOptionLabel={(option) => option.name || ''}
+                    loading={isLoadingAddress}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Province/City"
+                        error={!!stepErrors.province}
+                        helperText={stepErrors.province}
+                      />
+                    )}
+                    fullWidth
+                  />
                 </Box>
 
                 {/* Ward Selection */}
                 <Box sx={{ marginTop: '1em' }}>
-                  <FormControl fullWidth disabled={!selectedDistrict} error={!!stepErrors.ward}>
-                    <InputLabel>Ward</InputLabel>
-                    <Select
-                      value={selectedWard}
-                      label="Ward"
-                      onChange={(e) => handleWardChange(e.target.value)}
-                      disabled={isLoadingAddress || !selectedDistrict}
-                    >
-                      {wards.map((ward) => (
-                        <MenuItem key={ward.code} value={ward.code}>
-                          {ward.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  {stepErrors.ward && (
-                    <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '0.5em' }}>
-                      <ErrorOutlineIcon sx={{ color: 'error.main', fontSize: '0.75rem', mr: '0.25em' }} />
-                      <Typography variant="caption" color="error">
-                        {stepErrors.ward}
-                      </Typography>
-                    </Box>
-                  )}
+                  <Autocomplete
+                    value={selectedWard}
+                    onChange={handleWardChange}
+                    options={wards}
+                    getOptionLabel={(option) => option.name || ''}
+                    loading={isLoadingAddress}
+                    disabled={!selectedProvince}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Ward"
+                        error={!!stepErrors.ward}
+                        helperText={stepErrors.ward}
+                      />
+                    )}
+                    fullWidth
+                  />
                 </Box>
 
                 {/* Street Address */}
@@ -608,8 +544,22 @@ function VetShelterRegisterForm() {
                   )}
                 </Box>
 
-                {/* Coordinates Display */}
-                {(coordinates.latitude && coordinates.longitude) && (
+                {/* Address Verification Status */}
+                {addressVerificationStatus === 'verifying' && (
+                  <Box sx={{
+                    marginTop: '1em',
+                    padding: '0.5em',
+                    backgroundColor: '#e3f2fd',
+                    borderRadius: 1,
+                    border: '1px solid #2196f3'
+                  }}>
+                    <Typography variant="caption" sx={{ color: '#1976d2', fontWeight: 'bold' }}>
+                      🔄 Verifying input address...
+                    </Typography>
+                  </Box>
+                )}
+
+                {addressVerificationStatus === 'verified' && (
                   <Box sx={{
                     marginTop: '1em',
                     padding: '0.5em',
@@ -618,21 +568,29 @@ function VetShelterRegisterForm() {
                     border: '1px solid #4caf50'
                   }}>
                     <Typography variant="caption" sx={{ color: '#2e7d32', fontWeight: 'bold' }}>
-                      📍 Coordinates: {coordinates.latitude.toFixed(6)}, {coordinates.longitude.toFixed(6)}
+                      ✅ Address verified
+                    </Typography>
+                  </Box>
+                )}                {addressVerificationStatus === 'failed' && (
+                  <Box sx={{
+                    marginTop: '1em',
+                    padding: '0.5em',
+                    backgroundColor: '#ffebee',
+                    borderRadius: 1,
+                    border: '1px solid #f44336'
+                  }}>
+                    <Typography variant="caption" sx={{ color: '#c62828', fontWeight: 'bold' }}>
+                      ❌ Incorrect address, please try again
                     </Typography>
                   </Box>
                 )}
 
-                {isLoadingCoords && (
-                  <Box sx={{
-                    marginTop: '1em',
-                    padding: '0.5em',
-                    backgroundColor: '#fff3e0',
-                    borderRadius: 1,
-                    border: '1px solid #ff9800'
-                  }}>
-                    <Typography variant="caption" sx={{ color: '#f57c00' }}>
-                      🔄 Getting coordinates...
+                {/* Address validation error */}
+                {stepErrors.address && (
+                  <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '0.5em' }}>
+                    <ErrorOutlineIcon sx={{ color: 'error.main', fontSize: '0.75rem', mr: '0.25em' }} />
+                    <Typography variant="caption" color="error">
+                      {stepErrors.address}
                     </Typography>
                   </Box>
                 )}
