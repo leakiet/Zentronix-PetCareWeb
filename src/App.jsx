@@ -12,7 +12,9 @@ import VetSettings from './pages/customer/VetSettings/VetSettings'
 import ShelterSettings from './pages/customer/ShelterSettings/ShelterSettings'
 
 import CartLayout from '~/pages/customer/Cart/CardLayout'
+import AdoptionLayout from '~/pages/customer/Adoption/AdoptionLayout'
 import { selectCurrentCustomer } from './redux/user/customerSlice'
+import AdoptionDetail from '~/pages/customer/Adoption/AdoptionDetail'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 import { USER_ROLE } from './utils/constants'
@@ -46,6 +48,8 @@ function App() {
       <Route path="/menu/:slug" element={<MenuDetail />} />
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/cart" element={<CartLayout />} />
+      <Route path="/adoption" element={<AdoptionLayout />} />
+      <Route path="/adoption/:id" element={<AdoptionDetail />} />
 
       {/* Authentication */}
       <Route path="/login" element={<Auth />} />

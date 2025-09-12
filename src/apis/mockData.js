@@ -806,3 +806,82 @@ export const mockCart = {
     }
   ]
 }
+
+export const adoptionListing = [
+  {
+    'id': 1,
+    'petName': 'Buddy',
+    'description': 'Friendly and energetic dog, loves playing fetch.',
+    'age': 2,
+    'genderPet': 'MALE',
+    'image': 'https://pethouse.com.vn/wp-content/uploads/2025/09/cho-phoc-soc-mau-merle-ma-PS3293-1247x1496.jpg',
+    'shelterId': 'Shelter1',
+    'status': 'AVAILABLE',
+    'location': 'Ho Chi Minh City',
+    'breed': {
+      'id': 1,
+      'name': 'Golden Retriever'
+    },
+    'species': {
+      'id': 1,
+      'name': 'Dog'
+    }
+  },
+  {
+    'id': 2,
+    'petName': 'Whiskers',
+    'description': 'Playful cat, great with kids and other pets.',
+    'age': 1,
+    'genderPet': 'FEMALE',
+    'image': 'https://pethouse.com.vn/wp-content/uploads/2025/09/cho-phoc-soc-mau-merle-ma-PS3293-1247x1496.jpg',
+    'shelterId': 'Shelter2',
+    'status': 'AVAILABLE',
+    'location': 'Ha Noi',
+    'breed': {
+      'id': 2,
+      'name': 'Persian'
+    },
+    'species': {
+      'id': 2,
+      'name': 'Cat'
+    }
+  },
+  {
+    'id': 3,
+    'petName': 'Max',
+    'description': 'Loyal and obedient dog, trained in basic commands.',
+    'age': 3,
+    'genderPet': 'MALE',
+    'image': 'https://pethouse.com.vn/wp-content/uploads/2025/09/cho-phoc-soc-mau-merle-ma-PS3293-1247x1496.jpg',
+    'shelterId': 'Shelter1',
+    'status': 'PENDING',
+    'location': 'Da Nang',
+    'breed': {
+      'id': 3,
+      'name': 'Labrador Retriever'
+    },
+    'species': {
+      'id': 1,
+      'name': 'Dog'
+    }
+  },
+  {
+    'id': 4,
+    'petName': 'Luna',
+    'description': 'Curious and affectionate cat, loves cuddles.',
+    'age': 2,
+    'genderPet': 'FEMALE',
+    'image': 'https://pethouse.com.vn/wp-content/uploads/2025/09/cho-phoc-soc-mau-merle-ma-PS3293-1247x1496.jpg',
+    'shelterId': 'Shelter2',
+    'status': 'ADOPTED',
+    'location': 'Can Tho',
+    'breed': {
+      'id': 4,
+      'name': 'Siamese'
+    },
+    'species': {
+      'id': 2,
+      'name': 'Cat'
+    }
+  }
+]
