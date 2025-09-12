@@ -28,12 +28,12 @@ function Auth() {
 
   const confirmBack = async (e) => {
     e.preventDefault()
-    const warningMessage = 'Bạn có chắc chắn muốn quay lại trang chủ không?'
+    const warningMessage = 'Are you sure you want to go back to the home page?'
     const { confirmed } = await confirm({
-      title: 'Xác nhận quay lại trang chủ',
+      title: 'Confirm back to home page',
       description: warningMessage,
-      confirmationText: 'Quay lại',
-      cancellationText: 'Tiếp tục'
+      confirmationText: 'Go back',
+      cancellationText: 'Continue'
     })
     if (confirmed) navigate('/')
   }

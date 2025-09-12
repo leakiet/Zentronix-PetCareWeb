@@ -58,7 +58,7 @@ const Footer = () => {
             letterSpacing: '0.5px'
           }}
         >
-          Kết nối với Pet Care trên mạng xã hội:
+                    Connect with Pet Care on social media:
         </Typography>
         <Box>
           {[
@@ -111,8 +111,8 @@ const Footer = () => {
                 fontSize: '0.9rem'
               }}
             >
-              Ứng dụng tư vấn thực phẩm lành mạnh, giúp bạn sống khỏe mỗi ngày
-              bằng lựa chọn dinh dưỡng thông minh.
+              A healthy food consultation app that helps you live healthy every day
+              with smart nutritional choices.
             </Typography>
 
             {/* App Store Buttons */}
@@ -171,13 +171,13 @@ const Footer = () => {
                 fontSize: '1rem'
               }}
             >
-              Tính năng
+              Features
             </Typography>
             {[
-              'AI Tư vấn',
-              'Tìm món ăn',
-              'Lịch sử hỏi đáp',
-              'Thông tin thực phẩm'
+              'AI Consultation',
+              'Find Food',
+              'Chat History',
+              'Food Information'
             ].map((item, index) => (
               <Link
                 key={index}
@@ -212,9 +212,9 @@ const Footer = () => {
                 fontSize: '1rem'
               }}
             >
-              Hữu ích
+              Useful
             </Typography>
-            {['Về chúng tôi', 'Liên hệ', 'Chính sách', 'Hỗ trợ'].map(
+            {['About Us', 'Contact', 'Policy', 'Support'].map(
               (item, index) => (
                 <Link
                   key={index}
@@ -248,11 +248,11 @@ const Footer = () => {
                 fontWeight: 600
               }}
             >
-              Liên hệ
+              Contact
             </Typography>
             <Box component="address" sx={{ opacity: 0.8, lineHeight: 1.8 }}>
               <Typography variant="body2" sx={{ mb: 1 }}>
-                TP.HCM, Việt Nam
+                Ho Chi Minh City, Vietnam
               </Typography>
               <Typography variant="body2" sx={{ mb: 1 }}>
                 Email:{' '}

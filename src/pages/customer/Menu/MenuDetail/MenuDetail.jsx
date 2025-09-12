@@ -70,7 +70,7 @@ const MenuDetail = () => {
 
   // Related products (random 3 products)
   const relatedProducts = products
-    .filter((item) => item.slug !== slug) // So sánh slug
+    .filter((item) => item.slug !== slug) // Compare slug
     .slice(0, 3)
 
   return (
