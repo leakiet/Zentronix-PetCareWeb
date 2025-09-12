@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import moment from 'moment'
 import Badge from '@mui/material/Badge'
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
@@ -12,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Divider from '@mui/material/Divider'
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import NotificationsIcon from '@mui/icons-material/Notifications'
 import { mockNotifications } from '~/apis/mockData'
 const BLOG_NOTIFICATION_TYPE = {
   REPLY: 'REPLY',
@@ -41,7 +41,7 @@ function Notifications() {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClickNotificationIcon}
         >
-          <NotificationsNoneIcon sx={{ color: 'white' }} />
+          <NotificationsIcon sx={{ color: theme => theme.palette.primary.main }} />
         </Badge>
       </Tooltip>
 

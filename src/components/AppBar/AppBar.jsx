@@ -11,6 +11,7 @@ import Profile from '~/components/AppBar/Menu/Profile'
 import Cart from '~/components/AppBar/Cart/Cart'
 import NavItem from '~/components/AppBar/Menu/NavItem'
 import { Link } from 'react-router-dom'
+import Notifications from '~/components/AppBar/Notifications/Notifications'
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null)
@@ -96,6 +97,7 @@ function ResponsiveAppBar() {
           </Box>
           <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
+              <Notifications />
               <Cart />
               <Profile />
             </Box>

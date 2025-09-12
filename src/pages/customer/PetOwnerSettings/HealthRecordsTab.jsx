@@ -104,9 +104,9 @@ function HealthRecordsTab({
         </Grid>
 
         {/* Documents & Insurance Section */}
-        <Grid size={{ xs: 12, lg: 4 }}>
-          <Stack spacing={3}>
-            {/* Medical Documents */}
+        <Grid container size={{ xs: 12, lg: 4 }}>
+          {/* Medical Documents */}
+          <Grid size={{ xs: 12, md: 6, lg: 12 }}>
             <Card>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
@@ -138,8 +138,10 @@ function HealthRecordsTab({
                 </Button>
               </CardContent>
             </Card>
+          </Grid>
 
-            {/* Insurance Policies */}
+          {/* Insurance Policies */}
+          <Grid size={{ xs: 12, md: 6, lg: 12 }}>
             <Card>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
@@ -172,7 +174,7 @@ function HealthRecordsTab({
                 </Button>
               </CardContent>
             </Card>
-          </Stack>
+          </Grid>
         </Grid>
       </Grid>
     </Box>

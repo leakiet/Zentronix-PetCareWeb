@@ -8,3 +8,9 @@ export const USER_ROLE = {
   SHELTER: 'SHELTER',
   UNDEFINED: 'UNDEFINED'
 }
+
+export const PET_SPECIES = {
+  DOG: 'DOG',
+  CAT: 'CAT',
+  BIRD: 'BIRD'
+}
