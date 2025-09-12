@@ -101,7 +101,7 @@ const Profile = () => {
             </Link>
           </Box>
         ) : (
-          <>
+          <Box>
             <Link to={linkTo()} style={{ color: 'inherit', textDecoration: 'none' }}>
               <MenuItem sx={{ '&:hover': { color: 'success.light' } }}>
                 <ListItemIcon>

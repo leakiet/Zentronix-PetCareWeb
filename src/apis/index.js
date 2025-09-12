@@ -133,3 +133,19 @@ export const fetchAdoptionListingsAPI = async (params = {}) => {
   return response.data
 }
 
+
+//pets
+export const createPetAPI = async (data) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/pets/create`, data)
+  return response.data
+}
+
+export const fetPetsByCustomerId = async (userId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/pets/customer/${userId}`)
+  return response.data
+}
+
+export const updatePetAPI = async (petId, data) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/pets/update/${petId}`, data)
+  return response.data
+}
