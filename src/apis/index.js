@@ -74,7 +74,6 @@ export const updateCustomerPassword = async (data) => {
 }
 
 
-
 // Address
 export const createNewAddressAPI = async (data) => {
   const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/addresses/create`, data)
@@ -122,6 +121,11 @@ export const fetchBreedsAPI = async () => {
   return response.data
 }
 
+export const fetchAdoptionListingsByIdAPI = async (id) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-listings/${id}`)
+  return response.data
+}
+
 export const fetchAdoptionListingsAPI = async (params = {}) => {
   let url = `${API_ROOT}/apis/v1/adoption-listings?page=${params.page || 0}&size=${params.size || 10}&sortField=${params.sortField || 'id'}&sortDir=${params.sortDir || 'asc'}`
   if (params.species) url += `&species=${encodeURIComponent(params.species)}`
@@ -133,3 +137,34 @@ export const fetchAdoptionListingsAPI = async (params = {}) => {
   return response.data
 }
 
+export const createAdoptionRequestAPI = async (data) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/adoption-requests`, data)
+  return response.data
+}
+
+export const getAdoptionRequestByIdAPI = async (id) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/${id}`)
+  return response.data
+}
+
+export const updateAdoptionRequestStatusAPI = async (id, status) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/adoption-requests/${id}/status?status=${encodeURIComponent(status)}`)
+  return response.data
+}
+
+export const deleteAdoptionRequestAPI = async (id) => {
+  const response = await authorizedAxiosInstance.delete(`${API_ROOT}/apis/v1/adoption-requests/${id}`)
+  return response.data
+}
+
+export const getAllAdoptionRequestsAPI = async (params = {}) => {
+  let url = `${API_ROOT}/apis/v1/adoption-requests?page=${params.page || 0}&size=${params.size || 10}&sortField=${params.sortField || 'id'}&sortDir=${params.sortDir || 'asc'}`
+  if (params.status) url += `&status=${encodeURIComponent(params.status)}`
+  const response = await authorizedAxiosInstance.get(url)
+  return response.data
+}
+
+export const getRequestsByAdoptionListingIdAPI = async (adoptionListingId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/listing/${adoptionListingId}`)
+  return response.data
+}
