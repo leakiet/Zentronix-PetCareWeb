@@ -4,6 +4,8 @@ import MenuLayout from './pages/customer/Menu/MenuLayout'
 import MenuDetail from './pages/customer/Menu/MenuDetail/MenuDetail'
 import ScheduleLayout from './pages/customer/schedule/ScheduleLayout'
 import AboutUs from './pages/customer/AboutUs/AboutUs'
+import Contact from './pages/customer/Contact/Contact'
+import FAQ from './pages/customer/FAQ/FAQ'
 import Auth from './pages/customer/Auth/Auth'
 import AccountVerification from './pages/customer/Auth/AccountVerification'
 import NotFound from './pages/customer/NotFound/NotFound'
@@ -58,66 +60,54 @@ function App() {
   const currentCustomer = useSelector(selectCurrentCustomer)
 
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<HomeLayout />} />
-        <Route path="/menu" element={<MenuLayout />} />
-        <Route path="/menu/:slug" element={<MenuDetail />} />
-        <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/cart" element={<CartLayout />} />
-        <Route path="/adoption" element={<AdoptionLayout />} />
-        <Route path="/adoption/:id" element={<AdoptionDetail />} />
-        <Route path="/schedule" element={<ScheduleLayout/>} />
-        <Route path="/appointment" element={<AppointmentFlow/>} />
+    <Routes>
+      <Route path="/" element={<HomeLayout />} />
+      <Route path="/menu" element={<MenuLayout />} />
+      <Route path="/menu/:slug" element={<MenuDetail />} />
+      <Route path="/about-us" element={<AboutUs />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/faq" element={<FAQ />} />
+      <Route path="/cart" element={<CartLayout />} />
+      <Route path="/adoption" element={<AdoptionLayout />} />
+      <Route path="/adoption/:id" element={<AdoptionDetail />} />
+      <Route path="/schedule" element={<ScheduleLayout/>} />
+      <Route path="/appointment" element={<AppointmentFlow/>} />
 
-        {/* Authentication */}
-        <Route path="/login" element={<Auth />} />
-        <Route path="/register" element={<Auth />} />
-        <Route path="/reset-password" element={<Auth />} />
-        <Route path="/verify-email" element={<AccountVerification />} />
+      {/* Authentication */}
+      <Route path="/login" element={<Auth />} />
+      <Route path="/register" element={<Auth />} />
+      <Route path="/reset-password" element={<Auth />} />
+      <Route path="/verify-email" element={<AccountVerification />} />
 
-        {/* pet owner Settings - Only for PET_OWNER */}
-        <Route element={<PetOwnerRoute user={currentCustomer} />}>
-          <Route path="/pet-owner-settings" element={<PetOwnerSettings />} />
-          <Route path="/checkout" element={<Checkout />} />
-        </Route>
+      {/* pet owner Settings - Only for PET_OWNER */}
+      <Route element={<PetOwnerRoute user={currentCustomer} />}>
+        <Route path="/pet-owner-settings" element={<PetOwnerSettings />} />
+        <Route path="/checkout" element={<Checkout />} />
+      </Route>
 
-        {/* Vet Settings - Only for VET */}
-        <Route element={<VetRoute user={currentCustomer} />}>
-          <Route path="/vet-settings" element={<VetSettings />} />
-        </Route>
+      {/* Vet Settings - Only for VET */}
+      <Route element={<VetRoute user={currentCustomer} />}>
+        <Route path="/vet-settings" element={<VetSettings />} />
+      </Route>
 
-        {/* Shelter Settings - Only for SHELTER */}
-        <Route element={<ShelterRoute user={currentCustomer} />}>
-          <Route path="/shelter-settings" element={<ListAdoptionRequest />} />
-          <Route path="/shelter-settings/:id" element={<AdoptionRequestDetail />} />
-          <Route path="/shelter-profile/create" element={<CreateAdoptionListing />} />
-          <Route path="/shelter-settings/edit/:id" element={<UpdateAdoptionListing />} />
-        </Route>
+      {/* Shelter Settings - Only for SHELTER */}
+      <Route element={<ShelterRoute user={currentCustomer} />}>
+        <Route path="/shelter-settings" element={<ListAdoptionRequest />} />
+        <Route path="/shelter-settings/:id" element={<AdoptionRequestDetail />} />
+        <Route path="/shelter-profile/create" element={<CreateAdoptionListing />} />
+        <Route path="/shelter-settings/edit/:id" element={<UpdateAdoptionListing />} />
+      </Route>
 
-        <Route element={<UndefinedRoute user={currentCustomer} />}>
-          <Route path="/onboarding" element={<Onboard />} />
-        </Route>
+      <Route element={<UndefinedRoute user={currentCustomer} />}>
+        <Route path="/onboarding" element={<Onboard />} />
+      </Route>
 
-        {/* 404 Not Found */}
-        <Route path="*" element={<NotFound />} />
+      {/* 404 Not Found */}
+      <Route path="*" element={<NotFound />} />
 
-        {/* Unauthorized Access */}
-        <Route path="/unauthorized" element={<Unauthorized />} />
-      </Routes>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-    </>
+      {/* Unauthorized Access */}
+      <Route path="/unauthorized" element={<Unauthorized />} />
+    </Routes>
   )
 }
 

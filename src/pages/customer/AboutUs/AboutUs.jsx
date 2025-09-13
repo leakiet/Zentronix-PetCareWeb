@@ -34,7 +34,7 @@ const AboutUs = () => {
               lineHeight: 1.2
             }}
           >
-            At Fitbowl, every healthy meal is a love letter to your future self.
+            At Fur Shield, every pet care solution is a promise to protect and nurture the human-animal bond.
           </Typography>
           <Typography
             variant="body1"
@@ -46,7 +46,7 @@ const AboutUs = () => {
               fontSize: '1.2rem'
             }}
           >
-            We’re your partner in wellness, crafting personalized, AI-driven meals that nourish your body and soul, tailored to your unique needs and tastes.
+            We're your trusted partner in pet wellness, providing comprehensive AI-driven solutions that protect and care for your beloved companions, tailored to their unique needs and personalities.
           </Typography>
           {/* <Button
             variant="text"
@@ -81,7 +81,7 @@ const AboutUs = () => {
           data-aos="fade-up"
         >
           <img
-            src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070&auto=format&fit=crop"
+            src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=2070&auto=format&fit=crop"
             style={{
               width: '100%',
               height: '100%',
@@ -92,7 +92,7 @@ const AboutUs = () => {
               zIndex: 2,
               filter: 'brightness(0.5)'
             }}
-            alt="Fitbowl meal"
+            alt="Happy pets and owners"
           />
           <Box
             sx={{
@@ -124,13 +124,13 @@ const AboutUs = () => {
                 fontSize: { xs: '1.8rem', md: '2.5rem' }
               }}
             >
-              We help you build a healthy relationship with food.
+              We help you build a loving and protective relationship with your pets.
             </Typography>
             <Typography variant="body1" sx={{ color: '#fff', lineHeight: 1.8 }}>
-              Using advanced AI, Fitbowl creates fresh, nutritionally balanced, and flavorful meals tailored to your dietary needs and preferences. We aim to inspire a deeper connection between you and your food, empowering you to make conscious choices that fuel your body and nurture your soul.
+              Using advanced AI, Fur Shield creates comprehensive pet care solutions including health monitoring, adoption services, and expert consultation tailored to your pet's unique needs and characteristics. We aim to inspire a deeper connection between you and your pets, empowering you to make conscious choices that protect and nurture your animal companions.
             </Typography>
             <Typography variant="body1" sx={{ color: '#fff', lineHeight: 1.8, mt: 2 }}>
-              Our vision is a world where everyone embraces the power of personalized nutrition, transforming lives one delicious bowl at a time.
+              Our vision is a world where every pet receives the care and protection they deserve, strengthening the human-animal bond one loving connection at a time.
             </Typography>
           </Box>
         </Box>
@@ -186,10 +186,10 @@ const AboutUs = () => {
                     variant="h6"
                     sx={{ fontWeight: 600, color: '#fff', mb: 2 }}
                   >
-                    Food Made with Love
+                    Compassionate Care
                   </Typography>
                   <Typography variant="body2" sx={{ color: '#fff' }}>
-                    Every meal is crafted with care, from our kitchen to your table, spreading love through every bite.
+                    Every interaction with Fur Shield is filled with genuine care and empathy, ensuring your pet receives the love and attention they deserve.
                   </Typography>
                 </Box>
               </Box>
@@ -202,7 +202,7 @@ const AboutUs = () => {
                   borderRadius: '10px',
                   overflow: 'hidden',
                   backgroundImage:
-                    'url(https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=2070&auto=format&fit=crop)',
+                    'url(https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=2070&auto=format&fit=crop)',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   '&:hover .valueText': {
@@ -232,10 +232,10 @@ const AboutUs = () => {
                     variant="h6"
                     sx={{ fontWeight: 600, color: '#fff', mb: 2 }}
                   >
-                    You-nique Experience
+                    Personalized Approach
                   </Typography>
                   <Typography variant="body2" sx={{ color: '#fff' }}>
-                    Our AI listens to your needs, creating personalized meal plans that feel like they were made just for you.
+                    We recognize that every pet is unique, providing tailored care solutions that address their individual needs, personality, and health requirements.
                   </Typography>
                 </Box>
               </Box>
@@ -248,7 +248,7 @@ const AboutUs = () => {
                   borderRadius: '10px',
                   overflow: 'hidden',
                   backgroundImage:
-                    'url(https://images.unsplash.com/photo-1543353071-873f17a7a088?q=80&w=2070&auto=format&fit=crop)',
+                    'url(https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=2070&auto=format&fit=crop)',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   '&:hover .valueText': {
@@ -278,10 +278,10 @@ const AboutUs = () => {
                     variant="h6"
                     sx={{ fontWeight: 600, color: '#fff', mb: 2 }}
                   >
-                    Lasting Relationships
+                    Trusted Partnership
                   </Typography>
                   <Typography variant="body2" sx={{ color: '#fff' }}>
-                    We build lifelong connections with our customers, staff, and partners, fostering a community of wellness.
+                    We build lasting partnerships with pet owners, becoming a trusted companion in your journey of responsible pet care and companionship.
                   </Typography>
                 </Box>
               </Box>
@@ -294,7 +294,7 @@ const AboutUs = () => {
                   borderRadius: '10px',
                   overflow: 'hidden',
                   backgroundImage:
-                    'url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop)',
+                    'url(https://images.unsplash.com/photo-1559757148-5c350d0d3c56?q=80&w=2070&auto=format&fit=crop)',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   '&:hover .valueText': {
@@ -324,10 +324,10 @@ const AboutUs = () => {
                     variant="h6"
                     sx={{ fontWeight: 600, color: '#fff', mb: 2 }}
                   >
-                    Tasteful Communication
+                    Expert Guidance
                   </Typography>
                   <Typography variant="body2" sx={{ color: '#fff' }}>
-                    We make nutrition fun and engaging, communicating in a playful yet informative way to inspire healthy choices.
+                    Our team of veterinary experts and pet care specialists provide clear, actionable guidance to help you make informed decisions for your pet's health and well-being.
                   </Typography>
                 </Box>
               </Box>
@@ -340,9 +340,9 @@ const AboutUs = () => {
           <Grid container spacing={4} alignItems="center">
             <Grid size={{ xs: 12, md: 6 }} data-aos="fade-right">
               <img
-                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?q=80&w=2070&auto=format&fit=crop"
                 style={{ width: '100%', height: 'auto', borderRadius: '15px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-                alt="Sous-vide cooking"
+                alt="AI technology for pet care"
               />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }} data-aos="fade-left">
@@ -351,25 +351,25 @@ const AboutUs = () => {
                   variant="h4"
                   sx={{ fontWeight: 600, color: theme.colorSchemes.light.palette.text.primary }}
                 >
-                  OUR TECHNIQUE
+                  OUR AI TECHNOLOGY
                 </Typography>
                 <Typography
                   variant="h5"
                   sx={{ fontWeight: 600, color: theme.colorSchemes.light.palette.primary.secondary }}
                 >
-                  Sous-vide, Sou-good!
+                  Smart Care, Smart Pets!
                 </Typography>
                 <Typography
                   variant="body1"
                   sx={{ color: theme.colorSchemes.light.palette.text.textSub, lineHeight: 1.8 }}
                 >
-                  Our sous-vide technique gently cooks your meals in a precise water bath, retaining 90% of the nutrients and flavors. Each bite is tender, juicy, and bursting with natural goodness—no more bland, dry meals.
+                  Our AI technology intelligently monitors your pet's health patterns, analyzing behavior, nutrition, and wellness data. Each insight is carefully processed to provide personalized recommendations that keep your pets healthy and happy.
                 </Typography>
                 <Typography
                   variant="body1"
                   sx={{ color: theme.colorSchemes.light.palette.text.textSub, lineHeight: 1.8 }}
                 >
-                  We use minimal oil, less sugar, and no artificial additives, letting the true flavors of fresh ingredients shine through.
+                  We use advanced machine learning algorithms with veterinary expertise, ensuring accurate assessments and no artificial shortcuts, letting the true needs of your pets guide our recommendations.
                 </Typography>
               </Box>
             </Grid>
@@ -386,69 +386,69 @@ const AboutUs = () => {
               mb: 6
             }}
           >
-            Our Philosophy to Healthy Eating
+            Our Philosophy to Responsible Pet Care
           </Typography>
           <Grid container spacing={4}>
             <Grid size={{ xs: 12, md: 4 }} data-aos="zoom-in">
               <Box sx={{ p: 3, borderRadius: '10px', height: '100%' }}>
                 <img
-                  src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=2070&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=2070&auto=format&fit=crop"
                   style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '10px', mb: 2 }}
-                  alt="Protein bowl"
+                  alt="Pet health monitoring"
                 />
                 <Typography
                   variant="h6"
                   sx={{ fontWeight: 600, color: theme.colorSchemes.light.palette.text.primary, mb: 2 }}
                 >
-                  Protein Powerhouse
+                  Health Monitoring Excellence
                 </Typography>
                 <Typography
                   variant="body2"
                   sx={{ color: theme.colorSchemes.light.palette.text.textSub }}
                 >
-                  Our AI-curated bowls pack a protein punch, fueling your energy and supporting muscle growth for a stronger you.
+                  Our AI-powered health monitoring provides comprehensive insights, tracking vital signs and behavior patterns for proactive pet care.
                 </Typography>
               </Box>
             </Grid>
             <Grid size={{ xs: 12, md: 4 }} data-aos="zoom-in" data-aos-delay="100">
               <Box sx={{ p: 3, borderRadius: '10px', height: '100%' }}>
                 <img
-                  src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=2070&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993?q=80&w=2070&auto=format&fit=crop"
                   style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '10px', mb: 2 }}
-                  alt="Carb bowl"
+                  alt="Pet adoption"
                 />
                 <Typography
                   variant="h6"
                   sx={{ fontWeight: 600, color: theme.colorSchemes.light.palette.text.primary, mb: 2 }}
                 >
-                  Carbs Done Right
+                  Adoption Support Network
                 </Typography>
                 <Typography
                   variant="body2"
                   sx={{ color: theme.colorSchemes.light.palette.text.textSub }}
                 >
-                  We choose the right carbs to keep you energized all day, without the crash, using AI to balance your meals perfectly.
+                  We connect loving homes with pets in need, using AI matching algorithms to ensure the perfect companionship for both pets and owners.
                 </Typography>
               </Box>
             </Grid>
             <Grid size={{ xs: 12, md: 4 }} data-aos="zoom-in" data-aos-delay="200">
               <Box sx={{ p: 3, borderRadius: '10px', height: '100%' }}>
                 <img
-                  src="https://images.unsplash.com/photo-1543353071-873f17a7a088?q=80&w=2070&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?q=80&w=2070&auto=format&fit=crop"
                   style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '10px', mb: 2 }}
-                  alt="Veggie bowl"
+                  alt="Veterinary care"
                 />
                 <Typography
                   variant="h6"
                   sx={{ fontWeight: 600, color: theme.colorSchemes.light.palette.text.primary, mb: 2 }}
                 >
-                  Veggie Wonderland
+                  Expert Veterinary Network
                 </Typography>
                 <Typography
                   variant="body2"
                   sx={{ color: theme.colorSchemes.light.palette.text.textSub }}
                 >
-                  Our veggie-packed bowls boost digestion and heart health, crafted with AI to maximize flavor and nutrition.
+                  Our network of certified veterinarians provides expert consultation and emergency support, ensuring your pets receive the best medical care.
                 </Typography>
               </Box>
             </Grid>
