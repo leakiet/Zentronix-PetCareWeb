@@ -1,23 +1,21 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import moment from 'moment'
 import Badge from '@mui/material/Badge'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
-import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Divider from '@mui/material/Divider'
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
-import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import DoneIcon from '@mui/icons-material/Done'
 import NotInterestedIcon from '@mui/icons-material/NotInterested'
 import { useChatWebSocket } from '~/hooks/useChatWebSocket'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectCurrentNotifications, addNotification, clearCurrentNotifications, fetchNotificationsByShelterIdAPI, updateAdoptionRequestStatusAPI } from '~/redux/notifications/notificationsSlice'
+import { selectCurrentNotifications, addNotification, fetchNotificationsByShelterIdAPI, getRequestsByOwnerIdAPI } from '~/redux/notifications/notificationsSlice'
 import { selectCurrentCustomer } from '~/redux/user/customerSlice'
 
 const ADOPTION_REQUEST_STATUS = {
@@ -30,18 +28,28 @@ function Notifications() {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const notifications = useSelector(selectCurrentNotifications) || []
 
   const handleClickNotificationIcon = (event) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleClose = () => {
     setAnchorEl(null)
   }
 
   const user = useSelector(selectCurrentCustomer)
 
-  // Handle WebSocket message for new adoption requests
+  const handleNotificationClick = (item) => {
+    handleClose()
+    if (user?.role === 'SHELTER' && item.adoptionListing?.id) {
+      navigate(`/shelter-settings/${item.adoptionListing.id}`)
+    } else if (user?.role === 'PET_OWNER' && item.adoptionListing?.id) {
+      navigate(`/adoption/${item.adoptionListing.id}`)
+    }
+  }
+
   const handleWebSocketMessage = useCallback((message) => {
     const newNotification = {
       id: Date.now(),
@@ -63,17 +71,11 @@ function Notifications() {
     if (user) {
       if (user.role === 'SHELTER') {
         dispatch(fetchNotificationsByShelterIdAPI(user.id))
+      } else if (user.role === 'PET_OWNER') {
+        dispatch(getRequestsByOwnerIdAPI(user.id))
       }
     }
   }, [dispatch, user])
-
-  const handleClearNotifications = () => {
-    dispatch(clearCurrentNotifications())
-  }
-
-  const updateRequestStatus = (status, requestId) => {
-    dispatch(updateAdoptionRequestStatusAPI({ requestId, status }))
-  }
 
   return (
     <Box>
@@ -106,8 +108,16 @@ function Notifications() {
           </MenuItem>
         )}
         {notifications.map((item, index) => (
-          <Box key={item.id} onClick={handleClose}>
-            <MenuItem sx={{ minWidth: 200, maxWidth: 360, overflowY: 'auto' }}>
+          <Box key={item.id}>
+            <MenuItem
+              sx={{
+                minWidth: 200,
+                maxWidth: 360,
+                overflowY: 'auto',
+                cursor: user?.role === 'SHELTER' ? 'pointer' : 'default'
+              }}
+              onClick={() => handleNotificationClick(item)}
+            >
               <Box sx={{
                 maxWidth: '100%',
                 wordBreak: 'break-word',
@@ -126,26 +136,6 @@ function Notifications() {
                     )}
                   </Box>
                 </Box>
-                {/* {user?.role === 'SHELTER' && item.status === ADOPTION_REQUEST_STATUS.PENDING && (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
-                    <Button
-                      variant="contained"
-                      color="success"
-                      size="small"
-                      onClick={() => updateRequestStatus(ADOPTION_REQUEST_STATUS.ACCEPTED, item.id)}
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      size="small"
-                      onClick={() => updateRequestStatus(ADOPTION_REQUEST_STATUS.REJECTED, item.id)}
-                    >
-                      Reject
-                    </Button>
-                  </Box>
-                )} */}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
                   {item.status === ADOPTION_REQUEST_STATUS.ACCEPTED && (
                     <Chip icon={<DoneIcon />} label="Accepted" color="success" size="small" />
@@ -167,13 +157,6 @@ function Notifications() {
             {index !== notifications.length - 1 && <Divider />}
           </Box>
         ))}
-        {/* {notifications.length > 0 && (
-          <Box sx={{ p: 1 }}>
-            <Button variant="outlined" size="small" onClick={handleClearNotifications}>
-              Clear All
-            </Button>
-          </Box>
-        )} */}
       </Menu>
     </Box>
   )

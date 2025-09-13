@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Typography } from '@mui/material'
@@ -85,3 +86,4 @@ function TypingIndicator({ conversationId }) {
 }
 
 export default TypingIndicator
+

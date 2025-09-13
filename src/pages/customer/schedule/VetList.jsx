@@ -19,22 +19,22 @@ const VetList = ({ vets, onVetSelect, appointmentData }) => {
 
   const sortedVets = [...filteredVets].sort((a, b) => {
     switch (sortBy) {
-      case 'rating':
-        return b.rating - a.rating
-      case 'distance':
-        return parseFloat(a.distance) - parseFloat(b.distance)
-      case 'price':
-        return parseFloat(a.price.replace(/[^0-9]/g, '')) - parseFloat(b.price.replace(/[^0-9]/g, ''))
-      case 'availability':
-        return a.availability.localeCompare(b.availability)
-      default:
-        return 0
+    case 'rating':
+      return b.rating - a.rating
+    case 'distance':
+      return parseFloat(a.distance) - parseFloat(b.distance)
+    case 'price':
+      return parseFloat(a.price.replace(/[^0-9]/g, '')) - parseFloat(b.price.replace(/[^0-9]/g, ''))
+    case 'availability':
+      return a.availability.localeCompare(b.availability)
+    default:
+      return 0
     }
   })
 
   const getMatchReason = (vet) => {
     const reason = appointmentData?.reason?.toLowerCase() || ''
-    
+
     if (reason.includes('emergency') || reason.includes('urgent')) {
       return 'Expert in emergency cases and urgent care'
     } else if (reason.includes('skin') || reason.includes('dermatology')) {
@@ -44,7 +44,7 @@ const VetList = ({ vets, onVetSelect, appointmentData }) => {
     } else if (reason.includes('routine') || reason.includes('checkup') || reason.includes('vaccination')) {
       return 'Specializes in routine checkups and vaccinations'
     }
-    
+
     return vet.matchReason || 'Experienced veterinarian for your pet\'s needs'
   }
 
@@ -167,7 +167,7 @@ const VetList = ({ vets, onVetSelect, appointmentData }) => {
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                       {vet.specialization} • {vet.experience}
                     </Typography>
-                    
+
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <Rating
                         value={vet.rating}

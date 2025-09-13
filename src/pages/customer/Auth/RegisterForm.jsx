@@ -30,7 +30,7 @@ function VetShelterRegisterForm() {
   const [isLoadingCoords, setIsLoadingCoords] = useState(false)
   const [step, setStep] = useState(0) // 0: Personal, 1: Address, 2: Security
 
-    // Address states
+  // Address states
   const [provinces, setProvinces] = useState([])
   const [wards, setWards] = useState([])
   const [selectedProvince, setSelectedProvince] = useState(null) // Changed to object
@@ -155,7 +155,7 @@ function VetShelterRegisterForm() {
     } finally {
       setIsLoadingAddress(false)
     }
-  }  // Handle province change
+  } // Handle province change
   const handleProvinceChange = (event, newValue) => {
     setSelectedProvince(newValue)
     setSelectedWard(null)
@@ -245,7 +245,6 @@ function VetShelterRegisterForm() {
 
   const submitRegister = (data) => {
     const {
-      role,
       companyName,
       firstName,
       lastName,
@@ -265,7 +264,7 @@ function VetShelterRegisterForm() {
     }
 
     toast.promise(registerCustomerAPI({
-      role,
+      role, // Use role from state
       companyName,
       firstName,
       lastName,
