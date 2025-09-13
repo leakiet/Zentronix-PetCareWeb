@@ -11,7 +11,6 @@ const AdoptionLayout = () => {
   const theme = useTheme()
   const [selectedSpecies, setSelectedSpecies] = useState('')
   const [selectedBreeds, setSelectedBreeds] = useState('')
-  const [selectedLocations, setSelectedLocations] = useState([]) // Bỏ nếu không dùng
   const [selectedGenders, setSelectedGenders] = useState('')
   const [breeds, setBreeds] = useState([])
   const [adoptionListings, setAdoptionListings] = useState([])
@@ -108,7 +107,6 @@ const AdoptionLayout = () => {
   const clearAllFilters = () => {
     setSelectedBreeds('')
     setSelectedSpecies('')
-    // setSelectedLocations([]) // Bỏ
     setSelectedGenders('')
     setSelectedAgeValue('')
   }

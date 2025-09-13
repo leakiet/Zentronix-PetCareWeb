@@ -33,7 +33,6 @@ function ShelterSettings() {
   }
 
   const handleSave = () => {
-    // TODO: Implement save functionality
   }
 
   return (

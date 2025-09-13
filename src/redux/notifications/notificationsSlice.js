@@ -14,10 +14,10 @@ export const fetchNotificationsByShelterIdAPI = createAsyncThunk(
   }
 )
 
-export const updateAdoptionRequestStatusAPI = createAsyncThunk(
-  'notifications/updateAdoptionRequestStatusAPI',
-  async ({ requestId, status }) => {
-    const response = await authorizedAxiosInstance.patch(`${API_ROOT}/apis/v1/adoption-requests/${requestId}/status`, { status })
+export const getRequestsByOwnerIdAPI = createAsyncThunk(
+  'notifications/getRequestsByOwnerIdAPI',
+  async (ownerId) => {
+    const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/owner/${ownerId}`)
     return response.data
   }
 )
@@ -36,17 +36,19 @@ export const notificationsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Sửa: Cập nhật case cho thunk mới
       .addCase(fetchNotificationsByShelterIdAPI.fulfilled, (state, action) => {
         let incomingNotifications = action.payload
-        state.currentNotifications = Array.isArray(incomingNotifications) ? incomingNotifications.reverse() : []
+        const filteredNotifications = Array.isArray(incomingNotifications)
+          ? incomingNotifications.filter(notification => notification.status !== 'REJECTED')
+          : []
+        state.currentNotifications = filteredNotifications.reverse()
       })
-      .addCase(updateAdoptionRequestStatusAPI.fulfilled, (state, action) => {
-        const updatedRequest = action.payload
-        const index = state.currentNotifications.findIndex(n => n.id === updatedRequest.id)
-        if (index !== -1) {
-          state.currentNotifications[index] = updatedRequest
-        }
+      .addCase(getRequestsByOwnerIdAPI.fulfilled, (state, action) => {
+        let incomingNotifications = action.payload
+        const filteredNotifications = Array.isArray(incomingNotifications)
+          ? incomingNotifications.filter(notification => notification.status !== 'REJECTED')
+          : []
+        state.currentNotifications = filteredNotifications.reverse()
       })
   }
 })
