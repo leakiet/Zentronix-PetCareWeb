@@ -12,7 +12,8 @@ import Cart from '~/components/AppBar/Cart/Cart'
 import NavItem from '~/components/AppBar/Menu/NavItem'
 import { Link } from 'react-router-dom'
 import CaloCalculator from '~/components/AppBar/Menu/CaloCalculator'
-
+import Notification from '~/components/AppBar/Notifications/Notifications'
+import NotificationsShelter from './Notifications/NotificationsShelter'
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -98,6 +99,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
               <Cart />
+              <NotificationsShelter />
               <Profile />
             </Box>
           </Box>

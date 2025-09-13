@@ -3,6 +3,7 @@ import { employeeReducer } from './user/employeeSlice.js'
 import { customerReducer } from './user/customerSlice.js'
 import { cartReducer } from './cart/cartSlice.js'
 import { conversationReducer } from './conversation/conversationSlice.js'
+import { notificationsReducer } from './notifications/notificationsSlice.js'
 import { combineReducers } from 'redux'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
@@ -10,14 +11,15 @@ import storage from 'redux-persist/lib/storage'
 const rootPersistConfig = {
   key: 'root',
   storage: storage,
-  whitelist: ['employee', 'customer', 'cart', 'conversation']
+  whitelist: ['employee', 'customer', 'cart', 'conversation', 'notifications']
 }
 
 const rootReducer = combineReducers({
   employee: employeeReducer,
   customer: customerReducer,
   cart: cartReducer,
-  conversation: conversationReducer
+  conversation: conversationReducer,
+  notifications: notificationsReducer,
 })
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)

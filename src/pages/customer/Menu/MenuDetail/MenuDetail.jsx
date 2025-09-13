@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -14,18 +14,37 @@ import Rating from '@mui/material/Rating'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import { ShoppingCart, Add, Remove, ArrowBack } from '@mui/icons-material'
 import theme from '~/theme'
-import { products } from '~/apis/mockData'
 import CardContent from '@mui/material/CardContent'
 import AppBar from '~/components/AppBar/AppBar'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import { fetchProductBySlugAPI } from '~/apis'  // Thêm import API
+
 const MenuDetail = () => {
   const { slug } = useParams()
   const navigate = useNavigate()
-  const product = products.find((item) => item.slug === slug)
+  const [product, setProduct] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [quantity, setQuantity] = useState(1)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true)
+        const data = await fetchProductBySlugAPI(slug)
+        setProduct(data)
+      } catch (err) {
+        setError('Failed to load product details.')
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProduct()
+  }, [slug])
 
   const handleAddToCart = () => {
     setSnackbarOpen(true)
@@ -49,12 +68,24 @@ const MenuDetail = () => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)
   }
 
-  if (!product) {
+  if (loading) {
+    return (
+      <Box sx={{ bgcolor: theme.palette.background.main, minHeight: '100vh', fontFamily: '"Poppins", sans-serif', py: 6 }}>
+        <Box sx={{ maxWidth: '1280px', mx: 'auto', px: 2 }}>
+          <Typography variant="h5" align="center">
+            Loading product details...
+          </Typography>
+        </Box>
+      </Box>
+    )
+  }
+
+  if (error || !product) {
     return (
       <Box sx={{ bgcolor: theme.palette.background.main, minHeight: '100vh', fontFamily: '"Poppins", sans-serif', py: 6 }}>
         <Box sx={{ maxWidth: '1280px', mx: 'auto', px: 2 }}>
           <Typography variant="h5" color="error" align="center">
-            Product not found!
+            {error || 'Product not found!'}
           </Typography>
           <Button
             variant="contained"
@@ -68,10 +99,8 @@ const MenuDetail = () => {
     )
   }
 
-  // Related products (random 3 products)
-  const relatedProducts = products
-    .filter((item) => item.slug !== slug) // So sánh slug
-    .slice(0, 3)
+  // Related products (nếu API trả về, hoặc fetch riêng)
+  const relatedProducts = []  // Thay bằng data từ API nếu có
 
   return (
     <Box sx={{ bgcolor: theme.palette.background.default, color: theme.palette.text.primary, minHeight: '100vh', fontFamily: '"Poppins", sans-serif' }}>
@@ -128,9 +157,6 @@ const MenuDetail = () => {
               Price: {formatPrice(product.price)}
             </Typography>
 
-            {/* <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.text.primary, mb: 1 }}>
-              Stock quantity
-            </Typography> */}
             <Typography variant="body1" sx={{ mb: 3, color: theme.palette.text.textSub, display: 'flex', alignItems: 'center', gap: 1 }}>
               <Box>
                 <ArrowForwardIosIcon sx={{ mr: 1, color: theme.palette.primary.secondary }} />
@@ -196,7 +222,6 @@ const MenuDetail = () => {
               </IconButton>
             </Box>
 
-            {/* Add to cart button */}
             <Button
               variant="contained"
               sx={{

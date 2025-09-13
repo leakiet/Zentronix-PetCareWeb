@@ -105,6 +105,11 @@ export const fetchProductsAPI = async (params) => {
   return response.data
 }
 
+export const fetchProductBySlugAPI = async (slug) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/products/slug/${slug}`)
+  return response.data
+}
+
 export const fetchCategoriesAPI = async () => {
   const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/products/categories`)
   return response.data

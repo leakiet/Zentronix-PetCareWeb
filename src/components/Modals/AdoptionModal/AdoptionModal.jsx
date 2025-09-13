@@ -30,7 +30,7 @@ const modalStyle = {
   outline: 'none'
 }
 
-const AdoptionModal = ({ open, onClose, listingId, ownerId }) => {
+const AdoptionModal = ({ open, onClose, onSuccess, listingId, ownerId }) => {
   const [checked, setChecked] = useState({
     economic: false,
     time: false,
@@ -138,7 +138,7 @@ const AdoptionModal = ({ open, onClose, listingId, ownerId }) => {
         await createAdoptionRequestAPI(data)
         setSnackbar({ open: true, message: 'Adoption request submitted successfully!', severity: 'success' })
         onClose()
-        window.location.reload()
+        if (onSuccess) onSuccess()
       } catch {
         setSnackbar({ open: true, message: 'Failed to submit adoption request', severity: 'error' })
       }
