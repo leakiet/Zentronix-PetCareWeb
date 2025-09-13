@@ -1,4 +1,5 @@
-import { Box, Typography, Button, IconButton } from '@mui/material'
+import Box from '@mui/material/Box'
+import { Typography, Button, IconButton } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectCartItems, selectCartTotalQuantity, selectCartTotalPrice, removeFromCart, clearCart } from '~/redux/cart/cartSlice'

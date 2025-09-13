@@ -12,6 +12,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { logoutCustomerApi } from '~/redux/user/customerSlice'
 import { useConfirm } from 'material-ui-confirm'
+import theme from '~/theme'
 
 function ProfileNavBar() {
   const [anchorEl, setAnchorEl] = useState(null)
@@ -59,20 +60,16 @@ function ProfileNavBar() {
           to="/"
           sx={{ 
             textDecoration: 'none',
-            color: 'inherit',
+            color: theme.palette.primary.main,
             fontWeight: 700,
             fontSize: '2rem'
           }}
         >
-          Green Kitchen
+          FUR SHIELD
         </Typography>
       </Box>
 
       {/* Center: Agent & Profile buttons */}
-      <Box sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'center', gap: 2 }}>
-        <Button component={Link} to="/agent" color="primary" variant="outlined">Agent</Button>
-        <Button component={Link} to="/profile" color="primary" variant="contained">Profile</Button>
-      </Box>
 
       {/* Right: Account icon with dropdown */}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>

@@ -1,5 +1,6 @@
-import { Box, Typography } from '@mui/material'
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import Box from '@mui/material/Box'
+import { Typography } from '@mui/material'
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 
 function FieldErrorAlert({ errors, fieldName }) {
   if (!errors || !errors[fieldName]) return null

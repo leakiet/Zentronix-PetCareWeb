@@ -101,6 +101,10 @@ const MenuDetail = () => {
 
   // Related products (nếu API trả về, hoặc fetch riêng)
   const relatedProducts = []  // Thay bằng data từ API nếu có
+//   // Related products (random 3 products)
+//   const relatedProducts = products
+//     .filter((item) => item.slug !== slug) // Compare slug
+//     .slice(0, 3)
 
   return (
     <Box sx={{ bgcolor: theme.palette.background.default, color: theme.palette.text.primary, minHeight: '100vh', fontFamily: '"Poppins", sans-serif' }}>

@@ -35,6 +35,14 @@ export const logoutCustomerApi = createAsyncThunk(
   }
 )
 
+export const updateCustomerApi = createAsyncThunk(
+  'customer/updateCustomerApi',
+  async (data) => {
+    const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/users/update`, data)
+    return response.data
+  }
+)
+
 //tạo ra 1 slice trong redux store
 export const customerSlice = createSlice({
   name: 'customer',
@@ -45,16 +53,28 @@ export const customerSlice = createSlice({
     builder.addCase(loginCustomerApi.fulfilled, (state, action) => {
       //action.payload là dữ liệu trả về từ axios call api
       const customer = action.payload
-      //update lại dữ liệu của currentUser
       state.currentCustomer = customer
     })
     builder.addCase(googleLoginAPI.fulfilled, (state, action) => {
       const customer = action.payload
-      //update lại dữ liệu của currentUser
       state.currentCustomer = customer
     })
     builder.addCase(logoutCustomerApi.fulfilled, (state) => {
       state.currentCustomer = null
+    })
+    builder.addCase(updateCustomerApi.fulfilled, (state, action) => {
+      const updatedCustomer = action.payload
+      //update lại dữ liệu của currentUser
+      state.currentCustomer.role = updatedCustomer.role || state.currentCustomer.role
+      state.currentCustomer.firstName = updatedCustomer.firstName || state.currentCustomer.firstName
+      state.currentCustomer.lastName = updatedCustomer.lastName || state.currentCustomer.lastName
+      state.currentCustomer.phone = updatedCustomer.phone || state.currentCustomer.phone
+      state.currentCustomer.companyName = updatedCustomer.companyName || state.currentCustomer.companyName
+      state.currentCustomer.street = updatedCustomer.address.street || state.currentCustomer.street
+      state.currentCustomer.ward = updatedCustomer.address.ward || state.currentCustomer.ward
+      state.currentCustomer.city = updatedCustomer.address.city || state.currentCustomer.city
+      state.currentCustomer.latitude = updatedCustomer.address.latitude || state.currentCustomer.latitude
+      state.currentCustomer.longitude = updatedCustomer.address.longitude || state.currentCustomer.longitude
     })
   }
 })

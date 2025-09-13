@@ -17,7 +17,7 @@ import {
 import { toast } from 'react-toastify'
 import { resetPasswordAPI } from '~/apis'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
-import BackToLoginConfirm from '~/components/BackToLoginConfirm/BackToLoginConfirm'
+import BackToLoginConfirm from '~/components/Modals/BackToLoginConfirm/BackToLoginConfirm'
 
 function ResetPwForm({ onSubmit, email }) {
   const { register, handleSubmit, formState: { errors }, getValues } = useForm()

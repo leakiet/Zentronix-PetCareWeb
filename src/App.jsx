@@ -7,9 +7,9 @@ import Auth from './pages/customer/Auth/Auth'
 import AccountVerification from './pages/customer/Auth/AccountVerification'
 import NotFound from './pages/customer/NotFound/NotFound'
 import Unauthorized from './pages/customer/Unauthorized/Unauthorized'
-import Profile from './pages/customer/Profile/Profile'
 import VetSettings from './pages/customer/VetSettings/VetSettings'
 import ShelterSettings from './pages/customer/ShelterSettings/ShelterSettings'
+import Onboard from './pages/customer/Onboard/Onboard'
 
 import CartLayout from '~/pages/customer/Cart/CardLayout'
 import AdoptionLayout from '~/pages/customer/Adoption/AdoptionLayout'
@@ -18,6 +18,7 @@ import AdoptionDetail from '~/pages/customer/Adoption/AdoptionDetail'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 import { USER_ROLE } from './utils/constants'
+import PetOwnerSettings from './pages/customer/PetOwnerSettings/PetOwnerSettings'
 
 
 const PetOwnerRoute = ({ user }) => {
@@ -35,6 +36,12 @@ const VetRoute = ({ user }) => {
 const ShelterRoute = ({ user }) => {
   if (!user) return <Navigate to='/login' replace={true} />
   if (user.role !== USER_ROLE.SHELTER) return <Navigate to='/unauthorized' replace={true} />
+  return <Outlet />
+}
+
+const UndefinedRoute = ({ user }) => {
+  if (!user) return <Navigate to='/login' replace={true} />
+  if (user.role !== USER_ROLE.UNDEFINED) return <Navigate to='/' replace={true} />
   return <Outlet />
 }
 
@@ -57,14 +64,9 @@ function App() {
       <Route path="/reset-password" element={<Auth />} />
       <Route path="/verify-email" element={<AccountVerification />} />
 
-      {/* Customer Profile - Only for PET_OWNER */}
+      {/* pet owner Settings - Only for PET_OWNER */}
       <Route element={<PetOwnerRoute user={currentCustomer} />}>
-        <Route path="/profile" element={<Navigate to="/profile/overview" replace />} />
-        <Route path="/profile/overview" element={<Profile />} />
-        <Route path="/profile/account" element={<Profile />} />
-        <Route path="/profile/appointment" element={<Profile />} />
-        <Route path="/profile/order-history" element={<Profile />} />
-        <Route path="/profile/pet-health-profile" element={<Profile />} />
+        <Route path="/pet-owner-settings" element={<PetOwnerSettings />} />
       </Route>
 
       {/* Vet Settings - Only for VET */}
@@ -75,6 +77,10 @@ function App() {
       {/* Shelter Settings - Only for SHELTER */}
       <Route element={<ShelterRoute user={currentCustomer} />}>
         <Route path="/shelter-settings" element={<ShelterSettings />} />
+      </Route>
+
+      <Route element={<UndefinedRoute user={currentCustomer} />}>
+        <Route path="/onboarding" element={<Onboard />} />
       </Route>
 
       {/* 404 Not Found */}

@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentCustomer, logoutCustomerApi } from '~/redux/user/customerSlice'
 import { useConfirm } from 'material-ui-confirm'
 import { Link, useNavigate } from 'react-router-dom'
+import { USER_ROLE } from '~/utils/constants'
 
 const Profile = () => {
   const [anchorEl, setAnchorEl] = useState(null)
@@ -43,6 +44,13 @@ const Profile = () => {
           navigate('/login')
         })
     }
+  }
+
+  const linkTo = () => {
+    if (currentCustomer.role === USER_ROLE.PET_OWNER) return '/pet-owner-settings'
+    if (currentCustomer.role === USER_ROLE.VET) return '/vet-settings'
+    if (currentCustomer.role === USER_ROLE.SHELTER) return '/shelter-settings'
+    return '/onboarding'
   }
 
   return (
@@ -94,12 +102,12 @@ const Profile = () => {
           </Box>
         ) : (
           <Box>
-            <Link to='/profile' style={{ color: 'inherit', textDecoration: 'none' }}>
+            <Link to={linkTo()} style={{ color: 'inherit', textDecoration: 'none' }}>
               <MenuItem sx={{ '&:hover': { color: 'success.light' } }}>
                 <ListItemIcon>
                   <Person fontSize="small" />
                 </ListItemIcon>
-                Profile
+                Settings
               </MenuItem>
             </Link>
 

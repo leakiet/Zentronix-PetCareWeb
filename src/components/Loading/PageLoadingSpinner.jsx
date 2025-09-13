@@ -1,4 +1,5 @@
-import { Box, CircularProgress, Typography } from '@mui/material'
+import Box from '@mui/material/Box'
+import { CircularProgress, Typography } from '@mui/material'
 import AppBar from '~/components/AppBar/AppBar'
 
 export default function PageLoadingSpinner({ caption }) {
