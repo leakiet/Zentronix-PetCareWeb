@@ -174,6 +174,11 @@ export const getAllAdoptionRequestsAPI = async (params = {}) => {
   return response.data
 }
 
+export const fetchAdoptionListingsByShelterIdAPI = async (shelterId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-listings/shelter/${shelterId}`)
+  return response.data
+}
+
 
 //pets
 export const createPetAPI = async (data) => {
