@@ -73,7 +73,6 @@ export const updateCustomerPassword = async (data) => {
   return response.data
 }
 
-
 // Address
 export const createNewAddressAPI = async (data) => {
   const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/addresses/create`, data)
@@ -85,6 +84,23 @@ export const updateAddressAPI = async (data) => {
   return response.data
 }
 
+export const deleteAddressAPI = async (id) => {
+  const response = await authorizedAxiosInstance.delete(`${API_ROOT}/apis/v1/addresses/delete/${id}`)
+  return response.data
+}
+
+// Veterinarians
+export const fetchAvailableVetsAPI = async (params = {}) => {
+  let url = `${API_ROOT}/apis/v1/users/vets`
+  const queryParams = []
+  if (params.petCondition) queryParams.push(`petCondition=${encodeURIComponent(params.petCondition)}`)
+  if (params.location) queryParams.push(`location=${encodeURIComponent(params.location)}`)
+  if (params.latitude !== undefined) queryParams.push(`latitude=${encodeURIComponent(params.latitude)}`)
+  if (params.longitude !== undefined) queryParams.push(`longitude=${encodeURIComponent(params.longitude)}`)
+  if (queryParams.length > 0) url += `?${queryParams.join('&')}`
+  const response = await authorizedAxiosInstance.get(url)
+  return response.data
+}
 
 // Products
 export const fetchProductsAPI = async (params) => {
@@ -136,6 +152,17 @@ export const fetchAdoptionListingsAPI = async (params = {}) => {
   const response = await authorizedAxiosInstance.get(url)
   return response.data
 }
+//pets
+export const createPetAPI = async (data) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/pets/create`, data)
+  return response.data
+}
+
+export const fetPetsByCustomerId = async (userId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/pets/customer/${userId}`)
+  return response.data
+}
+
 
 export const createAdoptionRequestAPI = async (data) => {
   const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/adoption-requests`, data)
@@ -247,6 +274,7 @@ export const fetchPetVaccinationsByPetIdAPI = async (petId) => {
   const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/pet-vaccinations/pet/${petId}`)
   return response.data
 }
+
 
 export const getRequestsByShelterIdAPI = async (shelterId) => {
   const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/shelter/${shelterId}`)
