@@ -11,6 +11,9 @@ import Profile from '~/components/AppBar/Menu/Profile'
 import Cart from '~/components/AppBar/Cart/Cart'
 import NavItem from '~/components/AppBar/Menu/NavItem'
 import { Link } from 'react-router-dom'
+// import CaloCalculator from '~/components/AppBar/Menu/CaloCalculator'
+// import Notification from '~/components/AppBar/Notifications/Notifications'
+// import NotificationsShelter from './Notifications/NotificationsShelter'
 import Notifications from '~/components/AppBar/Notifications/Notifications'
 
 function ResponsiveAppBar() {
@@ -99,6 +102,7 @@ function ResponsiveAppBar() {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
               <Notifications />
               <Cart />
+              <NotificationsShelter />
               <Profile />
             </Box>
           </Box>

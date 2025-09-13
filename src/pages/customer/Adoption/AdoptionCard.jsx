@@ -7,8 +7,14 @@ import PetsIcon from '@mui/icons-material/Pets'
 import CategoryIcon from '@mui/icons-material/Category'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import theme from '~/theme'
+import { useNavigate } from 'react-router-dom'
 
 const AdoptionCard = ({ listing }) => {
+  const navigate = useNavigate()
+
+  const handleDetailsClick = () => {
+    navigate(`/adoption/${listing.id}`)
+  }
 
   return (
     <Card
@@ -25,8 +31,10 @@ const AdoptionCard = ({ listing }) => {
           boxShadow: 6
         },
         background: theme.palette.primary.card,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        cursor: 'pointer' // Thêm cursor pointer để chỉ ra có thể click
       }}
+      onClick={handleDetailsClick} // Thêm onClick để navigate khi click vào card
     >
       <CardMedia
         component="img"
@@ -42,30 +50,33 @@ const AdoptionCard = ({ listing }) => {
             {listing.petName}
           </Typography>
 
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-            {listing.description}
+
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            Age: {listing.age}
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            Gender: {listing.gender}
           </Typography>
 
           <Typography variant="body2" sx={{ mb: 1 }}>
-            <CalendarTodayIcon sx={{ mr: 1, fontSize: 16 }} /> Age: {listing.age} | <WcIcon sx={{ mr: 1, fontSize: 16 }} /> Gender: {listing.genderPet}
+            Breed: {listing.breed.name}
           </Typography>
 
           <Typography variant="body2" sx={{ mb: 1 }}>
-            <PetsIcon sx={{ mr: 1, fontSize: 16 }} /> Breed: {listing.breed.name} | <CategoryIcon sx={{ mr: 1, fontSize: 16 }} /> Species: {listing.species.name}
+            Species: {listing.species}
           </Typography>
-
-          <Typography variant="body2" sx={{ mb: 2 }}>
-            <LocationOnIcon sx={{ mr: 1, fontSize: 16 }} /> Location: {listing.location}
+          <Typography variant="body1" sx={{ mb: 1 }}>
+            Address: {listing.shelter?.address?.street || ''} {listing.shelter?.address?.ward || ''} {listing.shelter?.address?.city || ''} {listing.shelter?.address?.latitude || ''} {listing.shelter?.address?.longitude || ''}
           </Typography>
 
           <Chip
-            label={listing.status}
-            color={listing.status === 'AVAILABLE' ? 'success' : 'default'}
+            label={listing.adoptionStatus}
+            color={listing.adoptionStatus === 'AVAILABLE' ? 'success' : 'default'}
             sx={{ mb: 2, fontWeight: 'bold' }}
           />
         </Box>
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        {/* <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button
             variant="contained"
             color="primary"
@@ -73,7 +84,7 @@ const AdoptionCard = ({ listing }) => {
             startIcon={<FavoriteIcon />}
             sx={{ borderRadius: 2, fontWeight: 'bold' }}
           >
-            Adopt
+            Adoption
           </Button>
 
           <Button
@@ -81,10 +92,14 @@ const AdoptionCard = ({ listing }) => {
             size="small"
             startIcon={<VisibilityIcon />}
             sx={{ borderRadius: 2, fontWeight: 'bold' }}
+            onClick={(e) => {
+              e.stopPropagation() // Ngăn event bubble lên card
+              handleDetailsClick()
+            }}
           >
             Details
           </Button>
-        </Box>
+        </Box> */}
       </CardContent>
     </Card>
   )

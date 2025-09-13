@@ -11,7 +11,7 @@ const AdoptionLayout = () => {
   const theme = useTheme()
   const [selectedSpecies, setSelectedSpecies] = useState('')
   const [selectedBreeds, setSelectedBreeds] = useState('')
-  const [selectedLocations, setSelectedLocations] = useState([])
+  const [selectedLocations, setSelectedLocations] = useState([]) // Bỏ nếu không dùng
   const [selectedGenders, setSelectedGenders] = useState('')
   const [breeds, setBreeds] = useState([])
   const [adoptionListings, setAdoptionListings] = useState([])
@@ -31,7 +31,8 @@ const AdoptionLayout = () => {
     { id: 'BIRD', name: 'Bird' }
   ]
 
-  const locations = ['Hanoi', 'Ho Chi Minh', 'Da Nang']
+  // Bỏ locations vì data không có
+  // const locations = ['Hanoi', 'Ho Chi Minh', 'Da Nang']
   const genders = ['MALE', 'FEMALE']
 
   const fetchListings = async (append = false) => {
@@ -70,17 +71,20 @@ const AdoptionLayout = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const breedsData = await fetchBreedsAPI()
-      setBreeds(breedsData)
-      fetchListings()
+      try {
+        const breedsData = await fetchBreedsAPI()
+        setBreeds(breedsData || []) // Add default empty array
+        fetchListings()
+      } catch (error) {
+        console.error('Error fetching breeds:', error)
+        setBreeds([]) // Set empty array on error
+      }
     }
     fetchData()
   }, [selectedSpecies, selectedBreeds, selectedGenders, selectedAgeValue, page, size, sortField, sortDir])
 
-  let filteredListings = adoptionListings.filter(listing => {
-    if (selectedLocations.length > 0 && !selectedLocations.includes(listing.location)) return false
-    return true
-  })
+  // Bỏ filter location vì data không có
+  let filteredListings = adoptionListings
 
   const handleSpeciesChange = (speciesId) => {
     setSelectedSpecies(speciesId)
@@ -89,13 +93,14 @@ const AdoptionLayout = () => {
 
   const handleBreedChange = (breedId) => setSelectedBreeds(breedId)
 
-  const handleLocationChange = (location) => {
-    if (selectedLocations.includes(location)) {
-      setSelectedLocations(selectedLocations.filter(loc => loc !== location))
-    } else {
-      setSelectedLocations([...selectedLocations, location])
-    }
-  }
+  // Bỏ handleLocationChange
+  // const handleLocationChange = (location) => {
+  //   if (selectedLocations.includes(location)) {
+  //     setSelectedLocations(selectedLocations.filter(loc => loc !== location))
+  //   } else {
+  //     setSelectedLocations([...selectedLocations, location])
+  //   }
+  // }
 
   const handleGenderChange = (gender) => setSelectedGenders(gender)
 
@@ -104,7 +109,7 @@ const AdoptionLayout = () => {
   const clearAllFilters = () => {
     setSelectedBreeds('')
     setSelectedSpecies('')
-    setSelectedLocations([])
+    // setSelectedLocations([]) // Bỏ
     setSelectedGenders('')
     setSelectedAgeValue('')
   }
@@ -136,16 +141,16 @@ const AdoptionLayout = () => {
         <AdoptionFilters
           breeds={breeds}
           speciesOptions={speciesOptions}
-          locations={locations}
+          // locations={locations} // Bỏ
           genders={genders}
           selectedSpeciesValue={selectedSpecies}
           selectedBreedValue={selectedBreeds}
           selectedGenderValue={selectedGenders}
           selectedAgeValue={selectedAgeValue}
-          selectedLocations={selectedLocations}
+          // selectedLocations={selectedLocations} // Bỏ
           handleSpeciesChange={handleSpeciesChange}
           handleBreedChange={handleBreedChange}
-          handleLocationChange={handleLocationChange}
+          // handleLocationChange={handleLocationChange} // Bỏ
           handleGenderChange={handleGenderChange}
           handleAgeChange={handleAgeChange}
           clearAllFilters={clearAllFilters}
