@@ -12,21 +12,23 @@ import {
   Chip,
   CircularProgress,
   Alert,
-  Grid,
-  Divider
+  Grid
 } from '@mui/material'
-import { CheckCircle, Cancel } from '@mui/icons-material'
+import { CheckCircle, Cancel, Edit } from '@mui/icons-material'
 import { selectCurrentCustomer } from '~/redux/user/customerSlice'
 import { getRequestsByAdoptionListingIdAPI, updateAdoptionRequestStatusAPI, approveAdoptionRequestAndRejectOthersAPI } from '~/apis'
 import { toast } from 'react-toastify'
 import theme from '~/theme'
 import AppBar from '~/components/AppBar/AppBar'
 import Footer from '~/components/Footer/Footer'
+import { ArrowBack } from '@mui/icons-material'
+import { useNavigate } from 'react-router-dom'
 
 const AdoptionRequestDetail = () => {
   const { id } = useParams()
   const listingId = id
   const user = useSelector(selectCurrentCustomer)
+  const navigate = useNavigate()
   const [requests, setRequests] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -61,6 +63,7 @@ const AdoptionRequestDetail = () => {
       await fetchRequests()
     } catch (err) {
       console.error(err)
+      toast.error('Failed to update request status.')
     } finally {
       setUpdating(null)
     }
@@ -80,15 +83,12 @@ const AdoptionRequestDetail = () => {
     }
   }
 
+  const handleUpdateListing = () => {
+    navigate(`/shelter-settings/edit/${listingId}`)
+  }
+
   const visibleRequests = requests.slice(0, visibleCount)
 
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-        <CircularProgress />
-      </Box>
-    )
-  }
 
   if (error) {
     return (
@@ -104,34 +104,59 @@ const AdoptionRequestDetail = () => {
     <Box sx={{ bgcolor: theme.palette.background.default, color: theme.palette.text.primary, minHeight: '100vh', fontFamily: '"Poppins", sans-serif' }}>
       <AppBar />
       <Box sx={{ mt: theme.fitbowl.appBarHeight, p: 3, background: theme.palette.background.main }}>
+        <Button variant="text" sx={{ mb: 2 }} startIcon={<ArrowBack />} onClick={() => navigate(-1)}>
+          Back
+        </Button>
         {listing && (
           <>
-            <Typography variant="h4" sx={{ mb: 3, fontWeight: 'bold' }}>
-              Adoption Listing Details
-            </Typography>
-            <Card sx={{ mb: 3, boxShadow: 3, borderRadius: 2 }}>
-              <CardMedia
-                component="img"
-                height="600"
-                image={listing.image}
-                alt={listing.petName}
-                sx={{ objectFit: 'cover' }}
-              />
-              <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
-                  {listing.petName} ({listing.breed.name})
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
-                  Age: {listing.age} years | Gender: {listing.gender}
-                </Typography>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  <strong>Description:</strong> {listing.description}
-                </Typography>
-                <Typography variant="body2" sx={{ mb: 2 }}>
-                  <strong>Species:</strong> {listing.species} | Status: {listing.status} | Adoption Status: {listing.adoptionStatus}
-                </Typography>
-              </CardContent>
-            </Card>
+            {loading ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <>
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                  <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                    Adoption Listing Details
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    startIcon={<Edit />}
+                    onClick={handleUpdateListing}
+                    sx={{
+                      bgcolor: 'primary.main',
+                      '&:hover': { bgcolor: 'primary.dark' }
+                    }}
+                  >
+                    Update Listing
+                  </Button>
+                </Box>
+                <Card sx={{ mb: 3, boxShadow: 3, borderRadius: 2 }}>
+                  <CardMedia
+                    component="img"
+                    height="600"
+                    image={listing.image}
+                    alt={listing.petName}
+                    sx={{ objectFit: 'cover' }}
+                  />
+                  <CardContent>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+                      {listing.petName} ({listing.breed.name})
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
+                      Age: {listing.age} years | Gender: {listing.gender}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mb: 1 }}>
+                      <strong>Description:</strong> {listing.description}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mb: 2 }}>
+                      <strong>Species:</strong> {listing.species} | Status: {listing.status} | Adoption Status: {listing.adoptionStatus}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </>
+            )}
           </>
         )}
         <Typography variant="h5" sx={{ mb: 2 }}>
@@ -220,7 +245,7 @@ const AdoptionRequestDetail = () => {
         )}
       </Box>
       <Footer />
-    </Box>
+    </Box >
   )
 }
 

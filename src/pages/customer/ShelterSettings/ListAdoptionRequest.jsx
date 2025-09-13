@@ -23,6 +23,7 @@ import { toast } from 'react-toastify'
 import theme from '~/theme'
 import AppBar from '~/components/AppBar/AppBar'
 import Footer from '~/components/Footer/Footer'
+import { useNavigate } from 'react-router-dom'
 
 const ListAdoptionRequest = () => {
   const user = useSelector(selectCurrentCustomer)
@@ -31,6 +32,7 @@ const ListAdoptionRequest = () => {
   const [error, setError] = useState(null)
   const [updating, setUpdating] = useState(null)
   const [selectedStatus, setSelectedStatus] = useState('ALL')
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (user && user.role === 'SHELTER') {
@@ -54,29 +56,21 @@ const ListAdoptionRequest = () => {
     }
   }
 
-  const handleUpdateStatus = async (requestId, status) => {
-    try {
-      setUpdating(requestId)
-      await updateAdoptionRequestStatusAPI({ requestId, status })
-      toast.success(`Request ${status.toLowerCase()} successfully!`)
-      await fetchRequests()
-    } catch (err) {
-      toast.error('Failed to update request status.')
-      console.error(err)
-    } finally {
-      setUpdating(null)
-    }
-  }
+  // const handleUpdateStatus = async (requestId, status) => {
+  //   try {
+  //     setUpdating(requestId)
+  //     await updateAdoptionRequestStatusAPI({ requestId, status })
+  //     toast.success(`Request ${status.toLowerCase()} successfully!`)
+  //     await fetchRequests()
+  //   } catch (err) {
+  //     toast.error('Failed to update request status.')
+  //     console.error(err)
+  //   } finally {
+  //     setUpdating(null)
+  //   }
+  // }
 
   const filteredRequests = selectedStatus === 'ALL' ? requests : requests.filter(listing => listing.adoptionStatus === selectedStatus)
-
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-        <CircularProgress />
-      </Box>
-    )
-  }
 
   if (error) {
     return (
@@ -93,6 +87,15 @@ const ListAdoptionRequest = () => {
         <Typography variant="h4" sx={{ mb: 3, fontWeight: 'bold' }}>
           Adoption Listings for Your Shelter
         </Typography>
+        <Box sx={{ mb: 3 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate('/shelter-profile/create')}
+          >
+            Create New Adoption Listing
+          </Button>
+        </Box>
         <FormControl sx={{ mb: 3, minWidth: 120 }}>
           <InputLabel>Filter by Status</InputLabel>
           <Select
@@ -106,7 +109,12 @@ const ListAdoptionRequest = () => {
             <MenuItem value="REJECTED">Rejected</MenuItem>
           </Select>
         </FormControl>
-        {filteredRequests.length === 0 ? (
+
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+            <CircularProgress />
+          </Box>
+        ) : filteredRequests.length === 0 ? (
           <Box sx={{ textAlign: 'center', mt: 5, height: '60vh' }}>
             <Typography variant="body1" sx={{ textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
               No adoption listings found.

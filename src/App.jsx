@@ -23,6 +23,9 @@ import { USER_ROLE } from './utils/constants'
 import PetOwnerSettings from './pages/customer/PetOwnerSettings/PetOwnerSettings'
 import ListAdoptionRequest from './pages/customer/ShelterSettings/ListAdoptionRequest'
 import AdoptionRequestDetail from './pages/customer/ShelterSettings/AdoptionRequestDetail'
+import CreateAdoptionListing from './pages/customer/ShelterSettings/CreateAdoptionListing'
+import UpdateAdoptionListing from './pages/customer/ShelterSettings/UpdateAdoptionListing'
+
 
 const PetOwnerRoute = ({ user }) => {
   if (!user) return <Navigate to='/login' replace={true} />
@@ -83,6 +86,8 @@ function App() {
       <Route element={<ShelterRoute user={currentCustomer} />}>
         <Route path="/shelter-settings" element={<ListAdoptionRequest />} />
         <Route path="/shelter-settings/:id" element={<AdoptionRequestDetail />} />
+        <Route path="/shelter-profile/create" element={<CreateAdoptionListing />} />
+        <Route path="/shelter-settings/edit/:id" element={<UpdateAdoptionListing />} />
       </Route>
 
       <Route element={<UndefinedRoute user={currentCustomer} />}>

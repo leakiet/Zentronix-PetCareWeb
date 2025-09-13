@@ -22,14 +22,6 @@ export const getRequestsByOwnerIdAPI = createAsyncThunk(
   }
 )
 
-export const updateAdoptionRequestStatusAPI = createAsyncThunk(
-  'notifications/updateAdoptionRequestStatusAPI',
-  async ({ requestId, status }) => {
-    const response = await authorizedAxiosInstance.patch(`${API_ROOT}/apis/v1/adoption-requests/${requestId}/status`, { status })
-    return response.data
-  }
-)
-
 export const notificationsSlice = createSlice({
   name: 'notifications',
   initialState,
@@ -46,18 +38,17 @@ export const notificationsSlice = createSlice({
     builder
       .addCase(fetchNotificationsByShelterIdAPI.fulfilled, (state, action) => {
         let incomingNotifications = action.payload
-        state.currentNotifications = Array.isArray(incomingNotifications) ? incomingNotifications.reverse() : []
+        const filteredNotifications = Array.isArray(incomingNotifications)
+          ? incomingNotifications.filter(notification => notification.status !== 'REJECTED')
+          : []
+        state.currentNotifications = filteredNotifications.reverse()
       })
       .addCase(getRequestsByOwnerIdAPI.fulfilled, (state, action) => {
         let incomingNotifications = action.payload
-        state.currentNotifications = Array.isArray(incomingNotifications) ? incomingNotifications.reverse() : []
-      })
-      .addCase(updateAdoptionRequestStatusAPI.fulfilled, (state, action) => {
-        const updatedRequest = action.payload
-        const index = state.currentNotifications.findIndex(n => n.id === updatedRequest.id)
-        if (index !== -1) {
-          state.currentNotifications[index] = updatedRequest
-        }
+        const filteredNotifications = Array.isArray(incomingNotifications)
+          ? incomingNotifications.filter(notification => notification.status !== 'REJECTED')
+          : []
+        state.currentNotifications = filteredNotifications.reverse()
       })
   }
 })

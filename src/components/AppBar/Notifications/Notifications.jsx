@@ -1,23 +1,21 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import moment from 'moment'
 import Badge from '@mui/material/Badge'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
-import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Divider from '@mui/material/Divider'
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
-import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import DoneIcon from '@mui/icons-material/Done'
 import NotInterestedIcon from '@mui/icons-material/NotInterested'
 import { useChatWebSocket } from '~/hooks/useChatWebSocket'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectCurrentNotifications, addNotification, clearCurrentNotifications, fetchNotificationsByShelterIdAPI, getRequestsByOwnerIdAPI, updateAdoptionRequestStatusAPI } from '~/redux/notifications/notificationsSlice'
+import { selectCurrentNotifications, addNotification, fetchNotificationsByShelterIdAPI, getRequestsByOwnerIdAPI } from '~/redux/notifications/notificationsSlice'
 import { selectCurrentCustomer } from '~/redux/user/customerSlice'
 
 const ADOPTION_REQUEST_STATUS = {
@@ -30,16 +28,27 @@ function Notifications() {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const notifications = useSelector(selectCurrentNotifications) || []
 
   const handleClickNotificationIcon = (event) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleClose = () => {
     setAnchorEl(null)
   }
 
   const user = useSelector(selectCurrentCustomer)
+
+  const handleNotificationClick = (item) => {
+    handleClose()
+    if (user?.role === 'SHELTER' && item.adoptionListing?.id) {
+      navigate(`/shelter-settings/${item.adoptionListing.id}`)
+    } else if (user?.role === 'PET_OWNER' && item.adoptionListing?.id) {
+      navigate(`/adoption/${item.adoptionListing.id}`)
+    }
+  }
 
   const handleWebSocketMessage = useCallback((message) => {
     const newNotification = {
@@ -67,14 +76,6 @@ function Notifications() {
       }
     }
   }, [dispatch, user])
-
-  const handleClearNotifications = () => {
-    dispatch(clearCurrentNotifications())
-  }
-
-  const updateRequestStatus = (status, requestId) => {
-    dispatch(updateAdoptionRequestStatusAPI({ requestId, status }))
-  }
 
   return (
     <Box>
@@ -107,8 +108,16 @@ function Notifications() {
           </MenuItem>
         )}
         {notifications.map((item, index) => (
-          <Box key={item.id} onClick={handleClose}>
-            <MenuItem sx={{ minWidth: 200, maxWidth: 360, overflowY: 'auto' }}>
+          <Box key={item.id}>
+            <MenuItem
+              sx={{
+                minWidth: 200,
+                maxWidth: 360,
+                overflowY: 'auto',
+                cursor: user?.role === 'SHELTER' ? 'pointer' : 'default'
+              }}
+              onClick={() => handleNotificationClick(item)}
+            >
               <Box sx={{
                 maxWidth: '100%',
                 wordBreak: 'break-word',

@@ -147,6 +147,30 @@ export const fetchAdoptionListingsByIdAPI = async (id) => {
   return response.data
 }
 
+export const updateAdoptionListingImageAPI = async (id, file) => {
+  const formData = new FormData()
+  formData.append('imageFile', file)
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/adoption-listings/${id}/image`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
+  return response.data
+}
+
+export const updateAdoptionListingAPI = async (id, formData) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/adoption-listings/${id}`, formData)
+  return response.data
+}
+
+
+export const createAdoptionListingAPI = async (formData) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/adoption-listings`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  return response.data
+}
+
 export const fetchAdoptionListingsAPI = async (params = {}) => {
   let url = `${API_ROOT}/apis/v1/adoption-listings?page=${params.page || 0}&size=${params.size || 10}&sortField=${params.sortField || 'id'}&sortDir=${params.sortDir || 'asc'}`
   if (params.species) url += `&species=${encodeURIComponent(params.species)}`
