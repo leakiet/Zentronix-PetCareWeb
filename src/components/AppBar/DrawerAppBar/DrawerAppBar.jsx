@@ -8,12 +8,7 @@ import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import LogoutIcon from '@mui/icons-material/Logout'
 import DrawerAppBarItem from './DrawerAppBarItem'
-import ExpandLess from '@mui/icons-material/ExpandLess'
-import ExpandMore from '@mui/icons-material/ExpandMore'
-import { useState } from 'react'
-import Collapse from '@mui/material/Collapse'
 import { Link } from 'react-router-dom'
-import ListItem from '@mui/material/ListItem'
 
 const DrawerAppBar = ({ drawerOpen, toggleDrawer }) => {
   const navItemStyle = {
@@ -30,11 +25,6 @@ const DrawerAppBar = ({ drawerOpen, toggleDrawer }) => {
     }
   }
 
-  const [open, setOpen] = useState(false)
-
-  const handleClick = () => {
-    setOpen(!open)
-  }
 
   return (
     <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
@@ -74,64 +64,36 @@ const DrawerAppBar = ({ drawerOpen, toggleDrawer }) => {
           <DrawerAppBarItem
             toggleDrawer={toggleDrawer}
             navItemStyle={navItemStyle}
-            label="Menu"
-            path="/menu"
-          />
-
-          <ListItem disablePadding >
-            <ListItemButton
-              onClick={handleClick}
-              sx={navItemStyle}
-            >
-              <ListItemText sx={{ color: (theme) => theme.palette.text.primary }} primary="Calculator" />
-              {open ? <ExpandLess sx={{ color: (theme) => theme.palette.text.primary }}/> : <ExpandMore sx={{ color: (theme) => theme.palette.text.primary }} />}
-            </ListItemButton>
-          </ListItem>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem disablePadding>
-                <ListItemButton
-                  component={Link}
-                  to='/smart-meal-planner'
-                  onClick={toggleDrawer(false)}
-                  sx={navItemStyle}
-                >
-                  <ListItemText sx={{ color: (theme) => theme.palette.text.primary }} primary="Smart Meal Planner" />
-                </ListItemButton>
-              </ListItem>
-
-              <ListItem disablePadding>
-                <ListItemButton
-                  component={Link}
-                  to='/calo-calculator'
-                  onClick={toggleDrawer(false)}
-                  sx={navItemStyle}
-                >
-                  <ListItemText sx={{ color: (theme) => theme.palette.text.primary }} primary="Calo Calculator" />
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </Collapse>
-
-          <DrawerAppBarItem
-            toggleDrawer={toggleDrawer}
-            navItemStyle={navItemStyle}
-            label="Order Checking"
-            path="/order-checking"
+            label="About Us"
+            path="/about-us"
           />
 
           <DrawerAppBarItem
             toggleDrawer={toggleDrawer}
             navItemStyle={navItemStyle}
-            label="Catering"
-            path="/catering"
+            label="Contact"
+            path="/contact"
           />
 
           <DrawerAppBarItem
             toggleDrawer={toggleDrawer}
             navItemStyle={navItemStyle}
-            label="Blog"
-            path="/blog"
+            label="FAQ"
+            path="/faq"
+          />
+
+          <DrawerAppBarItem
+            toggleDrawer={toggleDrawer}
+            navItemStyle={navItemStyle}
+            label="Schedule"
+            path="/schedule"
+          />
+
+          <DrawerAppBarItem
+            toggleDrawer={toggleDrawer}
+            navItemStyle={navItemStyle}
+            label="Adoption"
+            path="/adoption"
           />
 
         </List>
