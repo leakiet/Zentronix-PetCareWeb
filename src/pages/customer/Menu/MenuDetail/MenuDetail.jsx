@@ -17,7 +17,10 @@ import theme from '~/theme'
 import CardContent from '@mui/material/CardContent'
 import AppBar from '~/components/AppBar/AppBar'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-import { fetchProductBySlugAPI } from '~/apis'  // Thêm import API
+import { fetchProductBySlugAPI } from '~/apis'  // Giữ nguyên cho product
+import { useSelector } from 'react-redux'
+import { selectCurrentCustomer } from '~/redux/user/customerSlice'
+import { toast } from 'react-toastify'  // Thêm toast
 
 const MenuDetail = () => {
   const { slug } = useParams()
@@ -29,6 +32,8 @@ const MenuDetail = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
+  const [comments, setComments] = useState([])  // State cho comments
+  const user = useSelector(selectCurrentCustomer)  // Lấy user
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -44,6 +49,12 @@ const MenuDetail = () => {
       }
     }
     fetchProduct()
+
+    // Tải comments từ localStorage
+    const storedComments = localStorage.getItem(`comments_${slug}`)
+    if (storedComments) {
+      setComments(JSON.parse(storedComments))
+    }
   }, [slug])
 
   const handleAddToCart = () => {
@@ -59,6 +70,32 @@ const MenuDetail = () => {
   }
 
   const handleCommentSubmit = () => {
+    if (!user) {
+      toast.error('Please log in to submit a comment.')
+      return
+    }
+    if (!comment || !rating) {
+      toast.error('Please provide a rating and comment.')
+      return
+    }
+
+    // Tạo comment mới
+    const newComment = {
+      id: Date.now(),  // ID giả
+      user: user.fullName || 'Anonymous',
+      rating,
+      comment,
+      createdAt: new Date().toISOString()
+    }
+
+    // Thêm vào state
+    const updatedComments = [newComment, ...comments]
+    setComments(updatedComments)
+
+    // Lưu vào localStorage
+    localStorage.setItem(`comments_${slug}`, JSON.stringify(updatedComments))
+
+    // Clear form
     setComment('')
     setRating(0)
     setSnackbarOpen(true)
@@ -318,37 +355,35 @@ const MenuDetail = () => {
             <Typography variant="body1" sx={{ fontWeight: 600, color: theme.palette.text.primary, mb: 1 }}>
               Customer Comments:
             </Typography>
-            {[
-              {
-                user: 'John Doe',
-                rating: 4.5,
-                comment: 'The product is great, my pet loves it!'
-              },
-              {
-                user: 'Jane Smith',
-                rating: 5,
-                comment: 'High quality and fast delivery!'
-              }
-            ].map((item, index) => (
-              <Box
-                key={index}
-                sx={{
-                  mb: 2,
-                  p: 2,
-                  bgcolor: theme.palette.primary.card,
-                  borderRadius: '8px',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                }}
-              >
-                <Typography variant="body2" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
-                  {item.user}
-                </Typography>
-                <Rating value={item.rating} readOnly precision={0.5} sx={{ mb: 1 }} />
-                <Typography variant="body2" sx={{ color: theme.palette.text.textSub }}>
-                  {item.comment}
-                </Typography>
-              </Box>
-            ))}
+            {comments.length === 0 ? (
+              <Typography variant="body2" sx={{ color: theme.palette.text.textSub }}>
+                No comments yet. Be the first to comment!
+              </Typography>
+            ) : (
+              comments.map((item) => (
+                <Box
+                  key={item.id}
+                  sx={{
+                    mb: 2,
+                    p: 2,
+                    bgcolor: theme.palette.primary.card,
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  }}
+                >
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
+                    {item.user}
+                  </Typography>
+                  <Rating value={item.rating} readOnly precision={0.5} sx={{ mb: 1 }} />
+                  <Typography variant="body2" sx={{ color: theme.palette.text.textSub }}>
+                    {item.comment}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: theme.palette.text.textSub, mt: 1, display: 'block' }}>
+                    {new Date(item.createdAt).toLocaleDateString()}
+                  </Typography>
+                </Box>
+              ))
+            )}
           </Box>
         </Box>
 

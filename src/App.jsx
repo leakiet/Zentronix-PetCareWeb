@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 import { USER_ROLE } from './utils/constants'
 import PetOwnerSettings from './pages/customer/PetOwnerSettings/PetOwnerSettings'
+import ListAdoptionRequest from './pages/customer/ShelterSettings/ListAdoptionRequest'
 
 
 const PetOwnerRoute = ({ user }) => {
@@ -76,7 +77,7 @@ function App() {
 
       {/* Shelter Settings - Only for SHELTER */}
       <Route element={<ShelterRoute user={currentCustomer} />}>
-        <Route path="/shelter-settings" element={<ShelterSettings />} />
+        <Route path="/shelter-settings" element={<ListAdoptionRequest />} />
       </Route>
 
       <Route element={<UndefinedRoute user={currentCustomer} />}>

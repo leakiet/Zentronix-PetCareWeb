@@ -31,8 +31,6 @@ const AdoptionLayout = () => {
     { id: 'BIRD', name: 'Bird' }
   ]
 
-  // Bỏ locations vì data không có
-  // const locations = ['Hanoi', 'Ho Chi Minh', 'Da Nang']
   const genders = ['MALE', 'FEMALE']
 
   const fetchListings = async (append = false) => {
@@ -44,8 +42,9 @@ const AdoptionLayout = () => {
       else if (selectedAgeValue === 'adult') { minAge = 3; maxAge = 7 }
       else if (selectedAgeValue === 'senior') { minAge = 8; maxAge = undefined }
 
+      const currentPage = append ? page + 1 : page
       const params = {
-        page: append ? page + 1 : page,
+        page: currentPage,
         size,
         sortField,
         sortDir,
@@ -59,8 +58,8 @@ const AdoptionLayout = () => {
       if (append) setAdoptionListings(prev => [...prev, ...data.content])
       else setAdoptionListings(data.content || [])
       setTotalPages(data.totalPages || 0)
-      setHasMore(page < (data.totalPages - 1))
-      if (!append) setPage(0)
+      setHasMore(currentPage < (data.totalPages - 1))
+      if (append) setPage(currentPage)
     } catch (error) {
       console.error('Error fetching listings:', error)
     } finally {
@@ -81,7 +80,7 @@ const AdoptionLayout = () => {
       }
     }
     fetchData()
-  }, [selectedSpecies, selectedBreeds, selectedGenders, selectedAgeValue, page, size, sortField, sortDir])
+  }, [selectedSpecies, selectedBreeds, selectedGenders, selectedAgeValue, size, sortField, sortDir])
 
   // Bỏ filter location vì data không có
   let filteredListings = adoptionListings
@@ -116,7 +115,14 @@ const AdoptionLayout = () => {
 
   const loadMore = async () => {
     if (!hasMore || loadingMore) return
-    await fetchListings(true)
+    setLoadingMore(true)
+    try {
+      await fetchListings(true)
+    } catch (error) {
+      console.error('Error loading more:', error)
+    } finally {
+      setLoadingMore(false)
+    }
   }
 
   return (
@@ -137,7 +143,13 @@ const AdoptionLayout = () => {
           Choose <span style={{ fontWeight: 800, color: theme.palette.primary.secondary }}>ADOPTION LISTINGS</span>
         </Typography>
         <Box sx={{ width: '6rem', height: '0.4rem', bgcolor: theme.palette.primary.secondary, mx: 'auto', mb: 8 }} />
-
+        <Typography
+          variant="body1"
+          align="center"
+          sx={{ maxWidth: '48rem', mx: 'auto', mb: 10, fontSize: { xs: '1rem', md: '1.15rem' }, color: theme.palette.text.textSub }}
+        >
+          Discover adorable pets waiting for their forever homes. Browse our adoption listings and find your new best friend today.
+        </Typography>
         <AdoptionFilters
           breeds={breeds}
           speciesOptions={speciesOptions}
