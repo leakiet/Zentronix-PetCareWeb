@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Card,
   CardContent,
@@ -16,10 +17,21 @@ import { Pets, Male, Female } from '@mui/icons-material'
  * @param {Function} onAdoptClick - Callback when adopt button is clicked
  */
 function AdoptionPetCard({ pet, onAdoptClick }) {
+  const navigate = useNavigate()
   console.log('AdoptionPetCard rendered for pet:', pet.petName, pet)
 
   const handleAdoptClick = () => {
-    console.log('Adopt clicked for pet:', pet.petName)
+    console.log('Adopt clicked for pet:', pet.petName, 'ID:', pet.id || pet.petId)
+
+    // Navigate to adoption detail page
+    const petId = pet.id || pet.petId
+    if (petId) {
+      navigate(`/adoption/${petId}`)
+    } else {
+      console.error('Pet ID not found:', pet)
+    }
+
+    // Still call parent callback if provided (for additional logic)
     if (onAdoptClick) {
       onAdoptClick(pet)
     }
