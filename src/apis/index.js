@@ -73,8 +73,6 @@ export const updateCustomerPassword = async (data) => {
   return response.data
 }
 
-
-
 // Address
 export const createNewAddressAPI = async (data) => {
   const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/addresses/create`, data)
@@ -91,6 +89,18 @@ export const deleteAddressAPI = async (id) => {
   return response.data
 }
 
+// Veterinarians
+export const fetchAvailableVetsAPI = async (params = {}) => {
+  let url = `${API_ROOT}/apis/v1/users/vets`
+  const queryParams = []
+  if (params.petCondition) queryParams.push(`petCondition=${encodeURIComponent(params.petCondition)}`)
+  if (params.location) queryParams.push(`location=${encodeURIComponent(params.location)}`)
+  if (params.latitude !== undefined) queryParams.push(`latitude=${encodeURIComponent(params.latitude)}`)
+  if (params.longitude !== undefined) queryParams.push(`longitude=${encodeURIComponent(params.longitude)}`)
+  if (queryParams.length > 0) url += `?${queryParams.join('&')}`
+  const response = await authorizedAxiosInstance.get(url)
+  return response.data
+}
 
 // Products
 export const fetchProductsAPI = async (params) => {
@@ -132,4 +142,75 @@ export const fetchAdoptionListingsAPI = async (params = {}) => {
   const response = await authorizedAxiosInstance.get(url)
   return response.data
 }
+//pets
+export const createPetAPI = async (data) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/pets/create`, data)
+  return response.data
+}
 
+export const fetPetsByCustomerId = async (userId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/pets/customer/${userId}`)
+  return response.data
+}
+
+export const updatePetAPI = async (petId, data) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/pets/update/${petId}`, data)
+  return response.data
+}
+
+export const deletePetAPI = async (petId) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/pets/delete/${petId}`)
+  return response.data
+}
+
+//health records
+export const createHealthRecordAPI = async (data) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/health-records/create`, data)
+  return response.data
+}
+
+export const updateHealthRecordAPI = async (recordId, data) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/health-records/update/${recordId}`, data)
+  return response.data
+}
+
+export const deleteHealthRecordAPI = async (recordId) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/health-records/delete/${recordId}`)
+  return response.data
+}
+
+export const fetchHealthRecordsByPetIdAPI = async (petId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/health-records/pet/${petId}`)
+  return response.data
+}
+
+export const fetchHealthRecordByIdAPI = async (recordId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/health-records/${recordId}`)
+  return response.data
+}
+
+export const fetchAllHealthRecordsAPI = async () => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/health-records/all`)
+  return response.data
+}
+
+// Pet Vaccination APIs
+export const createPetVaccinationAPI = async (data) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/pet-vaccinations`, data)
+  return response.data
+}
+
+export const updatePetVaccinationAPI = async (id, data) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/pet-vaccinations/${id}`, data)
+  return response.data
+}
+
+export const deletePetVaccinationAPI = async (id) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/pet-vaccinations/delete/${id}`)
+  return response.data
+}
+
+export const fetchPetVaccinationsByPetIdAPI = async (petId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/pet-vaccinations/pet/${petId}`)
+  return response.data
+}
