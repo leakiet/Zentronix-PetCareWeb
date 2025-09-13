@@ -6,11 +6,18 @@ const initialState = {
   currentNotifications: []
 }
 
-// Thêm async thunk để fetch notifications từ API
-export const fetchNotificationsAPI = createAsyncThunk(
-  'notifications/fetchNotificationsAPI',
+export const fetchNotificationsByShelterIdAPI = createAsyncThunk(
+  'notifications/fetchNotificationsByShelterIdAPI',
   async (shelterId) => {
-    const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/notifications/shelter/${shelterId}`)
+    const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/shelter/${shelterId}`)
+    return response.data
+  }
+)
+
+export const updateAdoptionRequestStatusAPI = createAsyncThunk(
+  'notifications/updateAdoptionRequestStatusAPI',
+  async ({ requestId, status }) => {
+    const response = await authorizedAxiosInstance.patch(`${API_ROOT}/apis/v1/adoption-requests/${requestId}/status`, { status })
     return response.data
   }
 )
@@ -28,16 +35,26 @@ export const notificationsSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchNotificationsAPI.fulfilled, (state, action) => {
-      let incomingNotifications = action.payload
-      state.currentNotifications = Array.isArray(incomingNotifications) ? incomingNotifications.reverse() : []
-    })
+    builder
+      // Sửa: Cập nhật case cho thunk mới
+      .addCase(fetchNotificationsByShelterIdAPI.fulfilled, (state, action) => {
+        let incomingNotifications = action.payload
+        state.currentNotifications = Array.isArray(incomingNotifications) ? incomingNotifications.reverse() : []
+      })
+      .addCase(updateAdoptionRequestStatusAPI.fulfilled, (state, action) => {
+        const updatedRequest = action.payload
+        const index = state.currentNotifications.findIndex(n => n.id === updatedRequest.id)
+        if (index !== -1) {
+          state.currentNotifications[index] = updatedRequest
+        }
+      })
   }
 })
 
 export const {
   clearCurrentNotifications,
-  addNotification } = notificationsSlice.actions
+  addNotification
+} = notificationsSlice.actions
 
 export const selectCurrentNotifications = (state) => {
   return state.notifications.currentNotifications

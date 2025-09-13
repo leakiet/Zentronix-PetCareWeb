@@ -1,11 +1,4 @@
 import { Card, CardContent, CardMedia, Typography, Button, Chip, Box } from '@mui/material'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
-import WcIcon from '@mui/icons-material/Wc'
-import PetsIcon from '@mui/icons-material/Pets'
-import CategoryIcon from '@mui/icons-material/Category'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
 import theme from '~/theme'
 import { useNavigate } from 'react-router-dom'
 

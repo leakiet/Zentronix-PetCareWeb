@@ -102,7 +102,7 @@ function ResponsiveAppBar() {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
               <Notifications />
               <Cart />
-              <NotificationsShelter />
+              {/* <NotificationsShelter /> */}
               <Profile />
             </Box>
           </Box>

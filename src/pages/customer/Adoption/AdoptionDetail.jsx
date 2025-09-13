@@ -1,7 +1,18 @@
-import { Box, Card, CardContent, CardMedia, Typography, Grid, Button, Chip, CircularProgress, Avatar, Divider, Stack } from '@mui/material'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
+import Button from '@mui/material/Button'
+import Chip from '@mui/material/Chip'
+import CircularProgress from '@mui/material/CircularProgress'
+import Avatar from '@mui/material/Avatar'
+import Divider from '@mui/material/Divider'
+import Stack from '@mui/material/Stack'
 import { useTheme } from '@mui/material/styles'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import AppBar from '~/components/AppBar/AppBar'
 import FavoriteIcon from '@mui/icons-material/Favorite'
@@ -19,16 +30,41 @@ import HomeIcon from '@mui/icons-material/Home'
 import { fetchAdoptionListingsByIdAPI, getRequestsByAdoptionListingIdAPI } from '~/apis'
 import Footer from '~/components/Footer/Footer'
 import AdoptionModal from '~/components/Modals/AdoptionModal/AdoptionModal'
+import { useSelector } from 'react-redux'
+import { selectCurrentCustomer } from '~/redux/user/customerSlice'
+import { USER_ROLE } from '~/utils/constants'
+import { toast } from 'react-toastify'
 
 const AdoptionDetail = () => {
   const theme = useTheme()
   const { id } = useParams()
+  const navigate = useNavigate()
   const [listing, setListing] = useState(null)
   const [adoptionRequests, setAdoptionRequests] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [showAllRequests, setShowAllRequests] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const owner = useSelector(selectCurrentCustomer)
+
+  const checkRoleOwner = () => {
+    if (owner && owner.role === USER_ROLE.PET_OWNER) {
+      return owner.id
+    }
+    return false
+  }
+
+  const handleAdoptClick = () => {
+    if (!owner) {
+      navigate('/login')
+      return
+    }
+    if (owner.role !== USER_ROLE.PET_OWNER) {
+      toast.error('You do not have permission to adopt. Only Pet Owners can adopt.')
+      return
+    }
+    setModalOpen(true)
+  }
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -141,7 +177,8 @@ const AdoptionDetail = () => {
               size="large"
               startIcon={<FavoriteIcon />}
               sx={{ borderRadius: 2, fontWeight: 'bold' }}
-              onClick={() => setModalOpen(true)}
+              onClick={handleAdoptClick}
+              disabled={!checkRoleOwner()}
             >
               Adopt Now
             </Button>
@@ -229,6 +266,7 @@ const AdoptionDetail = () => {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         listingId={id}
+        shelterId={listing?.shelter?.id}
         ownerId={1}
       />
       <Footer />

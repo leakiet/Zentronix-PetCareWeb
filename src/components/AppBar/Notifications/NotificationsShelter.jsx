@@ -10,16 +10,17 @@ import Chip from '@mui/material/Chip'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Divider from '@mui/material/Divider'
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
-import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import GroupAddIcon from '@mui/icons-material/GroupAdd'
+import DoneIcon from '@mui/icons-material/Done'
+import NotInterestedIcon from '@mui/icons-material/NotInterested'
 import { useChatWebSocket } from '~/hooks/useChatWebSocket'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectCurrentNotifications, addNotification, clearCurrentNotifications, fetchNotificationsAPI } from '~/redux/notifications/notificationsSlice'  // Thêm fetchNotificationsAPI
+import { selectCurrentNotifications, addNotification, clearCurrentNotifications, fetchNotificationsByAdoptionListingIdAPI, updateAdoptionRequestStatusAPI } from '~/redux/notifications/notificationsSlice'
 
-const BLOG_NOTIFICATION_TYPE = {
-  REPLY: 'REPLY',
-  LIKE: 'LIKE',
-  ADOPTION_REQUEST: 'ADOPTION_REQUEST'
+const ADOPTION_REQUEST_STATUS = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED'
 }
 
 function NotificationsShelter() {
@@ -35,32 +36,39 @@ function NotificationsShelter() {
     setAnchorEl(null)
   }
 
-  // Hàm xử lý khi nhận message từ WebSocket
+  // Handle WebSocket message for new adoption requests
   const handleWebSocketMessage = (message) => {
     const newNotification = {
       id: Date.now(),
-      type: BLOG_NOTIFICATION_TYPE.ADOPTION_REQUEST,
-      user: 'System',
-      content: message,
+      type: 'ADOPTION_REQUEST',
+      user: message.user,
+      adoptionListing: message.adoptionListing,
+      content: message.message,
+      status: ADOPTION_REQUEST_STATUS.PENDING,
       time: moment()
     }
     dispatch(addNotification(newNotification))
   }
 
-  // Subscribe vào topic cho shelter (giả sử user.id là shelterId)
-  const user = useSelector((state) => state.user)  // Giả sử có user slice
+  // Subscribe to WebSocket topic for shelter
+  const user = useSelector((state) => state.user)
   const topic = user && user.role === 'SHELTER' ? `/topic/notifications/${user.id}` : null
   useChatWebSocket(topic, handleWebSocketMessage)
 
-  // Gọi API fetch notifications khi component mount
+  // Fetch adoption requests on mount
   useEffect(() => {
     if (user && user.role === 'SHELTER') {
-      dispatch(fetchNotificationsAPI(user.id))  // Gọi thunk với shelterId
+      dispatch(fetchNotificationsByAdoptionListingIdAPI(user.id))
     }
   }, [dispatch, user])
 
   const handleClearNotifications = () => {
     dispatch(clearCurrentNotifications())
+  }
+
+  // Handle accept/reject
+  const updateRequestStatus = (status, requestId) => {
+    dispatch(updateAdoptionRequestStatusAPI({ requestId, status }))
   }
 
   return (
@@ -105,18 +113,42 @@ function NotificationsShelter() {
                 gap: 1
               }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <GroupAddIcon fontSize="small" />
                   <Box>
-                    {item.type === BLOG_NOTIFICATION_TYPE.REPLY && <ChatBubbleIcon fontSize="small" />}
-                    {item.type === BLOG_NOTIFICATION_TYPE.LIKE && <ThumbUpIcon fontSize="small" />}
-                    {item.type === BLOG_NOTIFICATION_TYPE.ADOPTION_REQUEST && <NotificationsNoneIcon fontSize="small" />}
+                    <strong>{item.user?.fullName}</strong> wants to adopt <strong>{item.adoptionListing?.petName}</strong> ({item.adoptionListing?.breed?.name}, {item.adoptionListing?.age} years old). Message: {item.message} (Distance: {item.distance})
                   </Box>
-                  <Box>
-                    <strong>{item.user}</strong> {item.content}
+                </Box>
+                {item.status === ADOPTION_REQUEST_STATUS.PENDING && (
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      size="small"
+                      onClick={() => updateRequestStatus(ADOPTION_REQUEST_STATUS.ACCEPTED, item.id)}
+                    >
+                      Accept
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      onClick={() => updateRequestStatus(ADOPTION_REQUEST_STATUS.REJECTED, item.id)}
+                    >
+                      Reject
+                    </Button>
                   </Box>
+                )}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
+                  {item.status === ADOPTION_REQUEST_STATUS.ACCEPTED && (
+                    <Chip icon={<DoneIcon />} label="Accepted" color="success" size="small" />
+                  )}
+                  {item.status === ADOPTION_REQUEST_STATUS.REJECTED && (
+                    <Chip icon={<NotInterestedIcon />} label="Rejected" size="small" />
+                  )}
                 </Box>
                 <Box sx={{ textAlign: 'right' }}>
                   <Typography variant="span" sx={{ fontSize: '13px' }}>
-                    {item.time.fromNow()}
+                    {moment(item.createdAt).format('llll')}
                   </Typography>
                 </Box>
               </Box>

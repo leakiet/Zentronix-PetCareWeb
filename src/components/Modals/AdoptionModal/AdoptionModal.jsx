@@ -133,7 +133,7 @@ const AdoptionModal = ({ open, onClose, onSuccess, listingId, ownerId }) => {
         }
       }
 
-      const data = { ownerId, adoptionListingId: listingId, message, distance }
+      const data = { ownerId, adoptionListingId: listingId, message, shelterId: listing.shelter.id, distance }
       try {
         await createAdoptionRequestAPI(data)
         setSnackbar({ open: true, message: 'Adoption request submitted successfully!', severity: 'success' })
