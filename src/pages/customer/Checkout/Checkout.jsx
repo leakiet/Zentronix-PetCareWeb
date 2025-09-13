@@ -24,6 +24,7 @@ import { createOrderAPI } from '~/apis'
 import { toast } from 'react-toastify'
 import { clearCart } from '~/redux/cart/cartSlice'
 import { useDispatch } from 'react-redux'
+import ConfirmModal from '~/components/Modals/ComfirmModal/ComfirmModal'
 
 function Checkout() {
   const navigate = useNavigate()
@@ -49,6 +50,39 @@ function Checkout() {
   const [selectedWard, setSelectedWard] = useState(null)
   const [isLoadingAddress, setIsLoadingAddress] = useState(false)
   const [addressVerificationStatus, setAddressVerificationStatus] = useState('') // '', 'verifying', 'verified', 'failed'
+
+  // Confirm Modal states
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false)
+  const [confirmAction, setConfirmAction] = useState(null)
+  const [confirmTitle, setConfirmTitle] = useState('')
+  const [confirmDescription, setConfirmDescription] = useState('')
+  const [confirmBtnName, setConfirmBtnName] = useState('')
+
+  // Helper function to open confirm modal
+  const openConfirmModal = (title, description, btnName, action) => {
+    setConfirmTitle(title)
+    setConfirmDescription(description)
+    setConfirmBtnName(btnName)
+    setConfirmAction(() => action)
+    setConfirmModalOpen(true)
+  }
+
+  // Helper function to close confirm modal
+  const closeConfirmModal = () => {
+    setConfirmModalOpen(false)
+    setConfirmAction(null)
+    setConfirmTitle('')
+    setConfirmDescription('')
+    setConfirmBtnName('')
+  }
+
+  // Handler for confirm action
+  const handleConfirmAction = async () => {
+    if (confirmAction) {
+      await confirmAction()
+    }
+    closeConfirmModal()
+  }
 
   // Load provinces on component mount
   useEffect(() => {
@@ -79,7 +113,7 @@ function Checkout() {
       if (!response.ok) throw new Error('Failed to fetch provinces')
       const data = await response.json()
       setProvinces(data)
-    } catch (error) {
+    } catch {
       toast.error('Failed to load provinces')
     } finally {
       setIsLoadingAddress(false)
@@ -93,7 +127,7 @@ function Checkout() {
       if (!response.ok) throw new Error('Failed to fetch wards')
       const data = await response.json()
       setWards(data.wards || [])
-    } catch (error) {
+    } catch {
       toast.error('Failed to load wards')
     } finally {
       setIsLoadingAddress(false)
@@ -135,7 +169,7 @@ function Checkout() {
         }
       }
       return null
-    } catch (error) {
+    } catch {
       return null
     }
   }
@@ -175,7 +209,7 @@ function Checkout() {
       } else {
         setAddressVerificationStatus('failed')
       }
-    } catch (error) {
+    } catch {
       setAddressVerificationStatus('failed')
       toast.error('Failed to verify address. Please try again.')
     } finally {
@@ -203,55 +237,63 @@ function Checkout() {
       return
     }
 
-    setIsLoading(true)
+    // Show confirm modal
+    openConfirmModal(
+      'Confirm Order',
+      `Are you sure you want to place this order for $${totalPrice?.toFixed(2)}? This action cannot be undone.`,
+      'Place Order',
+      async () => {
+        setIsLoading(true)
 
-    try {
-      // Prepare order data
-      const orderData = {
-        petOwnerId: currentCustomer.id,
-        orderItems: cartItems.map(item => ({
-          productId: item.id,
-          quantity: item.quantity,
-          unitPrice: item.price
-        })),
-        shippingAddress: isEditingAddress ? {
-          street: customAddress.street,
-          ward: customAddress.ward,
-          city: customAddress.city,
-          latitude: customAddress.latitude,
-          longitude: customAddress.longitude
-        } : {
-          street: currentCustomer.address?.street || currentCustomer.street || '',
-          ward: currentCustomer.address?.ward || currentCustomer.ward || '',
-          city: currentCustomer.address?.city || currentCustomer.city || '',
-          latitude: currentCustomer.address?.latitude ? parseFloat(currentCustomer.address.latitude) : (currentCustomer.latitude ? parseFloat(currentCustomer.latitude) : null),
-          longitude: currentCustomer.address?.longitude ? parseFloat(currentCustomer.address.longitude) : (currentCustomer.longitude ? parseFloat(currentCustomer.longitude) : null)
-        },
-        paymentMethod: paymentMethod
-      }
+        try {
+          // Prepare order data
+          const orderData = {
+            petOwnerId: currentCustomer.id,
+            orderItems: cartItems.map(item => ({
+              productId: item.id,
+              quantity: item.quantity,
+              unitPrice: item.price
+            })),
+            shippingAddress: isEditingAddress ? {
+              street: customAddress.street,
+              ward: customAddress.ward,
+              city: customAddress.city,
+              latitude: customAddress.latitude,
+              longitude: customAddress.longitude
+            } : {
+              street: currentCustomer.address?.street || currentCustomer.street || '',
+              ward: currentCustomer.address?.ward || currentCustomer.ward || '',
+              city: currentCustomer.address?.city || currentCustomer.city || '',
+              latitude: currentCustomer.address?.latitude ? parseFloat(currentCustomer.address.latitude) : (currentCustomer.latitude ? parseFloat(currentCustomer.latitude) : null),
+              longitude: currentCustomer.address?.longitude ? parseFloat(currentCustomer.address.longitude) : (currentCustomer.longitude ? parseFloat(currentCustomer.longitude) : null)
+            },
+            paymentMethod: paymentMethod
+          }
 
-      // Create order
-      const response = await createOrderAPI(orderData)
+          // Create order
+          const response = await createOrderAPI(orderData)
 
-      // Clear cart after successful order
-      dispatch(clearCart())
+          // Clear cart after successful order
+          dispatch(clearCart())
 
-      toast.success(`Order ${response.orderCode || `#${response.id}`} placed successfully!`)
+          toast.success(`Order ${response.orderCode || `#${response.id}`} placed successfully!`)
 
-      // Navigate to order confirmation or orders page
-      navigate('/customer/orders', {
-        state: {
-          orderId: response.id,
-          orderCode: response.orderCode,
-          orderData: response
+          // Navigate to order confirmation or orders page
+          navigate('/customer/orders', {
+            state: {
+              orderId: response.id,
+              orderCode: response.orderCode,
+              orderData: response
+            }
+          })
+
+        } catch {
+          toast.error('Failed to place order. Please try again.')
+        } finally {
+          setIsLoading(false)
         }
-      })
-
-    } catch {
-      toast.error('Failed to place order. Please try again.')
-    } finally {
-      setIsLoading(false)
-    }
+      }
+    )
   }
 
   return (
@@ -601,20 +643,52 @@ function Checkout() {
           variant="outlined"
           onClick={() => navigate('/menu')}
           size="large"
+          sx={{
+            px: 4,
+            py: 1.5,
+            borderRadius: 2,
+            fontSize: '1.1rem',
+            fontWeight: 'bold',
+            borderWidth: 2,
+            '&:hover': {
+              borderWidth: 2,
+              transform: 'translateY(-1px)'
+            },
+            transition: 'all 0.2s ease-in-out'
+          }}
         >
           Continue Shopping
         </Button>
 
         <Button
           variant="contained"
+          color="primary"
           onClick={handlePlaceOrder}
           disabled={
             isLoading ||
             (!currentCustomer.address?.street && !currentCustomer.street && !isEditingAddress) ||
             (isEditingAddress && addressVerificationStatus !== 'verified')
           }
-          size="large"
-          sx={{ minWidth: 200 }}
+          size="medium"
+          sx={{
+            minWidth: 160,
+            px: 3,
+            py: 1,
+            borderRadius: 2,
+            fontSize: '1rem',
+            fontWeight: 'bold',
+            boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)',
+            '&:hover': {
+              boxShadow: '0 6px 20px rgba(25, 118, 210, 0.4)',
+              transform: 'translateY(-1px)',
+              backgroundColor: 'primary.dark'
+            },
+            '&:disabled': {
+              backgroundColor: 'grey.400',
+              color: 'grey.700'
+            },
+            transition: 'all 0.2s ease-in-out'
+          }}
         >
           {isLoading ? 'Placing Order...' : `Place Order - $${totalPrice?.toFixed(2)}`}
         </Button>
@@ -626,6 +700,16 @@ function Checkout() {
             Please update your shipping address in your profile or enter a different address above.
         </Alert>
       )}
+
+      {/* Confirm Modal */}
+      <ConfirmModal
+        open={confirmModalOpen}
+        onClose={closeConfirmModal}
+        onConfirm={handleConfirmAction}
+        title={confirmTitle}
+        description={confirmDescription}
+        btnName={confirmBtnName}
+      />
     </Container>
   )
 }

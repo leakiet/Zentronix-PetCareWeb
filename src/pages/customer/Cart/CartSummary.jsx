@@ -3,9 +3,11 @@ import { Typography, Button, IconButton } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectCartItems, selectCartTotalQuantity, selectCartTotalPrice, removeFromCart, clearCart } from '~/redux/cart/cartSlice'
+import { useNavigate } from 'react-router-dom'
 
 const CartSummary = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const cartItems = useSelector(selectCartItems)
   const totalQuantity = useSelector(selectCartTotalQuantity)
@@ -114,6 +116,7 @@ const CartSummary = () => {
       <Button
         fullWidth
         variant="contained"
+        onClick={() => navigate('/checkout')}
         sx={{
           mt: 2,
           borderRadius: 5,
@@ -128,6 +131,7 @@ const CartSummary = () => {
       <Button
         fullWidth
         variant="outlined"
+        onClick={() => navigate('/menu')}
         sx={{
           mt: 1,
           borderRadius: 5,

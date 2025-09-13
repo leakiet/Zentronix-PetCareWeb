@@ -23,7 +23,9 @@ function HealthDialog({
   documents,
   insurancePolicies,
   onOpenHealthRecordDialog,
-  onDeleteHealthRecord
+  onDeleteHealthRecord,
+  onDocumentUpload,
+  onDocumentDelete
 }) {
   const getPetDocuments = (petId) => {
     return documents.filter(doc => doc.petId === petId)
@@ -63,6 +65,9 @@ function HealthDialog({
         {dialogTab === 1 && (
           <DocumentsTab
             documents={getPetDocuments(selectedPet?.id)}
+            petId={selectedPet?.id}
+            onDocumentUpload={onDocumentUpload}
+            onDocumentDelete={onDocumentDelete}
           />
         )}
 

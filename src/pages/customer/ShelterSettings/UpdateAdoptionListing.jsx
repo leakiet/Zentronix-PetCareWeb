@@ -73,7 +73,7 @@ const UpdateAdoptionListing = () => {
   const [imagePreview, setImagePreview] = useState(null)
   const [initialImage, setInitialImage] = useState(null)
   const [listingId, setListingId] = useState(null)
-  
+
   // Crop Modal States
   const [cropModalOpen, setCropModalOpen] = useState(false)
   const [crop, setCrop] = useState({ x: 0, y: 0 })

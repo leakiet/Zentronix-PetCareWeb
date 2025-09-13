@@ -197,10 +197,10 @@ export const createPetAPI = async (data) => {
 }
 
 
-// export const fetPetsByCustomerId = async (userId) => {
-//   const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/pets/customer/${userId}`)
-//   return response.data
-// }
+export const fetPetsByCustomerId = async (userId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/pets/customer/${userId}`)
+  return response.data
+}
 
 
 export const createAdoptionRequestAPI = async (data) => {
@@ -228,10 +228,10 @@ export const getRequestsByAdoptionListingIdAPI = async (id) => {
 //   return response.data
 // }
 
-export const getRequestsByShelterIdAPI = async (shelterId) => {
-  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/shelter/${shelterId}`)
-  return response.data
-}
+// export const getRequestsByShelterIdAPI = async (shelterId) => {
+//   const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/shelter/${shelterId}`)
+//   return response.data
+// }
 
 export const getRequestsByOwnerIdAPI = async (ownerId) => {
   const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/owner/${ownerId}`)
@@ -262,6 +262,11 @@ export const getAllAdoptionRequestsAPI = async (params = {}) => {
 
 export const updatePetAPI = async (petId, data) => {
   const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/pets/update/${petId}`, data)
+  return response.data
+}
+
+export const updatePetImageAPI = async (petId, imageUrl) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/pets/update-image/${petId}`, { image: imageUrl })
   return response.data
 }
 
@@ -323,7 +328,6 @@ export const fetchPetVaccinationsByPetIdAPI = async (petId) => {
 }
 
 
-
 // Order APIs
 export const createOrderAPI = async (orderData) => {
   const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/orders/create`, orderData)
@@ -342,5 +346,60 @@ export const fetchOrderByIdAPI = async (orderId) => {
 
 export const getRequestsByShelterIdAPI = async (shelterId) => {
   const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/shelter/${shelterId}`)
+  return response.data
+}
+
+// Image APIs
+export const uploadImageAPI = async (formData, userId) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/images/upload?userId=${userId}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  return response.data
+}
+
+export const getUserImagesAPI = async (userId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/images?userId=${userId}`)
+  return response.data
+}
+
+export const getImageByIdAPI = async (imageId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/images/${imageId}`)
+  return response.data
+}
+
+export const deleteImageAPI = async (imageId, userId) => {
+  const response = await authorizedAxiosInstance.delete(`${API_ROOT}/apis/v1/images/${imageId}?userId=${userId}`)
+  return response.data
+}
+
+export const checkImageUsageAPI = async (imageId, userId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/images/check-usage/${imageId}?userId=${userId}`)
+  return response.data
+}
+
+// Document APIs
+export const uploadDocumentAPI = async (petId, formData) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/documents/upload/${petId}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  return response.data
+}
+
+export const fetchDocumentsByPetIdAPI = async (petId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/documents/pet/${petId}`)
+  return response.data
+}
+
+export const deleteDocumentAPI = async (petId, documentId) => {
+  const response = await authorizedAxiosInstance.delete(`${API_ROOT}/apis/v1/documents/${petId}/${documentId}`)
+  return response.data
+}
+
+export const downloadDocumentAPI = async (documentId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/documents/download/${documentId}`)
   return response.data
 }
