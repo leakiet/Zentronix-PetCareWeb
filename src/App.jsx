@@ -4,6 +4,8 @@ import MenuLayout from './pages/customer/Menu/MenuLayout'
 import MenuDetail from './pages/customer/Menu/MenuDetail/MenuDetail'
 import ScheduleLayout from './pages/customer/schedule/ScheduleLayout'
 import AboutUs from './pages/customer/AboutUs/AboutUs'
+import Contact from './pages/customer/Contact/Contact'
+import FAQ from './pages/customer/FAQ/FAQ'
 import Auth from './pages/customer/Auth/Auth'
 import AccountVerification from './pages/customer/Auth/AccountVerification'
 import NotFound from './pages/customer/NotFound/NotFound'
@@ -61,6 +63,8 @@ function App() {
       <Route path="/menu" element={<MenuLayout />} />
       <Route path="/menu/:slug" element={<MenuDetail />} />
       <Route path="/about-us" element={<AboutUs />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/faq" element={<FAQ />} />
       <Route path="/cart" element={<CartLayout />} />
       <Route path="/adoption" element={<AdoptionLayout />} />
       <Route path="/adoption/:id" element={<AdoptionDetail />} />

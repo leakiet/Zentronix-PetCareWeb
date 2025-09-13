@@ -28,8 +28,9 @@ import {
   loadFromLocalStorage
 } from '~/redux/conversation/conversationSlice'
 import { selectCurrentCustomer } from '~/redux/user/customerSlice'
-import { selectIsTyping, selectTypingMessage, setTypingStart, setTypingStop, handleAIResponse } from '~/redux/typing/typingSlice'
+import { selectIsTyping, selectTypingMessage, setTypingStart, setTypingStop, handleAIResponse, setTypingState } from '~/redux/typing/typingSlice'
 import AdoptionListingsDisplay from './AdoptionListingsDisplay'
+import TypingIndicator from './TypingIndicator'
 
 // Helper fallback cho senderName
 function getSenderName(msg, customerName) {
@@ -257,7 +258,7 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
         console.log('Typing start event received:', msg)
         dispatch(setTypingStart({
           conversationId: msg.conversationId,
-          message: msg.message || 'AI đang nhập...',
+          message: msg.message || 'AI is typing...',
           sender: msg.sender,
           timestamp: msg.timestamp
         }))
@@ -268,6 +269,17 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
         console.log('Typing stop event received:', msg)
         dispatch(setTypingStop({
           conversationId: msg.conversationId
+        }))
+        return
+      }
+
+      if (msg.type === 'TYPING_SYNC') {
+        console.log('Typing sync event received:', msg)
+        dispatch(setTypingState({
+          conversationId: msg.conversationId,
+          isTyping: msg.isTyping,
+          message: msg.message,
+          sender: msg.sender
         }))
         return
       }
@@ -331,7 +343,8 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
 
   useChatWebSocket(
     animationConvId && !isCreatingConversation ? `/topic/conversations/${animationConvId}` : null,
-    handleIncoming
+    handleIncoming,
+    animationConvId
   )
 
 
@@ -593,74 +606,8 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
           )
         })}
 
-        {/* Typing Indicator */}
-        {isTyping && (
-          <ListItem sx={{ px: 0, py: 0.5 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%', mb: 1 }}>
-              <Box
-                sx={{
-                  maxWidth: '70%',
-                  bgcolor: 'grey.100',
-                  color: 'text.primary',
-                  p: 1.5,
-                  borderRadius: '18px 18px 18px 4px',
-                  boxShadow: 1,
-                  wordWrap: 'break-word'
-                }}
-              >
-                <Typography variant="body2" sx={{ fontWeight: 500, mb: 0.5, color: 'success.main' }}>
-                  PetCare AI
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Typography variant="body2" sx={{ lineHeight: 1.4, color: 'text.secondary' }}>
-                    {typingMessage}
-                  </Typography>
-                  <Box sx={{ display: 'flex', gap: 0.5 }}>
-                    <Box
-                      sx={{
-                        width: 6,
-                        height: 6,
-                        borderRadius: '50%',
-                        bgcolor: 'success.main',
-                        animation: 'typing 1.4s infinite ease-in-out',
-                        '@keyframes typing': {
-                          '0%, 60%, 100%': { opacity: 0.3 },
-                          '30%': { opacity: 1 }
-                        }
-                      }}
-                    />
-                    <Box
-                      sx={{
-                        width: 6,
-                        height: 6,
-                        borderRadius: '50%',
-                        bgcolor: 'success.main',
-                        animation: 'typing 1.4s infinite ease-in-out 0.2s',
-                        '@keyframes typing': {
-                          '0%, 60%, 100%': { opacity: 0.3 },
-                          '30%': { opacity: 1 }
-                        }
-                      }}
-                    />
-                    <Box
-                      sx={{
-                        width: 6,
-                        height: 6,
-                        borderRadius: '50%',
-                        bgcolor: 'success.main',
-                        animation: 'typing 1.4s infinite ease-in-out 0.4s',
-                        '@keyframes typing': {
-                          '0%, 60%, 100%': { opacity: 0.3 },
-                          '30%': { opacity: 1 }
-                        }
-                      }}
-                    />
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </ListItem>
-        )}
+        {/* Typing Indicator - Always render, component handles visibility */}
+        <TypingIndicator conversationId={animationConvId} />
       </List>
       <Box sx={{ display: 'flex', gap: 1, mt: 'auto' }}>
         <TextField
@@ -669,7 +616,7 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
           size="small"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Nhập tin nhắn..."
+          placeholder="Type your message..."
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
         />
         <Button
