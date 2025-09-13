@@ -22,7 +22,7 @@ import { Outlet } from 'react-router-dom'
 import { USER_ROLE } from './utils/constants'
 import PetOwnerSettings from './pages/customer/PetOwnerSettings/PetOwnerSettings'
 import ListAdoptionRequest from './pages/customer/ShelterSettings/ListAdoptionRequest'
-
+import AdoptionRequestDetail from './pages/customer/ShelterSettings/AdoptionRequestDetail'
 
 const PetOwnerRoute = ({ user }) => {
   if (!user) return <Navigate to='/login' replace={true} />
@@ -82,6 +82,7 @@ function App() {
       {/* Shelter Settings - Only for SHELTER */}
       <Route element={<ShelterRoute user={currentCustomer} />}>
         <Route path="/shelter-settings" element={<ListAdoptionRequest />} />
+        <Route path="/shelter-settings/:id" element={<AdoptionRequestDetail />} />
       </Route>
 
       <Route element={<UndefinedRoute user={currentCustomer} />}>

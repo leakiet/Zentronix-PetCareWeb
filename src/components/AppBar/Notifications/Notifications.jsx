@@ -17,7 +17,7 @@ import DoneIcon from '@mui/icons-material/Done'
 import NotInterestedIcon from '@mui/icons-material/NotInterested'
 import { useChatWebSocket } from '~/hooks/useChatWebSocket'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectCurrentNotifications, addNotification, clearCurrentNotifications, fetchNotificationsByShelterIdAPI, updateAdoptionRequestStatusAPI } from '~/redux/notifications/notificationsSlice'
+import { selectCurrentNotifications, addNotification, clearCurrentNotifications, fetchNotificationsByShelterIdAPI, getRequestsByOwnerIdAPI, updateAdoptionRequestStatusAPI } from '~/redux/notifications/notificationsSlice'
 import { selectCurrentCustomer } from '~/redux/user/customerSlice'
 
 const ADOPTION_REQUEST_STATUS = {
@@ -41,7 +41,6 @@ function Notifications() {
 
   const user = useSelector(selectCurrentCustomer)
 
-  // Handle WebSocket message for new adoption requests
   const handleWebSocketMessage = useCallback((message) => {
     const newNotification = {
       id: Date.now(),
@@ -63,6 +62,8 @@ function Notifications() {
     if (user) {
       if (user.role === 'SHELTER') {
         dispatch(fetchNotificationsByShelterIdAPI(user.id))
+      } else if (user.role === 'PET_OWNER') {
+        dispatch(getRequestsByOwnerIdAPI(user.id))
       }
     }
   }, [dispatch, user])
@@ -126,26 +127,6 @@ function Notifications() {
                     )}
                   </Box>
                 </Box>
-                {/* {user?.role === 'SHELTER' && item.status === ADOPTION_REQUEST_STATUS.PENDING && (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
-                    <Button
-                      variant="contained"
-                      color="success"
-                      size="small"
-                      onClick={() => updateRequestStatus(ADOPTION_REQUEST_STATUS.ACCEPTED, item.id)}
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      size="small"
-                      onClick={() => updateRequestStatus(ADOPTION_REQUEST_STATUS.REJECTED, item.id)}
-                    >
-                      Reject
-                    </Button>
-                  </Box>
-                )} */}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
                   {item.status === ADOPTION_REQUEST_STATUS.ACCEPTED && (
                     <Chip icon={<DoneIcon />} label="Accepted" color="success" size="small" />
@@ -167,13 +148,6 @@ function Notifications() {
             {index !== notifications.length - 1 && <Divider />}
           </Box>
         ))}
-        {/* {notifications.length > 0 && (
-          <Box sx={{ p: 1 }}>
-            <Button variant="outlined" size="small" onClick={handleClearNotifications}>
-              Clear All
-            </Button>
-          </Box>
-        )} */}
       </Menu>
     </Box>
   )

@@ -14,6 +14,14 @@ export const fetchNotificationsByShelterIdAPI = createAsyncThunk(
   }
 )
 
+export const getRequestsByOwnerIdAPI = createAsyncThunk(
+  'notifications/getRequestsByOwnerIdAPI',
+  async (ownerId) => {
+    const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/owner/${ownerId}`)
+    return response.data
+  }
+)
+
 export const updateAdoptionRequestStatusAPI = createAsyncThunk(
   'notifications/updateAdoptionRequestStatusAPI',
   async ({ requestId, status }) => {
@@ -36,8 +44,11 @@ export const notificationsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Sửa: Cập nhật case cho thunk mới
       .addCase(fetchNotificationsByShelterIdAPI.fulfilled, (state, action) => {
+        let incomingNotifications = action.payload
+        state.currentNotifications = Array.isArray(incomingNotifications) ? incomingNotifications.reverse() : []
+      })
+      .addCase(getRequestsByOwnerIdAPI.fulfilled, (state, action) => {
         let incomingNotifications = action.payload
         state.currentNotifications = Array.isArray(incomingNotifications) ? incomingNotifications.reverse() : []
       })

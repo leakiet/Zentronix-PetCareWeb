@@ -101,7 +101,7 @@ const BookAppointment = ({ onStartBooking }) => {
                 Select Your Pet
               </Typography>
             </Box>
-            
+
             <FormControl fullWidth sx={{ mb: 3 }}>
               <InputLabel>Choose Pet</InputLabel>
               <Select
@@ -158,7 +158,7 @@ const BookAppointment = ({ onStartBooking }) => {
                 Appointment Reason
               </Typography>
             </Box>
-            
+
             <FormControl fullWidth sx={{ mb: 3 }}>
               <InputLabel>Reason for Visit</InputLabel>
               <Select
@@ -204,11 +204,11 @@ const BookAppointment = ({ onStartBooking }) => {
                 Location-Based Suggestions
               </Typography>
             </Box>
-            
+
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
               We&apos;ll suggest veterinarians based on your location and your pet&apos;s condition to ensure you get the best care.
             </Typography>
-            
+
             {userLocation ? (
               <Typography variant="body2" sx={{ color: theme.palette.primary.main }}>
                 ✓ Location detected: We&apos;ll find vets near you

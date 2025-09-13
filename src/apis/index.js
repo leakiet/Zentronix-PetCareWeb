@@ -137,6 +137,11 @@ export const fetchBreedsAPI = async () => {
   return response.data
 }
 
+export const fetchAdoptionListingsByShelterIdAPI = async (shelterId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-listings/shelter/${shelterId}`)
+  return response.data
+}
+
 export const fetchAdoptionListingsByIdAPI = async (id) => {
   const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-listings/${id}`)
   return response.data
@@ -152,6 +157,15 @@ export const fetchAdoptionListingsAPI = async (params = {}) => {
   const response = await authorizedAxiosInstance.get(url)
   return response.data
 }
+
+export const approveAdoptionRequestAPI = async (listingId, requestId, ownerId) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/adoption-listings/${listingId}/approve`, {
+    requestId,
+    ownerId
+  })
+  return response.data
+}
+
 //pets
 export const createPetAPI = async (data) => {
   const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/pets/create`, data)
@@ -184,8 +198,18 @@ export const getRequestsByAdoptionListingIdAPI = async (id) => {
   return response.data
 }
 
-export const updateAdoptionRequestStatusAPI = async (id, status) => {
-  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/adoption-requests/${id}/status?status=${encodeURIComponent(status)}`)
+// export const updateAdoptionRequestStatusAPI = async (id, status) => {
+//   const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/adoption-requests/${id}/status?status=${encodeURIComponent(status)}`)
+//   return response.data
+// }
+
+export const getRequestsByShelterIdAPI = async (shelterId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/shelter/${shelterId}`)
+  return response.data
+}
+
+export const getRequestsByOwnerIdAPI = async (ownerId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/owner/${ownerId}`)
   return response.data
 }
 
@@ -194,22 +218,20 @@ export const deleteAdoptionRequestAPI = async (id) => {
   return response.data
 }
 
+export const updateAdoptionRequestStatusAPI = async ({ requestId, status }) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/adoption-requests/${requestId}/status`, { status })
+  return response.data
+}
+
+export const approveAdoptionRequestAndRejectOthersAPI = async (requestId, ownerId) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/adoption-requests/${requestId}/approve`, { ownerId })
+  return response.data
+}
+
 export const getAllAdoptionRequestsAPI = async (params = {}) => {
   let url = `${API_ROOT}/apis/v1/adoption-requests?page=${params.page || 0}&size=${params.size || 10}&sortField=${params.sortField || 'id'}&sortDir=${params.sortDir || 'asc'}`
   if (params.status) url += `&status=${encodeURIComponent(params.status)}`
   const response = await authorizedAxiosInstance.get(url)
-  return response.data
-}
-
-
-//pets
-export const createPetAPI = async (data) => {
-  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/pets/create`, data)
-  return response.data
-}
-
-export const fetPetsByCustomerId = async (userId) => {
-  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/pets/customer/${userId}`)
   return response.data
 }
 
@@ -276,7 +298,3 @@ export const fetchPetVaccinationsByPetIdAPI = async (petId) => {
 }
 
 
-export const getRequestsByShelterIdAPI = async (shelterId) => {
-  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/adoption-requests/shelter/${shelterId}`)
-  return response.data
-}

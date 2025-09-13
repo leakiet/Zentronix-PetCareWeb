@@ -20,7 +20,7 @@ import { selectCartItems, selectCartTotalQuantity, selectCartTotalPrice, selectC
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main
   }
 }))
 
