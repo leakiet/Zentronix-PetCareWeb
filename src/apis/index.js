@@ -202,3 +202,18 @@ export const fetchPetVaccinationsByPetIdAPI = async (petId) => {
   return response.data
 }
 
+// Order APIs
+export const createOrderAPI = async (orderData) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/orders/create`, orderData)
+  return response.data
+}
+
+export const fetchOrdersByPetOwnerAPI = async (petOwnerId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/orders/pet-owner/${petOwnerId}`)
+  return response.data
+}
+
+export const fetchOrderByIdAPI = async (orderId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/orders/${orderId}`)
+  return response.data
+}
