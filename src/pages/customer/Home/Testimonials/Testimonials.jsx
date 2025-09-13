@@ -90,7 +90,7 @@ What do customers say about Fur Shield?
                 </Avatar>
                 <Box>
                   <Typography variant="h6" fontWeight="bold">
-                    Nguyen Chi Quyen
+                    Nguyen Chi
                   </Typography>
                   <Rating value={5} size="small" readOnly />
                 </Box>
