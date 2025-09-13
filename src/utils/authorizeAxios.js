@@ -20,16 +20,23 @@ authorizedAxiosInstance.defaults.withCredentials = true
 
 //Cấu hình interceptor cho authorizedAxiosInstance
 // intercepter request: Can thiệp vào giữa mọi request api
-authorizedAxiosInstance.interceptors.request.use((config) => {
-  // Do something before request is sent
+authorizedAxiosInstance.interceptors.request.use(
+  (config) => {
+    // Lấy token từ localStorage
+    const token = localStorage.getItem('accessToken')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
 
-  // Kỹ thuật chặn spam click (Xem kĩ mô tả ở file formatter.js)
-  interceptorLoadingElements(true)
-  return config
-}, (error) => {
-  // Do something with request error
-  return Promise.reject(error)
-})
+    // Kỹ thuật chặn spam click
+    interceptorLoadingElements(true)
+
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
 
 //Khởi tạo một cái promise cho việc gọi api refresh_token
 //Mục đichs tạo ra promíe này để khi nào gọi api refresh_token xong xuôi thì mới retry lại nhiều api bị lỗi trước đó.

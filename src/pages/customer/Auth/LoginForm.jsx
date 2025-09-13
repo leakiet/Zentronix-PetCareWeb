@@ -79,6 +79,15 @@ function LoginForm() {
         toast.success('Login successfully!')
         // Get user from Redux state after login
         const user = res.payload
+
+        // 👉 Lưu userId + accessToken vào localStorage
+        if (user?.id) {
+          localStorage.setItem('userId', user.id)
+        }
+        if (user?.accessToken) {
+          localStorage.setItem('accessToken', user.accessToken)
+        }
+
         const redirectPath = getRedirectPath(user)
         navigate(redirectPath)
       }

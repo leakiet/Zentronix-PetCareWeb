@@ -2,6 +2,7 @@ import HomeLayout from '~/pages/customer/Home/HomeLayout'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import MenuLayout from './pages/customer/Menu/MenuLayout'
 import MenuDetail from './pages/customer/Menu/MenuDetail/MenuDetail'
+import ScheduleLayout from './pages/customer/schedule/ScheduleLayout'
 import AboutUs from './pages/customer/AboutUs/AboutUs'
 import Auth from './pages/customer/Auth/Auth'
 import AccountVerification from './pages/customer/Auth/AccountVerification'
@@ -10,6 +11,7 @@ import Unauthorized from './pages/customer/Unauthorized/Unauthorized'
 import VetSettings from './pages/customer/VetSettings/VetSettings'
 import ShelterSettings from './pages/customer/ShelterSettings/ShelterSettings'
 import Onboard from './pages/customer/Onboard/Onboard'
+import AppointmentFlow from './pages/customer/schedule/AppointmentForm'
 
 import CartLayout from '~/pages/customer/Cart/CardLayout'
 import AdoptionLayout from '~/pages/customer/Adoption/AdoptionLayout'
@@ -19,6 +21,7 @@ import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 import { USER_ROLE } from './utils/constants'
 import PetOwnerSettings from './pages/customer/PetOwnerSettings/PetOwnerSettings'
+import ListAdoptionRequest from './pages/customer/ShelterSettings/ListAdoptionRequest'
 
 
 const PetOwnerRoute = ({ user }) => {
@@ -57,6 +60,8 @@ function App() {
       <Route path="/cart" element={<CartLayout />} />
       <Route path="/adoption" element={<AdoptionLayout />} />
       <Route path="/adoption/:id" element={<AdoptionDetail />} />
+      <Route path="/schedule" element={<ScheduleLayout/>} />
+      <Route path="/appointment" element={<AppointmentFlow/>} />
 
       {/* Authentication */}
       <Route path="/login" element={<Auth />} />
@@ -76,7 +81,7 @@ function App() {
 
       {/* Shelter Settings - Only for SHELTER */}
       <Route element={<ShelterRoute user={currentCustomer} />}>
-        <Route path="/shelter-settings" element={<ShelterSettings />} />
+        <Route path="/shelter-settings" element={<ListAdoptionRequest />} />
       </Route>
 
       <Route element={<UndefinedRoute user={currentCustomer} />}>

@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+import { useNavigate } from 'react-router-dom'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -26,7 +28,7 @@ import PendingIcon from '@mui/icons-material/Pending'
 function AppointmentTab({ pets, appointments, onBookAppointment }) {
   const [bookingDialogOpen, setBookingDialogOpen] = useState(false)
   const { register, handleSubmit, control, reset, formState: { errors } } = useForm()
-
+  const navigate = useNavigate()
   const getStatusIcon = (status) => {
     switch (status.toLowerCase()) {
     case 'confirmed':
@@ -58,8 +60,7 @@ function AppointmentTab({ pets, appointments, onBookAppointment }) {
   }
 
   const handleBookNewAppointment = () => {
-    reset()
-    setBookingDialogOpen(true)
+    navigate('/schedule')
   }
 
   const handleSaveAppointment = (data) => {

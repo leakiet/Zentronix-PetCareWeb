@@ -27,6 +27,9 @@ import {
   setIsCreatingConversation,
   loadFromLocalStorage
 } from '~/redux/conversation/conversationSlice'
+import { selectCurrentCustomer } from '~/redux/user/customerSlice'
+import { selectIsTyping, selectTypingMessage, setTypingStart, setTypingStop, handleAIResponse } from '~/redux/typing/typingSlice'
+import AdoptionListingsDisplay from './AdoptionListingsDisplay'
 
 // Helper fallback cho senderName
 function getSenderName(msg, customerName) {
@@ -67,6 +70,10 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
     isCreatingConversation
   } = useSelector(state => state.conversation)
 
+  // Typing state
+  const isTyping = useSelector(selectIsTyping)
+  const typingMessage = useSelector(selectTypingMessage)
+
   // Local state (chỉ những state không cần persist)
   const [input, setInput] = useState('')
   const [page, setPage] = useState(0)
@@ -76,10 +83,11 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
   const listRef = useRef(null)
   const PAGE_SIZE = 20
 
-  const customerId = useSelector(state => state.customer.currentCustomer?.id)
-  const customerName = useSelector(state => state.customer.currentCustomer?.name)
-  const customerEmail = useSelector(state => state.customer.currentCustomer?.email)
-  const isCustomerLoggedIn = useSelector(state => !!state.customer.currentCustomer)
+  const currentCustomer = useSelector(selectCurrentCustomer)
+  const customerId = currentCustomer?.id
+  const customerName = currentCustomer?.name
+  const customerEmail = currentCustomer?.email
+  const isCustomerLoggedIn = !!currentCustomer
 
   // Load conversation data from localStorage on mount theo user
   useEffect(() => {
@@ -244,6 +252,26 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
     (msg) => {
       console.log('Received WebSocket message:', msg)
 
+      // Handle typing events
+      if (msg.type === 'TYPING_START') {
+        console.log('Typing start event received:', msg)
+        dispatch(setTypingStart({
+          conversationId: msg.conversationId,
+          message: msg.message || 'AI đang nhập...',
+          sender: msg.sender,
+          timestamp: msg.timestamp
+        }))
+        return
+      }
+
+      if (msg.type === 'TYPING_STOP') {
+        console.log('Typing stop event received:', msg)
+        dispatch(setTypingStop({
+          conversationId: msg.conversationId
+        }))
+        return
+      }
+
       // ✅ Kiểm tra duplicate theo nhiều tiêu chí
       const isDuplicate = messages.some(m =>
         // Same ID
@@ -284,12 +312,17 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
       // Thêm message mới vào Redux
       dispatch(addMessage({
         ...msg,
-        senderRole: msg.sender === 'PetCare AI' ? 'AI' : 'PET_OWNER'
+        senderRole: msg.sender === 'PetCare AI' ? 'AI' : 'PET_OWNER',
+        adoptionData: msg.adoptionData // Ensure WebSocket adoptionData is included
       }))
 
-      // Cập nhật awaitingAI state
+      // Cập nhật awaitingAI state và typing state
       if (msg.senderName === 'AI' || msg.senderName === 'PetCare AI' || msg.sender === 'PetCare AI') {
         dispatch(setAwaitingAI(false))
+        // Auto-stop typing when AI response is received
+        dispatch(handleAIResponse({
+          conversationId: msg.conversationId
+        }))
       }
     },
     [dispatch, messages]
@@ -309,10 +342,8 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
       console.error('Message cannot be empty')
       return
     }
-    if (chatMode === 'AI' && awaitingAI) return
 
     setInput('')
-    if (chatMode === 'AI') dispatch(setAwaitingAI(true))
     const tempId = `temp-${Date.now()}`
 
     // Add pending message to Redux
@@ -379,6 +410,7 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
       // Nếu response có message từ AI, thêm message mới
       if (response.sender === 'PetCare AI' || response.isFromAI) {
         console.log('Adding AI response message:', response.messageId)
+        console.log('AI response adoptionData:', response.adoptionData) // Debug log
         dispatch(addMessage({
           id: response.messageId || Date.now(),
           conversationId: response.conversationId,
@@ -387,7 +419,8 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
           content: response.message,
           timestamp: response.timestamp,
           status: 'sent',
-          isFromAI: true
+          isFromAI: true,
+          adoptionData: response.adoptionData // ⭐ ADD THIS LINE!
         }))
       }
 
@@ -413,7 +446,7 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
       dispatch(setIsCreatingConversation(false)) // Reset flag nếu có lỗi
     }
   }, [
-    input, chatMode, awaitingAI, animationConvId, isCreatingConversation,
+    input, chatMode, animationConvId, isCreatingConversation,
     isCustomerLoggedIn, customerEmail, customerName, dispatch
   ])
 
@@ -477,15 +510,28 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
     }
   }, [chatMode, isCustomerLoggedIn, animationConvId, customerEmail, dispatch])
 
+  // Handler for adoption card clicks
+  const handleAdoptClick = (pet) => {
+    console.log('Adopt clicked for pet:', pet)
+    // TODO: Implement adoption flow - could open a modal, navigate to adoption page, etc.
+    // For now, just log the pet information
+  }
+
   return (
-    <Box sx={{ width: 400, border: 1, borderColor: 'grey.300', borderRadius: 2, p: 2 }}>
+    <Box sx={{ width: 400, height: 600, border: 1, borderColor: 'grey.300', borderRadius: 2, p: 2, display: 'flex', flexDirection: 'column' }}>
       <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', color: 'primary.main' }}>
         💬 {chatMode === 'AI' ? 'AI Assistant Chat' : 'Customer Support'}
       </Typography>
-      <List ref={listRef} sx={{ height: 300, overflowY: 'auto', bgcolor: 'grey.50', mb: 2, p: 1 }}>
+      <List ref={listRef} sx={{ height: 400, overflowY: 'auto', bgcolor: 'grey.50', mb: 2, p: 1, flex: 1 }}>
         {messages.map((m, idx) => {
           const messageType = getMessageType(m)
           const content = m.content || m.message
+          const hasAdoptionData = m.adoptionData && m.adoptionData.adoption && m.adoptionData.adoption.length > 0
+
+          // Debug log for adoption data
+          if (hasAdoptionData) {
+            console.log('Rendering message with adoption data:', m.id, 'pets:', m.adoptionData.adoption.length)
+          }
 
           return (
             <ListItem key={`${m.id}-${idx}`} sx={{ px: 0, py: 0.5 }}>
@@ -528,17 +574,95 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
                     <Typography variant="body2" sx={{ fontWeight: 500, mb: 0.5, color: messageType === 'ai' ? 'success.main' : 'warning.main' }}>
                       {getSenderName(m, customerName)}
                     </Typography>
-                    <Typography variant="body2" sx={{ lineHeight: 1.4 }}>
-                      {content}
-                    </Typography>
+
+                    {/* Render adoption data if available, otherwise render normal text */}
+                    {hasAdoptionData ? (
+                      <AdoptionListingsDisplay
+                        adoptionData={m.adoptionData}
+                        onAdoptClick={handleAdoptClick}
+                      />
+                    ) : (
+                      <Typography variant="body2" sx={{ lineHeight: 1.4 }}>
+                        {content}
+                      </Typography>
+                    )}
                   </Box>
                 </Box>
               )}
             </ListItem>
           )
         })}
+
+        {/* Typing Indicator */}
+        {isTyping && (
+          <ListItem sx={{ px: 0, py: 0.5 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%', mb: 1 }}>
+              <Box
+                sx={{
+                  maxWidth: '70%',
+                  bgcolor: 'grey.100',
+                  color: 'text.primary',
+                  p: 1.5,
+                  borderRadius: '18px 18px 18px 4px',
+                  boxShadow: 1,
+                  wordWrap: 'break-word'
+                }}
+              >
+                <Typography variant="body2" sx={{ fontWeight: 500, mb: 0.5, color: 'success.main' }}>
+                  PetCare AI
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography variant="body2" sx={{ lineHeight: 1.4, color: 'text.secondary' }}>
+                    {typingMessage}
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 0.5 }}>
+                    <Box
+                      sx={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: '50%',
+                        bgcolor: 'success.main',
+                        animation: 'typing 1.4s infinite ease-in-out',
+                        '@keyframes typing': {
+                          '0%, 60%, 100%': { opacity: 0.3 },
+                          '30%': { opacity: 1 }
+                        }
+                      }}
+                    />
+                    <Box
+                      sx={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: '50%',
+                        bgcolor: 'success.main',
+                        animation: 'typing 1.4s infinite ease-in-out 0.2s',
+                        '@keyframes typing': {
+                          '0%, 60%, 100%': { opacity: 0.3 },
+                          '30%': { opacity: 1 }
+                        }
+                      }}
+                    />
+                    <Box
+                      sx={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: '50%',
+                        bgcolor: 'success.main',
+                        animation: 'typing 1.4s infinite ease-in-out 0.4s',
+                        '@keyframes typing': {
+                          '0%, 60%, 100%': { opacity: 0.3 },
+                          '30%': { opacity: 1 }
+                        }
+                      }}
+                    />
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </ListItem>
+        )}
       </List>
-      <Box sx={{ display: 'flex', gap: 1 }}>
+      <Box sx={{ display: 'flex', gap: 1, mt: 'auto' }}>
         <TextField
           fullWidth
           variant="outlined"
@@ -547,12 +671,11 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
           onChange={(e) => setInput(e.target.value)}
           placeholder="Nhập tin nhắn..."
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-          disabled={chatMode === 'AI' && awaitingAI}
         />
         <Button
           variant="contained"
           onClick={handleSend}
-          disabled={chatMode === 'AI' && awaitingAI || (chatMode === 'EMP' && !isCustomerLoggedIn)}
+          disabled={!input.trim() || (chatMode === 'EMP' && !isCustomerLoggedIn)}
         >
   Send
         </Button>
@@ -594,7 +717,7 @@ export default function Chat() {
             borderRadius: 2,
             overflow: 'hidden',
             maxWidth: '90vw',
-            maxHeight: '80vh'
+            maxHeight: '85vh'
           }}
         >
           <ChatWidget />
