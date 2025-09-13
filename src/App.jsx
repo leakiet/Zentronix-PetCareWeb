@@ -28,6 +28,8 @@ import Checkout from './pages/customer/Checkout/Checkout'
 import AdoptionRequestDetail from './pages/customer/ShelterSettings/AdoptionRequestDetail'
 import CreateAdoptionListing from './pages/customer/ShelterSettings/CreateAdoptionListing'
 import UpdateAdoptionListing from './pages/customer/ShelterSettings/UpdateAdoptionListing'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 const PetOwnerRoute = ({ user }) => {
@@ -106,7 +108,6 @@ function App() {
       {/* Unauthorized Access */}
       <Route path="/unauthorized" element={<Unauthorized />} />
     </Routes>
-
   )
 }
 

@@ -58,7 +58,7 @@ const Cart = () => {
   return (
     <Box>
       <AppBar />
-      <Box sx={{ mt: theme.fitbowl.appBarHeight }}>
+      <Box sx={{ mt: theme.fitbowl.appBarHeight, minHeight: '100vh' }}>
         <Box sx={{ mx: 2 }}>
           <Box sx={{ pt: 2, pb: 1, ml: 2 }}>
             <Button
