@@ -58,7 +58,7 @@ function ProfileNavBar() {
         <Typography
           component={Link}
           to="/"
-          sx={{ 
+          sx={{
             textDecoration: 'none',
             color: theme.palette.primary.main,
             fontWeight: 700,

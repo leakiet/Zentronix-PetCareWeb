@@ -22,6 +22,7 @@ import { Outlet } from 'react-router-dom'
 import { USER_ROLE } from './utils/constants'
 import PetOwnerSettings from './pages/customer/PetOwnerSettings/PetOwnerSettings'
 import ListAdoptionRequest from './pages/customer/ShelterSettings/ListAdoptionRequest'
+import Checkout from './pages/customer/Checkout/Checkout'
 
 
 const PetOwnerRoute = ({ user }) => {
@@ -72,6 +73,7 @@ function App() {
       {/* pet owner Settings - Only for PET_OWNER */}
       <Route element={<PetOwnerRoute user={currentCustomer} />}>
         <Route path="/pet-owner-settings" element={<PetOwnerSettings />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Route>
 
       {/* Vet Settings - Only for VET */}

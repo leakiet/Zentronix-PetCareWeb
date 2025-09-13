@@ -17,10 +17,10 @@ import theme from '~/theme'
 import CardContent from '@mui/material/CardContent'
 import AppBar from '~/components/AppBar/AppBar'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-import { fetchProductBySlugAPI } from '~/apis'  // Giữ nguyên cho product
+import { fetchProductBySlugAPI } from '~/apis' // Giữ nguyên cho product
 import { useSelector } from 'react-redux'
 import { selectCurrentCustomer } from '~/redux/user/customerSlice'
-import { toast } from 'react-toastify'  // Thêm toast
+import { toast } from 'react-toastify' // Thêm toast
 
 const MenuDetail = () => {
   const { slug } = useParams()
@@ -32,8 +32,8 @@ const MenuDetail = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
-  const [comments, setComments] = useState([])  // State cho comments
-  const user = useSelector(selectCurrentCustomer)  // Lấy user
+  const [comments, setComments] = useState([]) // State cho comments
+  const user = useSelector(selectCurrentCustomer) // Lấy user
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -81,7 +81,7 @@ const MenuDetail = () => {
 
     // Tạo comment mới
     const newComment = {
-      id: Date.now(),  // ID giả
+      id: Date.now(), // ID giả
       user: user.fullName || 'Anonymous',
       rating,
       comment,
@@ -137,11 +137,11 @@ const MenuDetail = () => {
   }
 
   // Related products (nếu API trả về, hoặc fetch riêng)
-  const relatedProducts = []  // Thay bằng data từ API nếu có
-//   // Related products (random 3 products)
-//   const relatedProducts = products
-//     .filter((item) => item.slug !== slug) // Compare slug
-//     .slice(0, 3)
+  const relatedProducts = [] // Thay bằng data từ API nếu có
+  //   // Related products (random 3 products)
+  //   const relatedProducts = products
+  //     .filter((item) => item.slug !== slug) // Compare slug
+  //     .slice(0, 3)
 
   return (
     <Box sx={{ bgcolor: theme.palette.background.default, color: theme.palette.text.primary, minHeight: '100vh', fontFamily: '"Poppins", sans-serif' }}>

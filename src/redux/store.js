@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   conversation: conversationReducer,
   notifications: notificationsReducer,
-  typing: typingReducer,
+  typing: typingReducer
 })
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)

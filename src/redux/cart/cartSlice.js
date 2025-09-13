@@ -78,7 +78,6 @@ const cartSlice = createSlice({
       state.totalQuantity = 0
       state.totalPrice = 0
       state.totalItems = 0
-      toast.success('Cart cleared')
     }
   }
 })

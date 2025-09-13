@@ -133,12 +133,12 @@ const ListAdoptionRequest = () => {
                     <Chip
                       icon={
                         request.status === ADOPTION_REQUEST_STATUS.ACCEPTED ? <CheckCircle /> :
-                        request.status === ADOPTION_REQUEST_STATUS.REJECTED ? <Cancel /> : <Pending />
+                          request.status === ADOPTION_REQUEST_STATUS.REJECTED ? <Cancel /> : <Pending />
                       }
                       label={request.status}
                       color={
                         request.status === ADOPTION_REQUEST_STATUS.ACCEPTED ? 'success' :
-                        request.status === ADOPTION_REQUEST_STATUS.REJECTED ? 'error' : 'warning'
+                          request.status === ADOPTION_REQUEST_STATUS.REJECTED ? 'error' : 'warning'
                       }
                       size="small"
                     />
