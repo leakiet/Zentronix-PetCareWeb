@@ -1,25 +1,21 @@
 import { Box, Typography, Select, MenuItem, FormControl, InputLabel, Chip } from '@mui/material'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
 
 const AdoptionFilters = ({
   breeds,
   speciesOptions,
-  locations,
   genders,
   selectedSpeciesValue,
   selectedBreedValue,
   selectedGenderValue,
   selectedAgeValue,
-  selectedLocations,
   handleSpeciesChange,
   handleBreedChange,
   handleGenderChange,
   handleAgeChange,
-  handleLocationChange,
   clearAllFilters
 }) => {
   return (
-    <Box sx={{ mb: 4, p: 3, bgcolor: 'background.paper', borderRadius: 3, boxShadow: 2 }}>
+    <Box sx={{ mb: 4, p: 3, borderRadius: 3 }}>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'text.primary' }}>
         Filter Listings
       </Typography>
@@ -43,7 +39,7 @@ const AdoptionFilters = ({
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            {speciesOptions.map((spec) => (
+            {speciesOptions && speciesOptions.map((spec) => (
               <MenuItem key={spec.id} value={String(spec.id)}>
                 {spec.name}
               </MenuItem>
@@ -65,7 +61,7 @@ const AdoptionFilters = ({
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {breeds.filter(breed => breed.species === selectedSpeciesValue).map((breed) => (
+              {breeds && breeds.filter(breed => breed.species === selectedSpeciesValue).map((breed) => (
                 <MenuItem key={breed.id} value={String(breed.id)}>
                   {breed.name}
                 </MenuItem>
@@ -86,7 +82,7 @@ const AdoptionFilters = ({
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            {genders.map((gender) => (
+            {genders && genders.map((gender) => (
               <MenuItem key={gender} value={String(gender)}>
                 {gender}
               </MenuItem>
@@ -125,37 +121,6 @@ const AdoptionFilters = ({
             }}
           />
         )}
-      </Box>
-
-      <Box sx={{ mt: 3 }}>
-        <Typography variant="body2" sx={{ mb: 1, color: 'text.secondary', display: 'flex', alignItems: 'center' }}>
-          <LocationOnIcon sx={{ mr: 1 }} />
-          Location:
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-          {locations.slice(0, 6).map((location) => (
-            <Chip
-              key={location}
-              label={location}
-              variant={selectedLocations.includes(location) ? 'filled' : 'outlined'}
-              onClick={() => handleLocationChange(location)}
-              sx={{
-                borderRadius: 2,
-                '&:hover': { bgcolor: 'action.hover' },
-                transition: 'all 0.2s'
-              }}
-            />
-          ))}
-          <Chip
-            label="📍 Near Me"
-            variant="outlined"
-            sx={{
-              borderRadius: 2,
-              '&:hover': { bgcolor: 'action.hover' },
-              transition: 'all 0.2s'
-            }}
-          />
-        </Box>
       </Box>
     </Box>
   )

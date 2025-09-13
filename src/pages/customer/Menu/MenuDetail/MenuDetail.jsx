@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -14,18 +14,48 @@ import Rating from '@mui/material/Rating'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import { ShoppingCart, Add, Remove, ArrowBack } from '@mui/icons-material'
 import theme from '~/theme'
-import { products } from '~/apis/mockData'
 import CardContent from '@mui/material/CardContent'
 import AppBar from '~/components/AppBar/AppBar'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import { fetchProductBySlugAPI } from '~/apis'  // Giữ nguyên cho product
+import { useSelector } from 'react-redux'
+import { selectCurrentCustomer } from '~/redux/user/customerSlice'
+import { toast } from 'react-toastify'  // Thêm toast
+
 const MenuDetail = () => {
   const { slug } = useParams()
   const navigate = useNavigate()
-  const product = products.find((item) => item.slug === slug)
+  const [product, setProduct] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [quantity, setQuantity] = useState(1)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
+  const [comments, setComments] = useState([])  // State cho comments
+  const user = useSelector(selectCurrentCustomer)  // Lấy user
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true)
+        const data = await fetchProductBySlugAPI(slug)
+        setProduct(data)
+      } catch (err) {
+        setError('Failed to load product details.')
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProduct()
+
+    // Tải comments từ localStorage
+    const storedComments = localStorage.getItem(`comments_${slug}`)
+    if (storedComments) {
+      setComments(JSON.parse(storedComments))
+    }
+  }, [slug])
 
   const handleAddToCart = () => {
     setSnackbarOpen(true)
@@ -40,6 +70,32 @@ const MenuDetail = () => {
   }
 
   const handleCommentSubmit = () => {
+    if (!user) {
+      toast.error('Please log in to submit a comment.')
+      return
+    }
+    if (!comment || !rating) {
+      toast.error('Please provide a rating and comment.')
+      return
+    }
+
+    // Tạo comment mới
+    const newComment = {
+      id: Date.now(),  // ID giả
+      user: user.fullName || 'Anonymous',
+      rating,
+      comment,
+      createdAt: new Date().toISOString()
+    }
+
+    // Thêm vào state
+    const updatedComments = [newComment, ...comments]
+    setComments(updatedComments)
+
+    // Lưu vào localStorage
+    localStorage.setItem(`comments_${slug}`, JSON.stringify(updatedComments))
+
+    // Clear form
     setComment('')
     setRating(0)
     setSnackbarOpen(true)
@@ -49,12 +105,24 @@ const MenuDetail = () => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)
   }
 
-  if (!product) {
+  if (loading) {
+    return (
+      <Box sx={{ bgcolor: theme.palette.background.main, minHeight: '100vh', fontFamily: '"Poppins", sans-serif', py: 6 }}>
+        <Box sx={{ maxWidth: '1280px', mx: 'auto', px: 2 }}>
+          <Typography variant="h5" align="center">
+            Loading product details...
+          </Typography>
+        </Box>
+      </Box>
+    )
+  }
+
+  if (error || !product) {
     return (
       <Box sx={{ bgcolor: theme.palette.background.main, minHeight: '100vh', fontFamily: '"Poppins", sans-serif', py: 6 }}>
         <Box sx={{ maxWidth: '1280px', mx: 'auto', px: 2 }}>
           <Typography variant="h5" color="error" align="center">
-            Product not found!
+            {error || 'Product not found!'}
           </Typography>
           <Button
             variant="contained"
@@ -68,10 +136,12 @@ const MenuDetail = () => {
     )
   }
 
-  // Related products (random 3 products)
-  const relatedProducts = products
-    .filter((item) => item.slug !== slug) // So sánh slug
-    .slice(0, 3)
+  // Related products (nếu API trả về, hoặc fetch riêng)
+  const relatedProducts = []  // Thay bằng data từ API nếu có
+//   // Related products (random 3 products)
+//   const relatedProducts = products
+//     .filter((item) => item.slug !== slug) // Compare slug
+//     .slice(0, 3)
 
   return (
     <Box sx={{ bgcolor: theme.palette.background.default, color: theme.palette.text.primary, minHeight: '100vh', fontFamily: '"Poppins", sans-serif' }}>
@@ -128,9 +198,6 @@ const MenuDetail = () => {
               Price: {formatPrice(product.price)}
             </Typography>
 
-            {/* <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.text.primary, mb: 1 }}>
-              Stock quantity
-            </Typography> */}
             <Typography variant="body1" sx={{ mb: 3, color: theme.palette.text.textSub, display: 'flex', alignItems: 'center', gap: 1 }}>
               <Box>
                 <ArrowForwardIosIcon sx={{ mr: 1, color: theme.palette.primary.secondary }} />
@@ -196,7 +263,6 @@ const MenuDetail = () => {
               </IconButton>
             </Box>
 
-            {/* Add to cart button */}
             <Button
               variant="contained"
               sx={{
@@ -289,37 +355,35 @@ const MenuDetail = () => {
             <Typography variant="body1" sx={{ fontWeight: 600, color: theme.palette.text.primary, mb: 1 }}>
               Customer Comments:
             </Typography>
-            {[
-              {
-                user: 'John Doe',
-                rating: 4.5,
-                comment: 'The product is great, my pet loves it!'
-              },
-              {
-                user: 'Jane Smith',
-                rating: 5,
-                comment: 'High quality and fast delivery!'
-              }
-            ].map((item, index) => (
-              <Box
-                key={index}
-                sx={{
-                  mb: 2,
-                  p: 2,
-                  bgcolor: theme.palette.primary.card,
-                  borderRadius: '8px',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                }}
-              >
-                <Typography variant="body2" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
-                  {item.user}
-                </Typography>
-                <Rating value={item.rating} readOnly precision={0.5} sx={{ mb: 1 }} />
-                <Typography variant="body2" sx={{ color: theme.palette.text.textSub }}>
-                  {item.comment}
-                </Typography>
-              </Box>
-            ))}
+            {comments.length === 0 ? (
+              <Typography variant="body2" sx={{ color: theme.palette.text.textSub }}>
+                No comments yet. Be the first to comment!
+              </Typography>
+            ) : (
+              comments.map((item) => (
+                <Box
+                  key={item.id}
+                  sx={{
+                    mb: 2,
+                    p: 2,
+                    bgcolor: theme.palette.primary.card,
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  }}
+                >
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
+                    {item.user}
+                  </Typography>
+                  <Rating value={item.rating} readOnly precision={0.5} sx={{ mb: 1 }} />
+                  <Typography variant="body2" sx={{ color: theme.palette.text.textSub }}>
+                    {item.comment}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: theme.palette.text.textSub, mt: 1, display: 'block' }}>
+                    {new Date(item.createdAt).toLocaleDateString()}
+                  </Typography>
+                </Box>
+              ))
+            )}
           </Box>
         </Box>
 

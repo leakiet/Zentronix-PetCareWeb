@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import moment from 'moment'
 import Badge from '@mui/material/Badge'
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
@@ -9,16 +10,12 @@ import Chip from '@mui/material/Chip'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Divider from '@mui/material/Divider'
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
-import ThumbUpIcon from '@mui/icons-material/ThumbUp'
-import NotificationsIcon from '@mui/icons-material/Notifications'
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import DoneIcon from '@mui/icons-material/Done'
 import NotInterestedIcon from '@mui/icons-material/NotInterested'
 import { useChatWebSocket } from '~/hooks/useChatWebSocket'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectCurrentNotifications, addNotification, clearCurrentNotifications, fetchNotificationsByShelterIdAPI, updateAdoptionRequestStatusAPI } from '~/redux/notifications/notificationsSlice'
-import { selectCurrentCustomer } from '~/redux/user/customerSlice'
+import { selectCurrentNotifications, addNotification, clearCurrentNotifications, fetchNotificationsByAdoptionListingIdAPI, updateAdoptionRequestStatusAPI } from '~/redux/notifications/notificationsSlice'
 
 const ADOPTION_REQUEST_STATUS = {
   PENDING: 'PENDING',
@@ -26,7 +23,7 @@ const ADOPTION_REQUEST_STATUS = {
   REJECTED: 'REJECTED'
 }
 
-function Notifications() {
+function NotificationsShelter() {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const dispatch = useDispatch()
@@ -39,31 +36,29 @@ function Notifications() {
     setAnchorEl(null)
   }
 
-  const user = useSelector(selectCurrentCustomer)
-
   // Handle WebSocket message for new adoption requests
-  const handleWebSocketMessage = useCallback((message) => {
+  const handleWebSocketMessage = (message) => {
     const newNotification = {
       id: Date.now(),
       type: 'ADOPTION_REQUEST',
       user: message.user,
       adoptionListing: message.adoptionListing,
-      message: message.message,
-      status: message.status || ADOPTION_REQUEST_STATUS.PENDING,
-      distance: message.distance,
-      createdAt: moment()
+      content: message.message,
+      status: ADOPTION_REQUEST_STATUS.PENDING,
+      time: moment()
     }
     dispatch(addNotification(newNotification))
-  }, [dispatch])
+  }
 
-  const topic = user ? `/topic/notifications/${user.id}` : null
+  // Subscribe to WebSocket topic for shelter
+  const user = useSelector((state) => state.user)
+  const topic = user && user.role === 'SHELTER' ? `/topic/notifications/${user.id}` : null
   useChatWebSocket(topic, handleWebSocketMessage)
 
+  // Fetch adoption requests on mount
   useEffect(() => {
-    if (user) {
-      if (user.role === 'SHELTER') {
-        dispatch(fetchNotificationsByShelterIdAPI(user.id))
-      }
+    if (user && user.role === 'SHELTER') {
+      dispatch(fetchNotificationsByAdoptionListingIdAPI(user.id))
     }
   }, [dispatch, user])
 
@@ -71,34 +66,35 @@ function Notifications() {
     dispatch(clearCurrentNotifications())
   }
 
+  // Handle accept/reject
   const updateRequestStatus = (status, requestId) => {
     dispatch(updateAdoptionRequestStatusAPI({ requestId, status }))
   }
 
   return (
     <Box>
-      <Tooltip title="Notifications">
+      <Tooltip title="Shelter Notifications">
         <Badge
           color="secondary"
           badgeContent={notifications.length}
           sx={{ cursor: 'pointer' }}
-          id="basic-button-open-notification"
-          aria-controls={open ? 'basic-notification-drop-down' : undefined}
+          id="shelter-notification-button"
+          aria-controls={open ? 'shelter-notification-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClickNotificationIcon}
         >
-          <NotificationsIcon sx={{ color: theme => theme.palette.primary.main }} />
+          <NotificationsNoneIcon sx={{ color: 'white' }} />
         </Badge>
       </Tooltip>
 
       <Menu
         sx={{ mt: 2 }}
-        id="basic-notification-drop-down"
+        id="shelter-notification-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        MenuListProps={{ 'aria-labelledby': 'basic-button-open-notification' }}
+        MenuListProps={{ 'aria-labelledby': 'shelter-notification-button' }}
       >
         {notifications.length === 0 && (
           <MenuItem sx={{ minWidth: 200 }}>
@@ -119,14 +115,10 @@ function Notifications() {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <GroupAddIcon fontSize="small" />
                   <Box>
-                    {user?.role === 'SHELTER' ? (
-                      <span><strong>{item.user?.fullName}</strong> wants to adopt <strong>{item.adoptionListing?.petName}</strong> ({item.adoptionListing?.breed?.name}, {item.adoptionListing?.age} years old). Message: {item.message} (Distance: {item.distance})</span>
-                    ) : (
-                      <span>Your adoption request for <strong>{item.adoptionListing?.petName}</strong> ({item.adoptionListing?.breed?.name}, {item.adoptionListing?.age} years old). Message: {item.message} (Distance: {item.distance})</span>
-                    )}
+                    <strong>{item.user?.fullName}</strong> wants to adopt <strong>{item.adoptionListing?.petName}</strong> ({item.adoptionListing?.breed?.name}, {item.adoptionListing?.age} years old). Message: {item.message} (Distance: {item.distance})
                   </Box>
                 </Box>
-                {/* {user?.role === 'SHELTER' && item.status === ADOPTION_REQUEST_STATUS.PENDING && (
+                {item.status === ADOPTION_REQUEST_STATUS.PENDING && (
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
                     <Button
                       variant="contained"
@@ -145,16 +137,13 @@ function Notifications() {
                       Reject
                     </Button>
                   </Box>
-                )} */}
+                )}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
                   {item.status === ADOPTION_REQUEST_STATUS.ACCEPTED && (
                     <Chip icon={<DoneIcon />} label="Accepted" color="success" size="small" />
                   )}
                   {item.status === ADOPTION_REQUEST_STATUS.REJECTED && (
                     <Chip icon={<NotInterestedIcon />} label="Rejected" size="small" />
-                  )}
-                  {item.status === ADOPTION_REQUEST_STATUS.PENDING && (
-                    <Chip label="Pending" size="small" />
                   )}
                 </Box>
                 <Box sx={{ textAlign: 'right' }}>
@@ -167,16 +156,16 @@ function Notifications() {
             {index !== notifications.length - 1 && <Divider />}
           </Box>
         ))}
-        {/* {notifications.length > 0 && (
+        {notifications.length > 0 && (
           <Box sx={{ p: 1 }}>
             <Button variant="outlined" size="small" onClick={handleClearNotifications}>
               Clear All
             </Button>
           </Box>
-        )} */}
+        )}
       </Menu>
     </Box>
   )
 }
 
-export default Notifications
+export default NotificationsShelter
