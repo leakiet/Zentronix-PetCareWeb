@@ -245,7 +245,6 @@ function VetShelterRegisterForm() {
 
   const submitRegister = (data) => {
     const {
-      role,
       companyName,
       firstName,
       lastName,
@@ -265,7 +264,7 @@ function VetShelterRegisterForm() {
     }
 
     toast.promise(registerCustomerAPI({
-      role,
+      role, // Use role from state
       companyName,
       firstName,
       lastName,
