@@ -139,15 +139,6 @@ const VetSuggestion = ({ onVetSelect, onBack, appointmentData }) => {
     fetchVets()
   }, [appointmentData])
 
-  // 👉 Khi chọn Vet thì push sang /appointment và truyền state
-  const handleSelectVet = (vet) => {
-    navigate('/appointment', {
-      state: {
-        appointmentData,
-        selectedVet: vet
-      }
-    })
-  }
 
   if (loading) {
     return (
@@ -162,7 +153,6 @@ const VetSuggestion = ({ onVetSelect, onBack, appointmentData }) => {
 
   const getMatchReason = (vet) => {
     const reason = appointmentData?.reason?.toLowerCase() || ''
-
     if (reason.includes('emergency') || reason.includes('urgent')) {
       return 'Expert in emergency cases and urgent care'
     } else if (reason.includes('skin') || reason.includes('dermatology')) {
@@ -384,12 +374,8 @@ const VetSuggestion = ({ onVetSelect, onBack, appointmentData }) => {
                         bgcolor: theme.palette.primary.dark
                       }
                     }}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleSelectVet(vet)
-                    }}
                   >
-                    Select This Vet
+                  Select This Vet
                   </Button>
                 </CardContent>
               </Card>
