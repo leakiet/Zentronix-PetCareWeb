@@ -35,14 +35,14 @@ import TypingIndicator from './TypingIndicator'
 // Helper fallback cho senderName
 function getSenderName(msg, customerName) {
   if (msg.senderName) return msg.senderName
-  if (msg.senderRole === 'PET_OWNER') return customerName || 'YOU'
-  if (msg.senderRole === 'AI') return 'AI Assistant'
+  if (msg.senderRole === 'PET_OWNER') return customerName || 'You'
+  if (msg.senderRole === 'AI') return 'PetCare AI'
   if (msg.senderRole === 'EMP') return 'Employee'
 
   // Fallback to backend sender field if available
   if (msg.sender) {
-    if (msg.sender === 'User') return customerName || 'YOU'
-    if (msg.sender === 'PetCare AI') return 'AI Assistant'
+    if (msg.sender === 'User') return customerName || 'You'
+    if (msg.sender === 'PetCare AI') return 'PetCare AI'
     return msg.sender
   }
 
