@@ -60,6 +60,16 @@ function ResponsiveAppBar() {
               drawerOpen={drawerOpen}
               toggleDrawer={toggleDrawer}
             />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <IconButton
+                size="large"
+                aria-label="open drawer"
+                onClick={toggleDrawer(true)}
+                color="inherit"
+              >
+                <MenuIcon sx={{ color: (theme) => theme.palette.primary.main }} />
+              </IconButton>
+            </Box>
 
             <Typography
               variant="h5"
@@ -73,23 +83,22 @@ function ResponsiveAppBar() {
                 fontWeight: 700,
                 letterSpacing: '.3rem',
                 color: (theme) => theme.palette.primary.secondary,
-                justifyContent: 'start',
+                justifyContent: 'center',
                 alignItems: 'center',
                 textDecoration: 'none'
               }}
             >
               Fur Shield
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-              <IconButton
-                size="large"
-                aria-label="open drawer"
-                onClick={toggleDrawer(true)}
-                color="inherit"
-              >
-                <MenuIcon sx={{ color: (theme) => theme.palette.primary.main }} />
-              </IconButton>
+
+            <Box sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
+              <Notifications />
             </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <Cart />
+            </Box>
+
+
           </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', alignItems: 'center' }}>

@@ -22,6 +22,14 @@ export const getRequestsByOwnerIdAPI = createAsyncThunk(
   }
 )
 
+export const getAppointmentNotificationsByUserIdAPI = createAsyncThunk(
+  'notifications/getAppointmentNotificationsByUserIdAPI',
+  async (userId) => {
+    const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/appointments/notifications/${userId}`)
+    return response.data
+  }
+)
+
 export const notificationsSlice = createSlice({
   name: 'notifications',
   initialState,
@@ -31,7 +39,16 @@ export const notificationsSlice = createSlice({
     },
     addNotification: (state, action) => {
       const incomingNotification = action.payload
-      state.currentNotifications.unshift(incomingNotification)
+      const existingIndex = state.currentNotifications.findIndex(notification => 
+        notification.id === incomingNotification.id ||
+        (notification.appointmentId === incomingNotification.appointmentId && 
+         notification.type === incomingNotification.type)
+      )
+      if (existingIndex === -1) {
+        state.currentNotifications.unshift(incomingNotification)
+      } else {
+        state.currentNotifications[existingIndex] = incomingNotification
+      }
     }
   },
   extraReducers: (builder) => {
@@ -49,6 +66,26 @@ export const notificationsSlice = createSlice({
           ? incomingNotifications.filter(notification => notification.status !== 'REJECTED')
           : []
         state.currentNotifications = filteredNotifications.reverse()
+      })
+      .addCase(getAppointmentNotificationsByUserIdAPI.fulfilled, (state, action) => {
+        let incomingNotifications = action.payload
+        const notifications = Array.isArray(incomingNotifications) ? incomingNotifications : []
+        const formattedNotifications = notifications.map(notification => ({
+          ...notification,
+          id: notification.id || `appointment_${notification.appointmentId}_${Date.now()}`,
+          createdAt: notification.createdAt || new Date().toISOString()
+        }))
+        if (state.currentNotifications.length > 0) {
+          const merged = [...state.currentNotifications, ...formattedNotifications]
+          const uniqueNotifications = merged.filter((notification, index, self) =>
+            index === self.findIndex(n => n.id === notification.id)
+          )
+          state.currentNotifications = uniqueNotifications.sort((a, b) => 
+            new Date(b.createdAt || b.updatedAt) - new Date(a.createdAt || a.updatedAt)
+          )
+        } else {
+          state.currentNotifications = formattedNotifications.reverse()
+        }
       })
   }
 })
