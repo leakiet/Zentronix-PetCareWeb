@@ -11,7 +11,7 @@ import Unauthorized from './pages/customer/Unauthorized/Unauthorized'
 import VetSettings from './pages/customer/VetSettings/VetSettings'
 import ShelterSettings from './pages/customer/ShelterSettings/ShelterSettings'
 import Onboard from './pages/customer/Onboard/Onboard'
-import AppointmentFlow from './pages/customer/schedule/AppointmentForm'
+// import AppointmentFlow from './pages/customer/schedule/AppointmentForm'
 
 import CartLayout from '~/pages/customer/Cart/CardLayout'
 import AdoptionLayout from '~/pages/customer/Adoption/AdoptionLayout'
@@ -25,6 +25,7 @@ import ListAdoptionRequest from './pages/customer/ShelterSettings/ListAdoptionRe
 import AdoptionRequestDetail from './pages/customer/ShelterSettings/AdoptionRequestDetail'
 import CreateAdoptionListing from './pages/customer/ShelterSettings/CreateAdoptionListing'
 import UpdateAdoptionListing from './pages/customer/ShelterSettings/UpdateAdoptionListing'
+import VetManageLayout from './pages/customer/VetSettings/VetManageLayout'
 
 
 const PetOwnerRoute = ({ user }) => {
@@ -63,8 +64,8 @@ function App() {
       <Route path="/cart" element={<CartLayout />} />
       <Route path="/adoption" element={<AdoptionLayout />} />
       <Route path="/adoption/:id" element={<AdoptionDetail />} />
-      <Route path="/schedule" element={<ScheduleLayout/>} />
-      <Route path="/appointment" element={<AppointmentFlow/>} />
+
+      {/* <Route path="/appointment" element={<AppointmentFlow/>} /> */}
 
       {/* Authentication */}
       <Route path="/login" element={<Auth />} />
@@ -75,11 +76,13 @@ function App() {
       {/* pet owner Settings - Only for PET_OWNER */}
       <Route element={<PetOwnerRoute user={currentCustomer} />}>
         <Route path="/pet-owner-settings" element={<PetOwnerSettings />} />
+        <Route path="/schedule" element={<ScheduleLayout />} />
       </Route>
 
       {/* Vet Settings - Only for VET */}
       <Route element={<VetRoute user={currentCustomer} />}>
         <Route path="/vet-settings" element={<VetSettings />} />
+        <Route path="/vet-appointments" element={<VetManageLayout />} />
       </Route>
 
       {/* Shelter Settings - Only for SHELTER */}

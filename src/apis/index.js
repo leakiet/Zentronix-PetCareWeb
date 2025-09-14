@@ -90,15 +90,8 @@ export const deleteAddressAPI = async (id) => {
 }
 
 // Veterinarians
-export const fetchAvailableVetsAPI = async (params = {}) => {
-  let url = `${API_ROOT}/apis/v1/users/vets`
-  const queryParams = []
-  if (params.petCondition) queryParams.push(`petCondition=${encodeURIComponent(params.petCondition)}`)
-  if (params.location) queryParams.push(`location=${encodeURIComponent(params.location)}`)
-  if (params.latitude !== undefined) queryParams.push(`latitude=${encodeURIComponent(params.latitude)}`)
-  if (params.longitude !== undefined) queryParams.push(`longitude=${encodeURIComponent(params.longitude)}`)
-  if (queryParams.length > 0) url += `?${queryParams.join('&')}`
-  const response = await authorizedAxiosInstance.get(url)
+export const fetchAvailableVetsAPI = async (params) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/clinic-info/vets`, { params })
   return response.data
 }
 
@@ -321,4 +314,82 @@ export const fetchPetVaccinationsByPetIdAPI = async (petId) => {
   return response.data
 }
 
+
+// Clinic Info APIs
+export const getClinicInfoByVetIdAPI = async (vetId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/clinic-info/vet/${vetId}`)
+  return response.data
+}
+
+export const createClinicInfoAPI = async (data) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/clinic-info`, data)
+  return response.data
+}
+
+export const updateClinicInfoAPI = async (id, data) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/clinic-info/${id}`, data)
+  return response.data
+}
+
+export const deleteClinicInfoAPI = async (id) => {
+  const response = await authorizedAxiosInstance.delete(`${API_ROOT}/apis/v1/clinic-info/${id}`)
+  return response.data
+}
+
+export const searchClinicInfosAPI = async (params = {}) => {
+  let url = `${API_ROOT}/apis/v1/clinic-info/search`
+  const queryParams = []
+  if (params.specialization) queryParams.push(`specialization=${encodeURIComponent(params.specialization)}`)
+  if (params.location) queryParams.push(`location=${encodeURIComponent(params.location)}`)
+  if (queryParams.length > 0) url += `?${queryParams.join('&')}`
+  const response = await authorizedAxiosInstance.get(url)
+  return response.data
+}
+
+
+// Appointments
+export const createAppointmentAPI = async (data) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/apis/v1/appointments`, data)
+  return response.data
+}
+
+export const updateAppointmentAPI = async (appointmentId, data) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/appointments/${appointmentId}`, data)
+  return response.data
+}
+
+export const getAppointmentByIdAPI = async (appointmentId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/appointments/${appointmentId}`)
+  return response.data
+}
+
+export const getAppointmentsByVetIdAPI = async (vetId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/appointments/vet/${vetId}`)
+  return response.data
+}
+
+export const getUpcomingAppointmentsByVetIdAPI = async (vetId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/appointments/vet/${vetId}/upcoming`)
+  return response.data
+}
+
+export const getAppointmentsByPetIdAPI = async (petId) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/appointments/pet/${petId}`)
+  return response.data
+}
+
+export const updateAppointmentStatusAPI = async (appointmentId, status) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/appointments/${appointmentId}/status?status=${status}`)
+  return response.data
+}
+
+export const deleteAppointmentAPI = async (appointmentId) => {
+  const response = await authorizedAxiosInstance.delete(`${API_ROOT}/apis/v1/appointments/${appointmentId}`)
+  return response.data
+}
+
+export const rescheduleAppointmentAPI = async (appointmentId, data) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/appointments/${appointmentId}/reschedule`, data)
+  return response.data
+}
 

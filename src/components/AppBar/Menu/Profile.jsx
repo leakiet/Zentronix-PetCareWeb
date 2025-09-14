@@ -110,6 +110,16 @@ const Profile = () => {
                 Settings
               </MenuItem>
             </Link>
+            <Link to='/vet-appointments' style={{ color: 'inherit', textDecoration: 'none' }}>
+              {currentCustomer.role === USER_ROLE.VET && (
+                <MenuItem sx={{ '&:hover': { color: 'success.light' } }}>
+                  <ListItemIcon>
+                    <Person fontSize="small" />
+                  </ListItemIcon>
+                  My Patients
+                </MenuItem>
+              )}
+            </Link>
 
             <Divider />
 
