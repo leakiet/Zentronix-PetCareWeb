@@ -8,15 +8,12 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import Login from '@mui/icons-material/Login'
 import PersonAdd from '@mui/icons-material/PersonAdd'
 import Person from '@mui/icons-material/Person'
-import Divider from '@mui/material/Divider'
 import DrawerAppBarItem from './DrawerAppBarItem'
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentCustomer, logoutCustomerApi } from '~/redux/user/customerSlice'
 import { useConfirm } from 'material-ui-confirm'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { USER_ROLE } from '~/utils/constants'
-import { Link } from 'react-router-dom'
 
 const DrawerAppBar = ({ drawerOpen, toggleDrawer }) => {
   const dispatch = useDispatch()
@@ -126,8 +123,6 @@ const DrawerAppBar = ({ drawerOpen, toggleDrawer }) => {
           <DrawerAppBarItem
             toggleDrawer={toggleDrawer}
             navItemStyle={navItemStyle}
-            label="About Us"
-            path="/about-us"
             label="About Us"
             path="/about-us"
           />

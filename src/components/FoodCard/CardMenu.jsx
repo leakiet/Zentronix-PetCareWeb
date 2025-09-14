@@ -88,7 +88,7 @@ const CardMenu = ({ item }) => {
             component="img"
             src={item.image}
             alt={item.name}
-            sx={{ objectFit: 'cover', cursor: 'pointer', p: 2, width: '100%' }}
+            sx={{ objectFit: 'cover', cursor: 'pointer', p: 2, width: '100%', height: 200 }}
             onClick={() => handleNavigateToDetail(item.slug)}
           />
         </Box>
@@ -98,7 +98,7 @@ const CardMenu = ({ item }) => {
           flexDirection: 'column'
         }}>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant='h5' sx={{
+            <Typography variant='h6' sx={{
               fontWeight: 700,
               mb: 1,
               color: theme.palette.text.primary,
