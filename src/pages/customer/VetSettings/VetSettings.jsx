@@ -8,6 +8,10 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Avatar from '@mui/material/Avatar'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital'
 import { useSelector } from 'react-redux'
 import { selectCurrentCustomer } from '~/redux/user/customerSlice'
@@ -23,12 +27,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { TimeField } from '@mui/x-date-pickers/TimeField'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
-import {
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel
-} from '@mui/material'
 
 const SpecializationEnum = {
   GENERAL_CHECKUP: 'GENERAL_CHECKUP',
@@ -75,28 +73,7 @@ function VetSettings() {
         try {
           const clinicData = await getClinicInfoByVetIdAPI(currentCustomer.id)
           if (clinicData) {
-            setClinicInfo(clinicData)
-            setFormData(prev => ({
-              ...prev,
-              clinicName: clinicData.clinicName || '',
-              address: clinicData.address || '',
-              openingHours: clinicData.openingHours || '',
-              servicesOffered: clinicData.servicesOffered || '',
-              yearOfExp: clinicData.yearOfExp || '',
-              specialization: clinicData.specialization || ''
-            }))
-
-            if (clinicData.openingHours) {
-              const timeRange = clinicData.openingHours.split(' - ')
-              if (timeRange.length === 2) {
-                const startTime = dayjs(`2022-01-01 ${timeRange[0]}`)
-                const endTime = dayjs(`2022-01-01 ${timeRange[1]}`)
-                setOpeningHoursValue(startTime)
-                setClosingHoursValue(endTime)
-              }
-            }
-
-            localStorage.setItem(`clinic_info_${currentCustomer.id}`, 'true')
+            navigate('/vet-appointments')
           }
         } catch (error) {
           console.log('No clinic info found for this vet')
@@ -105,7 +82,7 @@ function VetSettings() {
     }
 
     fetchClinicInfo()
-  }, [currentCustomer?.id])
+  }, [currentCustomer, navigate])
 
   const handleInputChange = (field) => (event) => {
     setFormData(prev => ({

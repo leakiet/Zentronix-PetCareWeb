@@ -44,22 +44,22 @@ const AdoptionCard = ({ listing }) => {
           </Typography>
 
 
-          <Typography variant="body2" sx={{ mb: 1 }}>
+          <Typography variant="body1" sx={{ mb: 1 }}>
             Age: {listing.age}
           </Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>
+          <Typography variant="body1" sx={{ mb: 1 }}>
             Gender: {listing.gender}
           </Typography>
 
-          <Typography variant="body2" sx={{ mb: 1 }}>
+          <Typography variant="body1" sx={{ mb: 1 }}>
             Breed: {listing.breed.name}
           </Typography>
 
-          <Typography variant="body2" sx={{ mb: 1 }}>
+          <Typography variant="body1" sx={{ mb: 1 }}>
             Species: {listing.species}
           </Typography>
           <Typography variant="body1" sx={{ mb: 1 }}>
-            Address: {listing.shelter?.address?.street || ''} {listing.shelter?.address?.ward || ''} {listing.shelter?.address?.city || ''} {listing.shelter?.address?.latitude || ''} {listing.shelter?.address?.longitude || ''}
+            Address: {listing.shelter?.address?.street || ''} {listing.shelter?.address?.ward || ''} {listing.shelter?.address?.city || ''}
           </Typography>
 
           {/* <Chip

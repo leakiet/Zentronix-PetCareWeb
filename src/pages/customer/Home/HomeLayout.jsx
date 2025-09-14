@@ -14,7 +14,7 @@ import Testimonials from './Testimonials/Testimonials'
 import PetCareSteps from './PetCareSteps/PetCareSteps'
 import theme from '~/theme'
 import { useNavigate } from 'react-router-dom'
-import VideoTop from './VideoTop/VideoTop'
+import VideoTop from './Hero/Hero'
 const HomeLayout = () => {
   const navigate = useNavigate()
   return (

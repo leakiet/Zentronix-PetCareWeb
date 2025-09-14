@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Box,
-  Container,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  Tabs,
-  Tab,
-  Button,
-  Chip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Alert,
-  Snackbar,
-  Avatar,
-  CircularProgress
-} from '@mui/material'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import Button from '@mui/material/Button'
+import Chip from '@mui/material/Chip'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
+import TextField from '@mui/material/TextField'
+import Alert from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
+import Avatar from '@mui/material/Avatar'
+import CircularProgress from '@mui/material/CircularProgress'
 import {
   LocalHospital as LocalHospitalIcon,
   Event as EventIcon,
@@ -81,15 +79,17 @@ const VetManageLayout = () => {
     try {
       const [appointmentsRes, upcomingRes] = await Promise.all([
         getAppointmentsByVetIdAPI(currentUser.id),
-        getUpcomingAppointmentsByVetIdAPI(currentUser.id)
+        // getUpcomingAppointmentsByVetIdAPI(currentUser.id)
       ])
 
       setAppointments(appointmentsRes || [])
-      setUpcomingAppointments(upcomingRes || [])
+      // setUpcomingAppointments(upcomingRes || [])
+      const upcoming = appointmentsRes?.filter(app => app.status === 'SCHEDULED' && dayjs(app.appointmentTime).isAfter(dayjs()))
+      setUpcomingAppointments(upcoming || [])
 
-      const allPetIds = [...new Set([
+      const allPetIds = [...new Set([ 
         ...appointmentsRes.map(app => app.pet?.id),
-        ...upcomingRes.map(app => app.pet?.id)
+        ...upcoming.map(app => app.pet?.id)
       ].filter(id => id))]
 
       if (allPetIds.length > 0) {
@@ -188,7 +188,6 @@ const VetManageLayout = () => {
     }
 
     try {
-      // Tạo health record trước
       const data = {
         petId: selectedAppointment.pet.id,
         vetId: currentUser.id,
@@ -204,11 +203,9 @@ const VetManageLayout = () => {
       await createHealthRecordAPI(data)
       showSnackbar('Health record created successfully')
 
-      // Sau đó complete appointment
       await updateAppointmentStatusAPI(selectedAppointment.id, 'COMPLETED')
       showSnackbar('Appointment completed successfully')
 
-      // Reset dialog
       setHealthRecordDialog(false)
       setSelectedAppointment(null)
       setHealthRecordData({ diagnosis: '', treatment: '', notes: '' })
@@ -222,7 +219,6 @@ const VetManageLayout = () => {
     return dayjs(dateTime).format('MMM DD, YYYY HH:mm')
   }
 
-  // Show loading if user data is not available yet
   if (!currentUser) {
     return (
       <Container maxWidth="xl" sx={{ py: 4, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
