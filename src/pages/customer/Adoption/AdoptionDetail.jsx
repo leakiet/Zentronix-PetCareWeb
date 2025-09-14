@@ -165,11 +165,11 @@ const AdoptionDetail = () => {
               <Typography variant="body1" sx={{ mb: 1 }}>
                 <HomeIcon sx={{ mr: 1, fontSize: 20 }} /> Address: {listing.shelter?.address?.street || ''} {listing.shelter?.address?.ward || ''} {listing.shelter?.address?.city || ''} {listing.shelter?.address?.latitude || ''} {listing.shelter?.address?.longitude || ''}
               </Typography>
-              <Chip
+              {/* <Chip
                 label={listing.adoptionStatus}
                 color={listing.adoptionStatus === 'AVAILABLE' ? 'success' : 'default'}
                 sx={{ mb: 2, fontWeight: 'bold' }}
-              />
+              /> */}
             </CardContent>
             <Button
               variant="contained"

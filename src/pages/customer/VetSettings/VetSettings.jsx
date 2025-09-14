@@ -30,7 +30,6 @@ import {
   InputLabel
 } from '@mui/material'
 
-// Thêm enum để đồng bộ với backend Specialization.java
 const SpecializationEnum = {
   GENERAL_CHECKUP: 'GENERAL_CHECKUP',
   VACCINATION: 'VACCINATION',
@@ -59,34 +58,45 @@ function VetSettings() {
     website: '',
     openingHours: '',
     servicesOffered: '',
-    address: '' // Thêm address vào formData
+    address: ''
   })
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchClinicInfo = async () => {
       if (currentCustomer?.id) {
+        const hasExistingInfo = currentCustomer?.specialization ||
+          currentCustomer?.yearOfExp ||
+          localStorage.getItem(`clinic_info_${currentCustomer.id}`)
+        if (!hasExistingInfo) {
+          return
+        }
+
         try {
           const clinicData = await getClinicInfoByVetIdAPI(currentCustomer.id)
-          setClinicInfo(clinicData)
-          setFormData(prev => ({
-            ...prev,
-            clinicName: clinicData.clinicName || '',
-            address: clinicData.address || '',
-            openingHours: clinicData.openingHours || '',
-            servicesOffered: clinicData.servicesOffered || '',
-            yearOfExp: clinicData.yearOfExp || '',
-            specialization: clinicData.specialization || ''
-          }))
+          if (clinicData) {
+            setClinicInfo(clinicData)
+            setFormData(prev => ({
+              ...prev,
+              clinicName: clinicData.clinicName || '',
+              address: clinicData.address || '',
+              openingHours: clinicData.openingHours || '',
+              servicesOffered: clinicData.servicesOffered || '',
+              yearOfExp: clinicData.yearOfExp || '',
+              specialization: clinicData.specialization || ''
+            }))
 
-          if (clinicData.openingHours) {
-            const timeRange = clinicData.openingHours.split(' - ')
-            if (timeRange.length === 2) {
-              const startTime = dayjs(`2022-01-01 ${timeRange[0]}`)
-              const endTime = dayjs(`2022-01-01 ${timeRange[1]}`)
-              setOpeningHoursValue(startTime)
-              setClosingHoursValue(endTime)
+            if (clinicData.openingHours) {
+              const timeRange = clinicData.openingHours.split(' - ')
+              if (timeRange.length === 2) {
+                const startTime = dayjs(`2022-01-01 ${timeRange[0]}`)
+                const endTime = dayjs(`2022-01-01 ${timeRange[1]}`)
+                setOpeningHoursValue(startTime)
+                setClosingHoursValue(endTime)
+              }
             }
+
+            localStorage.setItem(`clinic_info_${currentCustomer.id}`, 'true')
           }
         } catch (error) {
           console.log('No clinic info found for this vet')
@@ -131,8 +141,8 @@ function VetSettings() {
       const clinicData = {
         clinicName: formData.clinicName,
         address: formData.address,
-        yearOfExp: formData.yearOfExp, // Sửa từ formData.experience thành formData.yearOfExp
-        specialization: formData.specialization, // Đảm bảo là string từ enum
+        yearOfExp: formData.yearOfExp,
+        specialization: formData.specialization,
         openingHours: formData.openingHours,
         servicesOffered: formData.servicesOffered,
         veterinarianId: currentCustomer?.id
@@ -141,11 +151,13 @@ function VetSettings() {
       if (clinicInfo?.id) {
         await updateClinicInfoAPI(clinicInfo.id, clinicData)
         toast.success('Clinic information updated successfully!')
+        navigate('/vet-appointments')
       } else {
         const newClinic = await createClinicInfoAPI(clinicData)
         setClinicInfo(newClinic)
         toast.success('Clinic information created successfully!')
-        // navigate('/') // Bỏ navigate để tránh chuyển trang không mong muốn
+
+        localStorage.setItem(`clinic_info_${currentCustomer.id}`, 'true')
       }
     } catch (error) {
       console.error('Error saving clinic info:', error)
@@ -266,7 +278,7 @@ function VetSettings() {
             </Grid>
 
             {/* Address Information */}
-            <Grid size={12}>
+            {/* <Grid size={12}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
@@ -283,7 +295,7 @@ function VetSettings() {
                   />
                 </CardContent>
               </Card>
-            </Grid>
+            </Grid> */}
 
             {/* Save Button */}
             <Grid size={12}>

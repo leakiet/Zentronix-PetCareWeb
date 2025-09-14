@@ -41,7 +41,8 @@ import {
   fetPetsByCustomerId,
   createAppointmentAPI,
   getAppointmentsByPetIdAPI,
-  searchClinicInfosAPI
+  searchClinicInfosAPI,
+  getClinicInfoALlAPI
 } from '~/apis'
 import { selectCurrentCustomer } from '~/redux/user/customerSlice'
 import AppBar from '~/components/AppBar/AppBar'
@@ -100,6 +101,7 @@ const ScheduleLayout = () => {
   const [loading, setLoading] = useState(false)
   const [bookingDialog, setBookingDialog] = useState(false)
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' })
+  const [allVets, setAllVets] = useState([])
 
   const currentUser = useSelector(selectCurrentCustomer)
 
@@ -107,14 +109,18 @@ const ScheduleLayout = () => {
   useEffect(() => {
     if (currentUser?.id) {
       fetchUserPets()
+      fetchAllVets()
     }
   }, [currentUser])
 
   useEffect(() => {
-    if (selectedPet && appointmentData.petCondition) {
-      fetchAvailableVets()
+    if (appointmentData.petCondition && allVets.length > 0) {
+      filterVetsByCondition()
+    } else {
+      setAvailableVets(allVets)
     }
-  }, [selectedPet, appointmentData.petCondition])
+  }, [appointmentData.petCondition, allVets])
+
   const fetchUserPets = async () => {
     if (!currentUser?.id) return
 
@@ -129,6 +135,48 @@ const ScheduleLayout = () => {
     }
   }
 
+  const fetchAllVets = async () => {
+    try {
+      setLoading(true)
+      const clinics = await getClinicInfoALlAPI()
+
+      const vets = clinics
+        .filter(clinic => clinic.veterinarians && clinic.veterinarians.role === 'VET')
+        .map(clinic => {
+          const veterinarians = clinic.veterinarians
+          return {
+            ...veterinarians,
+            clinic: {
+              ...clinic,
+              openingHours: clinic.openingHours
+            }
+          }
+        })
+
+      setAllVets(vets || [])
+      setAvailableVets(vets || [])
+    } catch (error) {
+      console.error('Error fetching all vets:', error)
+      showSnackbar('Error loading veterinarians', 'error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const filterVetsByCondition = () => {
+    if (!appointmentData.petCondition || !allVets.length) {
+      setAvailableVets(allVets)
+      return
+    }
+
+    const specialization = mapPetConditionToSpecialization(appointmentData.petCondition)
+
+    const filteredVets = allVets.filter(vet => {
+      return vet.clinic?.specialization === specialization
+    })
+
+    setAvailableVets(filteredVets)
+  }
 
   const mapPetConditionToSpecialization = (petCondition) => {
     const mapping = {
@@ -144,53 +192,6 @@ const ScheduleLayout = () => {
       'Other': 'OTHERS'
     }
     return mapping[petCondition] || 'GENERAL_CHECKUP'
-  }
-
-  const fetchAvailableVets = async () => {
-    if (!selectedPet || !appointmentData.petCondition) return
-
-    try {
-      setLoading(true)
-
-      const specialization = mapPetConditionToSpecialization(appointmentData.petCondition)
-      const location = formatLocation(currentUser?.location || currentUser?.address)
-
-      const clinics = await searchClinicInfosAPI({
-        specialization: specialization,
-        location: location
-      })
-
-      const vets = clinics.flatMap(clinic => {
-        const veterinarians = clinic.veterinarians
-
-        if (Array.isArray(veterinarians)) {
-          return veterinarians.map(vet => ({
-            ...vet,
-            clinic: {
-              ...clinic,
-              openingHours: clinic.openingHours
-            }
-          }))
-        } else if (veterinarians && typeof veterinarians === 'object') {
-          return [{
-            ...veterinarians,
-            clinic: {
-              ...clinic,
-              openingHours: clinic.openingHours
-            }
-          }]
-        } else {
-          return []
-        }
-      }).filter(vet => vet && vet.role === 'VET')
-
-      setAvailableVets(vets || [])
-    } catch (error) {
-      console.error('Error in fetchAvailableVets:', error)
-      showSnackbar('Error loading available vets', 'error')
-    } finally {
-      setLoading(false)
-    }
   }
 
   const showSnackbar = (message, severity = 'success') => {
@@ -260,22 +261,22 @@ const ScheduleLayout = () => {
     'Other'
   ]
 
-  if (!currentUser) {
-    return (
-      <Box sx={{ bgcolor: theme.palette.background.default, color: theme.palette.text.primary, minHeight: '100vh', fontFamily: '"Poppins", sans-serif' }}>
-        <AppBar />
-        <Box sx={{ maxWidth: '1380px', mx: 'auto', px: 2, py: 6, mt: theme.fitbowl.appBarHeight, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-          <Box sx={{ textAlign: 'center' }}>
-            <CircularProgress size={60} sx={{ mb: 2 }} />
-            <Typography variant="h6" color="text.secondary">
-              Loading scheduling page...
-            </Typography>
-          </Box>
-        </Box>
-        <Footer />
-      </Box>
-    )
-  }
+  // if (!currentUser) {
+  //   return (
+  //     <Box sx={{ bgcolor: theme.palette.background.default, color: theme.palette.text.primary, minHeight: '100vh', fontFamily: '"Poppins", sans-serif' }}>
+  //       <AppBar />
+  //       <Box sx={{ maxWidth: '1380px', mx: 'auto', px: 2, py: 6, mt: theme.fitbowl.appBarHeight, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+  //         <Box sx={{ textAlign: 'center' }}>
+  //           <CircularProgress size={60} sx={{ mb: 2 }} />
+  //           <Typography variant="h6" color="text.secondary">
+  //             Loading scheduling page...
+  //           </Typography>
+  //         </Box>
+  //       </Box>
+  //       <Footer />
+  //     </Box>
+  //   )
+  // }
 
   return (
     <Box sx={{ bgcolor: theme.palette.background.default, color: theme.palette.text.primary, minHeight: '100vh', fontFamily: '"Poppins", sans-serif' }}>
@@ -528,19 +529,42 @@ const ScheduleLayout = () => {
                     <Grid container spacing={3}>
                       <Grid size={{ xs: 12, md: 6 }}>
                         <FormControl fullWidth>
-                          <InputLabel>Pet Condition *</InputLabel>
+                          <InputLabel>Pet Condition</InputLabel>
                           <Select
                             value={appointmentData.petCondition}
-                            label="Pet Condition *"
+                            label="Pet Condition"
                             onChange={(e) => setAppointmentData(prev => ({ ...prev, petCondition: e.target.value }))}
                           >
-                            {getPetConditionOptions().map((condition) => (
-                              <MenuItem key={condition} value={condition}>
-                                {condition}
-                              </MenuItem>
-                            ))}
+                            <MenuItem value="">
+                              <em>All Conditions (Show all vets - {allVets.length})</em>
+                            </MenuItem>
+                            {getPetConditionOptions().map((condition) => {
+                              const specialization = mapPetConditionToSpecialization(condition)
+                              const specialistCount = allVets.filter(vet => vet.clinic?.specialization === specialization).length
+
+                              return (
+                                <MenuItem key={condition} value={condition}>
+                                  {condition} {specialistCount > 0 ? `(${specialistCount} specialists)` : '(Not found vet)'}
+                                </MenuItem>
+                              )
+                            })}
                           </Select>
                         </FormControl>
+                        {/* {!appointmentData.petCondition && (
+                          <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                            Select a condition to filter vets by specialization
+                          </Typography>
+                        )}
+                        {appointmentData.petCondition && availableVets.length > 0 && (
+                          <Typography variant="caption" color="primary" sx={{ mt: 1, display: 'block' }}>
+                            Showing {availableVets.length} vets specialized in {appointmentData.petCondition}
+                          </Typography>
+                        )}
+                        {appointmentData.petCondition && availableVets.length === 0 && (
+                          <Typography variant="caption" color="error" sx={{ mt: 1, display: 'block' }}>
+                            No specialists found for {appointmentData.petCondition}
+                          </Typography>
+                        )} */}
                       </Grid>
                       <Grid size={{ xs: 12, md: 6 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
@@ -558,94 +582,140 @@ const ScheduleLayout = () => {
                 </Card>
 
                 {/* Available Veterinarians */}
-                {availableVets.length === 0 ? (
+                {allVets.length === 0 ? (
                   <Card>
                     <CardContent sx={{ textAlign: 'center', py: 6 }}>
                       <MedicalIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
                       <Typography variant="h6" color="text.secondary">
-                        No veterinarians available
+                        No veterinarians found
                       </Typography>
                       <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                        Try adjusting your pet condition or location.
+                        No veterinarians available in the system.
                       </Typography>
                     </CardContent>
                   </Card>
                 ) : (
-                  <Grid container spacing={3}>
-                    {availableVets.map((vet) => (
-                      <Grid size={{ xs: 12, md: 6 }} key={vet.id}>
-                        <Card
-                          sx={{
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease',
-                            '&:hover': {
-                              transform: 'translateY(-4px)',
-                              boxShadow: 3
-                            },
-                            border: selectedVet?.id === vet.id ? 2 : 1,
-                            borderColor: selectedVet?.id === vet.id ? 'primary.main' : 'grey.300'
-                          }}
-                          onClick={() => handleVetSelect(vet)}
-                        >
-                          <CardContent>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                              <Avatar sx={{ bgcolor: 'primary.main' }}>
-                                <PersonIcon />
-                              </Avatar>
-                              <Box sx={{ flex: 1 }}>
-                                <Typography variant="h6">{vet.fullName}</Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                  {vet.clinic?.specialization || 'General Veterinarian'}
-                                </Typography>
-                              </Box>
-                            </Box>
+                  <>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                      <Typography variant="h6">
+                        {appointmentData.petCondition
+                          ? `Veterinarians specialized in ${appointmentData.petCondition}`
+                          : 'All Available Veterinarians'}
+                      </Typography>
+                      <Chip
+                        label={`${availableVets.length} found`}
+                        color="primary"
+                        variant="outlined"
+                      />
+                    </Box>
 
-                            {vet.clinic?.clinicName && (
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                                <MedicalIcon fontSize="small" />
-                                <Typography variant="body2" color="text.secondary">
-                                  {vet.clinic.clinicName}
-                                </Typography>
-                              </Box>
-                            )}
+                    {availableVets.length === 0 ? (
+                      <Card>
+                        <CardContent sx={{ textAlign: 'center', py: 4 }}>
+                          <MedicalIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 1 }} />
+                          <Typography variant="body1" color="text.secondary">
+                            No specialists found for {appointmentData.petCondition}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                            Try selecting a different condition or &quot;All Conditions&quot;
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    ) : (
+                      <Grid container spacing={3}>
+                        {availableVets.map((vet) => (
+                          <Grid size={{ xs: 12, md: 6 }} key={vet.id}>
+                            <Card
+                              sx={{
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                '&:hover': {
+                                  transform: 'translateY(-4px)',
+                                  boxShadow: 3
+                                },
+                                border: selectedVet?.id === vet.id ? 2 : 1,
+                                borderColor: selectedVet?.id === vet.id ? 'primary.main' : 'grey.300'
+                              }}
+                              onClick={() => handleVetSelect(vet)}
+                            >
+                              <CardContent>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                                  <Avatar sx={{ bgcolor: 'primary.main' }}>
+                                    <PersonIcon />
+                                  </Avatar>
+                                  <Box sx={{ flex: 1 }}>
+                                    <Typography variant="h6">{vet.fullName}</Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                      {vet.clinic?.specialization || 'General Veterinarian'}
+                                    </Typography>
+                                    <Box sx={{ display: 'flex', gap: 0.5, mt: 0.5 }}>
+                                      <Chip
+                                        label="VET"
+                                        size="small"
+                                        color="success"
+                                        variant="outlined"
+                                      />
+                                      {appointmentData.petCondition &&
+                                        vet.clinic?.specialization === mapPetConditionToSpecialization(appointmentData.petCondition) && (
+                                          <Chip
+                                            label="SPECIALIST"
+                                            size="small"
+                                            color="primary"
+                                            variant="filled"
+                                          />
+                                        )}
+                                    </Box>
+                                  </Box>
+                                </Box>
 
-                            {vet.clinic?.openingHours && (
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                                <TimeIcon fontSize="small" />
-                                <Typography variant="body2" color="text.secondary">
-                                  {vet.clinic.openingHours}
-                                </Typography>
-                              </Box>
-                            )}
+                                {vet.clinic?.clinicName && (
+                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                                    <MedicalIcon fontSize="small" />
+                                    <Typography variant="body2" color="text.secondary">
+                                      {vet.clinic.clinicName}
+                                    </Typography>
+                                  </Box>
+                                )}
 
-                            {vet.address && (
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                                <LocationIcon fontSize="small" />
-                                <Typography variant="body2" color="text.secondary">
-                                  {formatLocation(vet.address)}
-                                </Typography>
-                              </Box>
-                            )}
+                                {vet.clinic?.openingHours && (
+                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                                    <TimeIcon fontSize="small" />
+                                    <Typography variant="body2" color="text.secondary">
+                                      {vet.clinic.openingHours || 'Contact for hours'}
+                                    </Typography>
+                                  </Box>
+                                )}
 
-                            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                              <Chip
-                                label="Available Today"
-                                size="small"
-                                color="success"
-                                variant="outlined"
-                              />
-                              <Chip
-                                label={`Exp: ${vet.experience || '5+'} years`}
-                                size="small"
-                                color="info"
-                                variant="outlined"
-                              />
-                            </Box>
-                          </CardContent>
-                        </Card>
+                                {(vet.address || vet.clinic?.address) && (
+                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                                    <LocationIcon fontSize="small" />
+                                    <Typography variant="body2" color="text.secondary">
+                                      {formatLocation(vet.address || vet.clinic?.address)}
+                                    </Typography>
+                                  </Box>
+                                )}
+
+                                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                                  <Chip
+                                    label="Available"
+                                    size="small"
+                                    color="success"
+                                    variant="outlined"
+                                  />
+                                  <Chip
+                                    label={`Exp: ${vet.clinic?.yearOfExp || '5+'} years`}
+                                    size="small"
+                                    color="info"
+                                    variant="outlined"
+                                  />
+                                </Box>
+                              </CardContent>
+                            </Card>
+                          </Grid>
+                        ))}
                       </Grid>
-                    ))}
-                  </Grid>
+                    )}
+                  </>
                 )}
               </Box>
             )}
