@@ -18,7 +18,6 @@ import { Pets, Male, Female } from '@mui/icons-material'
  */
 function AdoptionPetCard({ pet, onAdoptClick }) {
   const navigate = useNavigate()
-  console.log('AdoptionPetCard rendered for pet:', pet.petName, pet)
 
   const handleAdoptClick = () => {
     console.log('Adopt clicked for pet:', pet.petName, 'ID:', pet.id || pet.petId)

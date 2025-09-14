@@ -13,10 +13,7 @@ import AdoptionPetCard from './AdoptionPetCard'
  * @param {Function} onAdoptClick - Callback when adopt button is clicked on any pet
  */
 function AdoptionListingsDisplay({ adoptionData, onAdoptClick }) {
-  console.log('AdoptionListingsDisplay rendered with:', adoptionData)
-
   if (!adoptionData || !adoptionData.adoption || adoptionData.adoption.length === 0) {
-    console.log('AdoptionListingsDisplay: No adoption data or empty array, showing alert')
     return (
       <Alert severity="info" sx={{ mb: 2 }}>
         {adoptionData?.message || 'No pets available for adoption at this time.'}
@@ -24,7 +21,7 @@ function AdoptionListingsDisplay({ adoptionData, onAdoptClick }) {
     )
   }
 
-  console.log('AdoptionListingsDisplay: Rendering', adoptionData.adoption.length, 'pet cards')
+
 
   const handleAdoptClick = (pet) => {
     if (onAdoptClick) {

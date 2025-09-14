@@ -109,18 +109,15 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
       if (savedConversationId) {
         dispatch(setConversationId(savedConversationId))
         setAnimationConvId(savedConversationId)
-        console.log('Loaded conversation for user:', customerEmail, 'ID:', savedConversationId)
       }
 
       if (savedMessages) {
         const parsedMessages = JSON.parse(savedMessages)
         dispatch(setMessages(parsedMessages))
-        console.log('Loaded messages for user:', customerEmail, 'count:', parsedMessages.length)
       }
 
       if (savedChatMode) {
         dispatch(setChatMode(savedChatMode))
-        console.log('Loaded chatMode for user:', customerEmail, 'mode:', savedChatMode)
       }
     } else {
       // Nếu không có user đăng nhập, clear state
@@ -142,7 +139,6 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
     if (customerEmail && messages.length > 0) {
       const userMessagesKey = `messages_${customerEmail}`
       localStorage.setItem(userMessagesKey, JSON.stringify(messages))
-      console.log('Saved messages for user:', customerEmail, 'count:', messages.length)
     }
   }, [messages, customerEmail])
 
@@ -150,7 +146,6 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
     if (customerEmail && reduxConversationId) {
       const userConversationKey = `conversation_${customerEmail}`
       localStorage.setItem(userConversationKey, reduxConversationId)
-      console.log('Saved conversationId for user:', customerEmail, 'ID:', reduxConversationId)
     }
   }, [reduxConversationId, customerEmail])
 
@@ -190,13 +185,11 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
   useEffect(() => {
     if (!animationConvId) return
 
-    console.log('Loading messages for conversationId:', animationConvId)
 
     // Load messages từ server
     dispatch(setIsLoading(true))
     fetchMessagesPaged(animationConvId, 0, PAGE_SIZE).then((data) => {
       const loadedMessages = [...data.content].reverse()
-      console.log('Loaded messages from server:', loadedMessages.length)
 
       // Set messages từ server, giữ lại pending messages nếu có
       dispatch(setMessages([...loadedMessages, ...messages.filter(m => m.status === 'pending')]))
@@ -251,11 +244,9 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
   // Xử lý tin nhắn từ websocket
   const handleIncoming = useCallback(
     (msg) => {
-      console.log('Received WebSocket message:', msg)
 
       // Handle typing events
       if (msg.type === 'TYPING_START') {
-        console.log('Typing start event received:', msg)
         dispatch(setTypingStart({
           conversationId: msg.conversationId,
           message: msg.message || 'AI is typing...',
@@ -266,7 +257,6 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
       }
 
       if (msg.type === 'TYPING_STOP') {
-        console.log('Typing stop event received:', msg)
         dispatch(setTypingStop({
           conversationId: msg.conversationId
         }))
@@ -274,7 +264,6 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
       }
 
       if (msg.type === 'TYPING_SYNC') {
-        console.log('Typing sync event received:', msg)
         dispatch(setTypingState({
           conversationId: msg.conversationId,
           isTyping: msg.isTyping,
@@ -295,7 +284,6 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
       )
 
       if (isDuplicate) {
-        console.log('Duplicate message detected, skipping:', msg.id || 'no-id', 'content:', msg.message || msg.content)
         return
       }
 
@@ -314,7 +302,6 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
                         m.senderRole === 'PET_OWNER')
             .map(m => m.id)
 
-          console.log('Removing pending messages:', pendingToRemove)
           pendingToRemove.forEach(id => {
             dispatch(removePendingMessage(id))
           })
@@ -325,7 +312,7 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
       dispatch(addMessage({
         ...msg,
         senderRole: msg.sender === 'PetCare AI' ? 'AI' : 'PET_OWNER',
-        adoptionData: msg.adoptionData // Ensure WebSocket adoptionData is included
+        adoptionData: msg.adoptionData
       }))
 
       // Cập nhật awaitingAI state và typing state
@@ -352,7 +339,6 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
   const handleSend = useCallback(async () => {
     const text = input.trim()
     if (!text) {
-      console.error('Message cannot be empty')
       return
     }
 
@@ -360,7 +346,6 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
     const tempId = `temp-${Date.now()}`
 
     // Add pending message to Redux
-    console.log('Adding pending message:', tempId, 'content:', text)
     dispatch(addMessage({
       id: tempId,
       conversationId: animationConvId,
@@ -390,11 +375,9 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
       const response = await sendMessage(params)
 
       // ✅ Xử lý response trực tiếp thay vì chờ WebSocket
-      console.log('Received response from BE:', response)
 
       // Cập nhật conversationId nếu đây là lần đầu gửi (conversationId ban đầu null)
       if (!animationConvId && response.conversationId) {
-        console.log('New conversation created:', response.conversationId)
         setAnimationConvId(response.conversationId)
         dispatch(setConversationId(response.conversationId))
 
@@ -402,17 +385,14 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
         if (customerEmail) {
           const userConversationKey = `conversation_${customerEmail}`
           localStorage.setItem(userConversationKey, response.conversationId)
-          console.log('Saved conversationId for user:', customerEmail, 'ID:', response.conversationId)
         }
 
         dispatch(setIsCreatingConversation(false))
       }
 
       // ✅ Xử lý response để hiển thị message ngay lập tức
-      console.log('Processing HTTP response for tempId:', tempId, 'response:', response)
 
       // Thay thế pending message bằng message từ server
-      console.log('Updating pending message to sent:', tempId)
       dispatch(updateMessage({
         id: tempId,
         status: 'sent',
@@ -422,8 +402,6 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
 
       // Nếu response có message từ AI, thêm message mới
       if (response.sender === 'PetCare AI' || response.isFromAI) {
-        console.log('Adding AI response message:', response.messageId)
-        console.log('AI response adoptionData:', response.adoptionData) // Debug log
         dispatch(addMessage({
           id: response.messageId || Date.now(),
           conversationId: response.conversationId,
@@ -433,7 +411,7 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
           timestamp: response.timestamp,
           status: 'sent',
           isFromAI: true,
-          adoptionData: response.adoptionData // ⭐ ADD THIS LINE!
+          adoptionData: response.adoptionData
         }))
       }
 
@@ -540,11 +518,6 @@ function ChatWidget({ conversationId = null, initialMode = 'AI' }) {
           const messageType = getMessageType(m)
           const content = m.content || m.message
           const hasAdoptionData = m.adoptionData && m.adoptionData.adoption && m.adoptionData.adoption.length > 0
-
-          // Debug log for adoption data
-          if (hasAdoptionData) {
-            console.log('Rendering message with adoption data:', m.id, 'pets:', m.adoptionData.adoption.length)
-          }
 
           return (
             <ListItem key={`${m.id}-${idx}`} sx={{ px: 0, py: 0.5 }}>
