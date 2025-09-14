@@ -1,19 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  CardMedia,
-  Avatar,
-  Button,
-  Chip,
-  CircularProgress,
-  Alert,
-  Grid
-} from '@mui/material'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import Chip from '@mui/material/Chip'
+import CircularProgress from '@mui/material/CircularProgress'
+import Alert from '@mui/material/Alert'
+import Grid from '@mui/material/Grid'
 import { CheckCircle, Cancel, Edit } from '@mui/icons-material'
 import { selectCurrentCustomer } from '~/redux/user/customerSlice'
 import { getRequestsByAdoptionListingIdAPI, updateAdoptionRequestStatusAPI, approveAdoptionRequestAndRejectOthersAPI } from '~/apis'

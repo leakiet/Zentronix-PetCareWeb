@@ -2,18 +2,16 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import {
-  TextField,
-  Button,
-  Box,
-  Typography,
-  MenuItem,
-  Paper,
-  CircularProgress,
-  Grid,
-  Modal,
-  Slider
-} from '@mui/material'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import MenuItem from '@mui/material/MenuItem'
+import Paper from '@mui/material/Paper'
+import CircularProgress from '@mui/material/CircularProgress'
+import Grid from '@mui/material/Grid'
+import Modal from '@mui/material/Modal'
+import Slider from '@mui/material/Slider'
 import { toast } from 'react-toastify'
 import Cropper from 'react-easy-crop'
 import getCroppedImg from '~/utils/getCroppedImg'
