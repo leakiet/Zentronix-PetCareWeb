@@ -20,7 +20,7 @@ const PetCarePackages = () => {
   const carePackages = [
     {
       title: 'Basic Care',
-      price: '$29/month',
+      price: '29,000 VND/month',
       icon: <HealthAndSafety sx={{ fontSize: 48, color: theme.palette.primary.secondary }} />,
       features: [
         'Health monitoring dashboard',
@@ -34,7 +34,7 @@ const PetCarePackages = () => {
     },
     {
       title: 'Premium Care',
-      price: '$59/month',
+      price: '59,000 VND/month',
       icon: <Pets sx={{ fontSize: 48, color: theme.palette.primary.secondary }} />,
       features: [
         'Everything in Basic Care',
@@ -49,7 +49,7 @@ const PetCarePackages = () => {
     },
     {
       title: 'Ultimate Protection',
-      price: '$99/month',
+      price: '99,000 VND/month',
       icon: <Support sx={{ fontSize: 48, color: theme.palette.primary.secondary }} />,
       features: [
         'Everything in Premium Care',
@@ -183,7 +183,7 @@ const PetCarePackages = () => {
                   </Box>
 
                   <Button
-                    variant={pkg.popular ? "contained" : "outlined"}
+                    variant={pkg.popular ? 'contained' : 'outlined'}
                     fullWidth
                     size="large"
                     onClick={() => navigate('/contact')}

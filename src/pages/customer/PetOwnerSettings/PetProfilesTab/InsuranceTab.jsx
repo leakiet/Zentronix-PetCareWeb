@@ -25,7 +25,7 @@ function InsuranceTab({
                 <strong>Coverage:</strong> {policy.coverage}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                <strong>Deductible:</strong> ${policy.deductible || 'N/A'}
+                <strong>Deductible:</strong> {policy.deductible || 'N/A'} VND
               </Typography>
               <Typography variant="body2" color="primary" sx={{ mt: 1 }}>
                 <strong>Expires:</strong> {new Date(policy.endDate).toLocaleDateString()}

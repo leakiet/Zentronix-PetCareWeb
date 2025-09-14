@@ -166,7 +166,7 @@ const HomeLayout = () => {
                   Smart AI Pet Consultation
                 </Typography>
                 <Typography sx={{ mb: 3, color: theme.palette.text.textSub }}>
-                  Get instant AI-powered advice for your pet's health, nutrition, and behavior concerns from certified pet care experts.
+                  Get instant AI-powered advice for your pet&apos;s health, nutrition, and behavior concerns from certified pet care experts.
                 </Typography>
                 <Button
                   variant="outlined"
@@ -245,7 +245,7 @@ const HomeLayout = () => {
                   AI-Powered Health Monitoring
                 </Typography>
                 <Typography sx={{ mb: 3, color: theme.palette.text.textSub }}>
-                  Advanced artificial intelligence continuously monitors your pet's health, detecting potential issues before they become serious problems.
+                  Advanced artificial intelligence continuously monitors your pet&apos;s health, detecting potential issues before they become serious problems.
                 </Typography>
               </Card>
             </Grid>

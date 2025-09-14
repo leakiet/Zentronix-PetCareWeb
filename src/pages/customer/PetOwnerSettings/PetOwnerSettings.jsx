@@ -48,12 +48,43 @@ export default function PetOwnerSettings() {
     <>
       <ResponsiveAppBar />
       <Container maxWidth="lg" sx={{ py: 4, pt: 10 }}>
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-            Pet Owner Dashboard
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontWeight: 'bold',
+              color: 'primary.main',
+              mb: 2,
+              backgroundColor: 'primary.main',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              textAlign: 'center'
+            }}
+          >
+            🐾 My Pet Care Hub
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-            Manage your pets&apos; profiles, health records, and insurance information
+
+          <Box sx={{
+            width: '100px',
+            height: '4px',
+            backgroundColor: 'primary.main',
+            borderRadius: '2px',
+            mx: 'auto',
+            mb: 3
+          }} />
+
+          <Typography
+            variant="h6"
+            color="text.secondary"
+            sx={{
+              mb: 4,
+              fontStyle: 'italic',
+              textAlign: 'center',
+              maxWidth: '600px',
+              mx: 'auto'
+            }}
+          >
+            Your one-stop destination to manage your pets&apos; profiles, health records, and care services
           </Typography>
 
           <Paper sx={{ width: '100%' }}>

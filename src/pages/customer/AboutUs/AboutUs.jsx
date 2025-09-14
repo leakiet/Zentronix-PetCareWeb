@@ -46,7 +46,7 @@ const AboutUs = () => {
               fontSize: '1.2rem'
             }}
           >
-            We're your trusted partner in pet wellness, providing comprehensive AI-driven solutions that protect and care for your beloved companions, tailored to their unique needs and personalities.
+            We are your trusted partner in pet wellness, providing comprehensive AI-driven solutions that protect and care for your beloved companions, tailored to their unique needs and personalities.
           </Typography>
           {/* <Button
             variant="text"
@@ -127,7 +127,7 @@ const AboutUs = () => {
               We help you build a loving and protective relationship with your pets.
             </Typography>
             <Typography variant="body1" sx={{ color: '#fff', lineHeight: 1.8 }}>
-              Using advanced AI, Fur Shield creates comprehensive pet care solutions including health monitoring, adoption services, and expert consultation tailored to your pet's unique needs and characteristics. We aim to inspire a deeper connection between you and your pets, empowering you to make conscious choices that protect and nurture your animal companions.
+              Using advanced AI, Fur Shield creates comprehensive pet care solutions including health monitoring, adoption services, and expert consultation tailored to your pet&apos;s unique needs and characteristics. We aim to inspire a deeper connection between you and your pets, empowering you to make conscious choices that protect and nurture your animal companions.
             </Typography>
             <Typography variant="body1" sx={{ color: '#fff', lineHeight: 1.8, mt: 2 }}>
               Our vision is a world where every pet receives the care and protection they deserve, strengthening the human-animal bond one loving connection at a time.
@@ -327,7 +327,7 @@ const AboutUs = () => {
                     Expert Guidance
                   </Typography>
                   <Typography variant="body2" sx={{ color: '#fff' }}>
-                    Our team of veterinary experts and pet care specialists provide clear, actionable guidance to help you make informed decisions for your pet's health and well-being.
+                    Our team of veterinary experts and pet care specialists provide clear, actionable guidance to help you make informed decisions for your pet&apos;s health and well-being.
                   </Typography>
                 </Box>
               </Box>
@@ -363,7 +363,7 @@ const AboutUs = () => {
                   variant="body1"
                   sx={{ color: theme.colorSchemes.light.palette.text.textSub, lineHeight: 1.8 }}
                 >
-                  Our AI technology intelligently monitors your pet's health patterns, analyzing behavior, nutrition, and wellness data. Each insight is carefully processed to provide personalized recommendations that keep your pets healthy and happy.
+                  Our AI technology intelligently monitors your pet&apos;s health patterns, analyzing behavior, nutrition, and wellness data. Each insight is carefully processed to provide personalized recommendations that keep your pets healthy and happy.
                 </Typography>
                 <Typography
                   variant="body1"
