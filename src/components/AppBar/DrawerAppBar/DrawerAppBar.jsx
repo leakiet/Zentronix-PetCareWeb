@@ -16,6 +16,7 @@ import { selectCurrentCustomer, logoutCustomerApi } from '~/redux/user/customerS
 import { useConfirm } from 'material-ui-confirm'
 import { Link, useNavigate } from 'react-router-dom'
 import { USER_ROLE } from '~/utils/constants'
+import { Link } from 'react-router-dom'
 
 const DrawerAppBar = ({ drawerOpen, toggleDrawer }) => {
   const dispatch = useDispatch()
@@ -127,6 +128,22 @@ const DrawerAppBar = ({ drawerOpen, toggleDrawer }) => {
             navItemStyle={navItemStyle}
             label="About Us"
             path="/about-us"
+            label="About Us"
+            path="/about-us"
+          />
+
+          <DrawerAppBarItem
+            toggleDrawer={toggleDrawer}
+            navItemStyle={navItemStyle}
+            label="Contact"
+            path="/contact"
+          />
+
+          <DrawerAppBarItem
+            toggleDrawer={toggleDrawer}
+            navItemStyle={navItemStyle}
+            label="FAQ"
+            path="/faq"
           />
 
           <DrawerAppBarItem

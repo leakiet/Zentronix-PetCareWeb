@@ -58,20 +58,23 @@ const Footer = () => {
             letterSpacing: '0.5px'
           }}
         >
-                    Connect with Pet Care on social media:
+Connect with Fur Shield on social media:
         </Typography>
         <Box>
           {[
-            { icon: <Facebook />, link: '#' },
-            { icon: <Twitter />, link: '#' },
-            { icon: <Instagram />, link: '#' },
-            { icon: <LinkedIn />, link: '#' },
-            { icon: <GitHub />, link: '#' }
+            { icon: <Facebook />, link: 'https://facebook.com/furshield', name: 'Facebook' },
+            { icon: <Twitter />, link: 'https://twitter.com/furshield', name: 'Twitter' },
+            { icon: <Instagram />, link: 'https://instagram.com/furshield', name: 'Instagram' },
+            { icon: <LinkedIn />, link: 'https://linkedin.com/company/furshield', name: 'LinkedIn' },
+            { icon: <GitHub />, link: 'https://github.com/furshield', name: 'GitHub' }
           ].map((item, index) => (
             <Link
               key={index}
               href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
               color="inherit"
+              aria-label={`Follow Fur Shield on ${item.name}`}
               sx={{
                 mx: 2,
                 transition: 'all 0.3s ease',
@@ -101,7 +104,7 @@ const Footer = () => {
                 letterSpacing: '1px'
               }}
             >
-              Pet Care
+              Fur Shield
             </Typography>
             <Typography
               variant="body2"
@@ -111,8 +114,8 @@ const Footer = () => {
                 fontSize: '0.9rem'
               }}
             >
-              A healthy food consultation app that helps you live healthy every day
-              with smart nutritional choices.
+              Your trusted companion for comprehensive pet care solutions,
+              from nutrition and health monitoring to adoption services and veterinary support.
             </Typography>
 
             {/* App Store Buttons */}
@@ -125,14 +128,14 @@ const Footer = () => {
               }}
             >
               <Link
-                href="https://apps.apple.com/app/apple-store/id375380948"
+                href="https://apps.apple.com/app/fur-shield/id123456789" // Placeholder - update with actual App Store ID
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{ display: 'inline-block', mr: 2 }}
               >
                 <img
                   src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-                  alt="Tải từ App Store"
+                  alt="Download Fur Shield on App Store"
                   style={{
                     height: '45px',
                     transition: 'all 0.3s ease',
@@ -142,14 +145,14 @@ const Footer = () => {
               </Link>
 
               <Link
-                href="https://play.google.com/store"
+                href="https://play.google.com/store/apps/details?id=com.furshield.app" // Placeholder - update with actual package name
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{ display: 'inline-block' }}
               >
                 <img
                   src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-                  alt="Tải từ Google Play"
+                  alt="Download Fur Shield on Google Play"
                   style={{
                     height: '45px',
                     transition: 'all 0.3s ease',
@@ -174,14 +177,15 @@ const Footer = () => {
               Features
             </Typography>
             {[
-              'AI Consultation',
-              'Find Food',
-              'Chat History',
-              'Food Information'
+              { label: 'AI Pet Consultation', href: '/chat' },
+              { label: 'Nutrition Guidance', href: '/about-us' },
+              { label: 'Pet Health Tracking', href: '/about-us' },
+              { label: 'Adoption Services', href: '/adoption' },
+              { label: 'Veterinary Support', href: '/schedule' }
             ].map((item, index) => (
               <Link
                 key={index}
-                href="#"
+                href={item.href}
                 variant="body2"
                 display="block"
                 color="inherit"
@@ -195,13 +199,13 @@ const Footer = () => {
                   }
                 }}
               >
-                {item}
+                {item.label}
               </Link>
             ))}
           </Grid>
           <ChatBox />
 
-          {/* Hữu ích */}
+          {/* Useful Links */}
           <Grid size={{ xs: 6, md: 2 }}>
             <Typography
               variant="h6"
@@ -212,13 +216,18 @@ const Footer = () => {
                 fontSize: '1rem'
               }}
             >
-              Useful
+              Useful Links
             </Typography>
-            {['About Us', 'Contact', 'Policy', 'Support'].map(
+            {[
+              { label: 'About Us', href: '/about-us' },
+              { label: 'Contact', href: '/contact' },
+              { label: 'FAQ', href: '/faq' },
+              { label: 'Support', href: '/contact' }
+            ].map(
               (item, index) => (
                 <Link
                   key={index}
-                  href="#"
+                  href={item.href}
                   variant="body2"
                   display="block"
                   color="inherit"
@@ -232,13 +241,13 @@ const Footer = () => {
                     }
                   }}
                 >
-                  {item}
+                  {item.label}
                 </Link>
               )
             )}
           </Grid>
 
-          {/* Liên hệ */}
+          {/* Contact Info */}
           <Grid size={{ xs: 12, md: 4 }}>
             <Typography
               variant="h6"
@@ -248,7 +257,7 @@ const Footer = () => {
                 fontWeight: 600
               }}
             >
-              Contact
+              Get In Touch
             </Typography>
             <Box component="address" sx={{ opacity: 0.8, lineHeight: 1.8 }}>
               <Typography variant="body2" sx={{ mb: 1 }}>
@@ -256,8 +265,8 @@ const Footer = () => {
               </Typography>
               <Typography variant="body2" sx={{ mb: 1 }}>
                 Email:{' '}
-                <Link href="mailto:support@petcare.vn" color="inherit">
-                  support@petcare.vn
+                <Link href="mailto:support@furshield.vn" color="inherit">
+                  support@furshield.vn
                 </Link>
               </Typography>
               <Typography variant="body2">
@@ -268,28 +277,174 @@ const Footer = () => {
               </Typography>
             </Box>
           </Grid>
+
+          {/* Quick Stats */}
+          <Grid container spacing={{ xs: 3, md: 5 }} sx={{ mt: 2 }}>
+            <Grid size={{ xs: 12, md: 4 }}>
+              <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: theme.palette.primary.text,
+                    fontWeight: 600,
+                    mb: 2
+                  }}
+                >
+                  Quick Stats
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>
+                    ✓ 10,000+ Pets Protected
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>
+                    ✓ 50+ Certified Veterinarians
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>
+                    ✓ 24/7 Emergency Support
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>
+                    ✓ AI-Powered Health Monitoring
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 4 }}>
+              <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: theme.palette.primary.text,
+                    fontWeight: 600,
+                    mb: 2
+                  }}
+                >
+                  Business Hours
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>
+                    🕒 Monday - Friday: 8:00 AM - 6:00 PM
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>
+                    🕒 Saturday: 9:00 AM - 4:00 PM
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'white', opacity: 0.8 }}>
+                    🕒 Sunday: Closed
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'white', opacity: 0.8, fontWeight: 'bold' }}>
+                    🚨 Emergency: 24/7 Available
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 4 }}>
+              <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: theme.palette.primary.text,
+                    fontWeight: 600,
+                    mb: 2
+                  }}
+                >
+                  Stay Connected
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: 'white',
+                    opacity: 0.8,
+                    lineHeight: 1.6,
+                    mb: 2
+                  }}
+                >
+                  Subscribe to our newsletter for pet care tips, health updates, and exclusive offers.
+                </Typography>
+                
+              </Box>
+            </Grid>
+          </Grid>
         </Grid>
-      </Container>
+        </Container>
 
       {/* Copyright */}
       <Box
         sx={{
-          py: 2,
+          py: 3,
           backgroundColor: 'rgba(27, 94, 32, 0.3)',
           textAlign: 'center',
           borderTop: '1px solid',
           borderColor: 'rgba(255, 255, 255, 0.1)'
         }}
       >
-        <Typography
-          variant="body2"
-          sx={{
-            color: theme.palette.primary.text,
-            fontSize: '0.875rem'
-          }}
-        >
-          © {new Date().getFullYear()} Pet Care. All rights reserved.
-        </Typography>
+        <Container maxWidth="lg">
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2 }}>
+            <Typography
+              variant="body2"
+              sx={{
+                color: theme.palette.primary.text,
+                fontSize: '0.875rem'
+              }}
+            >
+              © {new Date().getFullYear()} Fur Shield. All rights reserved.
+            </Typography>
+
+            <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', justifyContent: 'center' }}>
+              <Typography
+                variant="body2"
+                component={Link}
+                href="#"
+                sx={{
+                  color: 'white',
+                  opacity: 0.8,
+                  textDecoration: 'none',
+                  fontSize: '0.875rem',
+                  '&:hover': {
+                    opacity: 1,
+                    textDecoration: 'underline'
+                  }
+                }}
+              >
+                Privacy Policy
+              </Typography>
+              <Typography
+                variant="body2"
+                component={Link}
+                href="#"
+                sx={{
+                  color: 'white',
+                  opacity: 0.8,
+                  textDecoration: 'none',
+                  fontSize: '0.875rem',
+                  '&:hover': {
+                    opacity: 1,
+                    textDecoration: 'underline'
+                  }
+                }}
+              >
+                Terms of Service
+              </Typography>
+              <Typography
+                variant="body2"
+                component={Link}
+                href="/contact"
+                sx={{
+                  color: 'white',
+                  opacity: 0.8,
+                  textDecoration: 'none',
+                  fontSize: '0.875rem',
+                  '&:hover': {
+                    opacity: 1,
+                    textDecoration: 'underline'
+                  }
+                }}
+              >
+                Contact Us
+              </Typography>
+            </Box>
+          </Box>
+        </Container>
       </Box>
     </Box>
   )

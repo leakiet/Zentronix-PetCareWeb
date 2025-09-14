@@ -5,13 +5,13 @@ import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
-import RestaurantIcon from '@mui/icons-material/Restaurant'
-import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining'
-import CorporateFareIcon from '@mui/icons-material/CorporateFare'
+import PetsIcon from '@mui/icons-material/Pets'
+import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety'
+import SupportIcon from '@mui/icons-material/Support'
+import { HealthAndSafety, Pets, Support } from '@mui/icons-material'
 import Footer from '~/components/Footer/Footer'
 import Testimonials from './Testimonials/Testimonials'
-import FeaturedMenu from './FeaturedMenu/FeaturedMenu'
-import BowlSection from './BowlSection/BowlSection'
+import PetCareSteps from './PetCareSteps/PetCareSteps'
 import theme from '~/theme'
 import { useNavigate } from 'react-router-dom'
 import VideoTop from './VideoTop/VideoTop'
@@ -45,7 +45,7 @@ const HomeLayout = () => {
               color: theme.palette.primary.main
             }}
           >
-            SERVICES FOR PET CARE
+            FUR SHIELD PET CARE SERVICES
           </Typography>
 
           <Grid container spacing={4}>
@@ -64,7 +64,7 @@ const HomeLayout = () => {
                   }
                 }}
               >
-                <RestaurantIcon
+                <HealthAndSafetyIcon
                   sx={{
                     fontSize: 60,
                     color: theme.palette.primary.secondary,
@@ -72,10 +72,10 @@ const HomeLayout = () => {
                   }}
                 />
                 <Typography variant="h4" sx={{ mb: 2, fontWeight: 'bold' }}>
-                  Dine-in
+                  Pet Health Monitoring
                 </Typography>
                 <Typography sx={{ mb: 3, color: theme.palette.text.textSub }}>
-                  Enjoy delicious and healthy meals in Pet Care&apos;s fresh and green space.
+                  Comprehensive health tracking and monitoring for your beloved pets with AI-powered insights and regular check-ups.
                 </Typography>
                 <Button
                   variant="outlined"
@@ -89,7 +89,7 @@ const HomeLayout = () => {
                     }
                   }}
                 >
-                  Visit our store
+                  Start Monitoring
                 </Button>
               </Card>
             </Grid>
@@ -109,7 +109,7 @@ const HomeLayout = () => {
                   }
                 }}
               >
-                <DeliveryDiningIcon
+                <PetsIcon
                   sx={{
                     fontSize: 60,
                     color: theme.palette.primary.secondary,
@@ -117,14 +117,14 @@ const HomeLayout = () => {
                   }}
                 />
                 <Typography variant="h4" sx={{ mb: 2, fontWeight: 'bold' }}>
-                  Delivery
+                  Pet Adoption Services
                 </Typography>
                 <Typography sx={{ mb: 3, color: theme.palette.text.textSub }}>
-                  Enjoy convenient healthy meals delivered right to your door.
+                  Find your perfect companion through our verified adoption platform with detailed pet profiles and matching system.
                 </Typography>
                 <Button
                   variant="outlined"
-                  onClick={() => navigate('/menu')}
+                  onClick={() => navigate('/adoption')}
                   sx={{
                     borderColor: theme.palette.primary.secondary,
                     color: theme.palette.primary.secondary,
@@ -135,7 +135,7 @@ const HomeLayout = () => {
                     }
                   }}
                 >
-                  Order now
+                  Find Your Pet
                 </Button>
               </Card>
             </Grid>
@@ -155,7 +155,7 @@ const HomeLayout = () => {
                   }
                 }}
               >
-                <CorporateFareIcon
+                <SupportIcon
                   sx={{
                     fontSize: 60,
                     color: theme.palette.primary.secondary,
@@ -163,14 +163,14 @@ const HomeLayout = () => {
                   }}
                 />
                 <Typography variant="h4" sx={{ mb: 2, fontWeight: 'bold' }}>
-                  Catering
+                  Smart AI Pet Consultation
                 </Typography>
                 <Typography sx={{ mb: 3, color: theme.palette.text.textSub }}>
-                  Premium, healthy, and nutritious catering solutions for businesses.
+                  Get instant AI-powered advice for your pet's health, nutrition, and behavior concerns from certified pet care experts.
                 </Typography>
                 <Button
                   variant="outlined"
-                  onClick={() => navigate('/about-us')}
+                  onClick={() => navigate('/chat')}
                   sx={{
                     borderColor: theme.palette.primary.secondary,
                     color: theme.palette.primary.secondary,
@@ -181,7 +181,7 @@ const HomeLayout = () => {
                     }
                   }}
                 >
-                  Learn more
+                  Get Expert Help
                 </Button>
               </Card>
             </Grid>
@@ -189,11 +189,164 @@ const HomeLayout = () => {
         </Container>
       </Box>
 
-      {/* Build Your Bowl Section */}
-      <BowlSection />
+      {/* Pet Care Steps Section */}
+      <PetCareSteps />
 
-      {/* Featured Menu Section */}
-      <FeaturedMenu />
+      {/* Why Choose Fur Shield Section */}
+      <Box sx={{ py: 8, bgcolor: theme.palette.background.default }}>
+        <Container maxWidth="lg">
+          <Typography
+            variant="h3"
+            textAlign="center"
+            sx={{
+              mb: 2,
+              fontWeight: 'bold',
+              color: theme.palette.primary.main
+            }}
+          >
+            Why Choose Fur Shield?
+          </Typography>
+          <Typography
+            variant="h6"
+            textAlign="center"
+            sx={{
+              mb: 6,
+              color: theme.palette.text.textSub,
+              fontWeight: 400
+            }}
+          >
+            Advanced technology meets compassionate care for your beloved pets
+          </Typography>
+
+          <Grid container spacing={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
+              <Card
+                sx={{
+                  height: '100%',
+                  textAlign: 'center',
+                  borderRadius: 3,
+                  p: 4,
+                  border: `2px solid ${theme.palette.primary.secondary}`,
+                  transition: 'transform 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.15)'
+                  }
+                }}
+              >
+                <HealthAndSafety
+                  sx={{
+                    fontSize: 64,
+                    color: theme.palette.primary.secondary,
+                    mb: 3
+                  }}
+                />
+                <Typography variant="h5" sx={{ mb: 2, fontWeight: 'bold' }}>
+                  AI-Powered Health Monitoring
+                </Typography>
+                <Typography sx={{ mb: 3, color: theme.palette.text.textSub }}>
+                  Advanced artificial intelligence continuously monitors your pet's health, detecting potential issues before they become serious problems.
+                </Typography>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 4 }}>
+              <Card
+                sx={{
+                  height: '100%',
+                  textAlign: 'center',
+                  borderRadius: 3,
+                  p: 4,
+                  border: `2px solid ${theme.palette.primary.secondary}`,
+                  transition: 'transform 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.15)'
+                  }
+                }}
+              >
+                <Pets
+                  sx={{
+                    fontSize: 64,
+                    color: theme.palette.primary.secondary,
+                    mb: 3
+                  }}
+                />
+                <Typography variant="h5" sx={{ mb: 2, fontWeight: 'bold' }}>
+                  Expert Veterinary Network
+                </Typography>
+                <Typography sx={{ mb: 3, color: theme.palette.text.textSub }}>
+                  Access to certified veterinarians and specialists through our extensive network, ensuring your pet receives the best possible care.
+                </Typography>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 4 }}>
+              <Card
+                sx={{
+                  height: '100%',
+                  textAlign: 'center',
+                  borderRadius: 3,
+                  p: 4,
+                  border: `2px solid ${theme.palette.primary.secondary}`,
+                  transition: 'transform 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.15)'
+                  }
+                }}
+              >
+                <Support
+                  sx={{
+                    fontSize: 64,
+                    color: theme.palette.primary.secondary,
+                    mb: 3
+                  }}
+                />
+                <Typography variant="h5" sx={{ mb: 2, fontWeight: 'bold' }}>
+                  24/7 Emergency Support
+                </Typography>
+                <Typography sx={{ mb: 3, color: theme.palette.text.textSub }}>
+                  Round-the-clock emergency support when you need it most. Our team is always ready to help with urgent pet care situations.
+                </Typography>
+              </Card>
+            </Grid>
+          </Grid>
+
+          <Box textAlign="center" sx={{ mt: 6 }}>
+            <Typography
+              variant="body1"
+              sx={{
+                mb: 3,
+                color: theme.palette.text.textSub,
+                maxWidth: '600px',
+                mx: 'auto'
+              }}
+            >
+              Join thousands of pet owners who trust Fur Shield to provide exceptional care for their beloved companions.
+            </Typography>
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={() => navigate('/about-us')}
+              sx={{
+                borderColor: theme.palette.primary.secondary,
+                color: theme.palette.primary.secondary,
+                px: 4,
+                py: 1.5,
+                fontWeight: 'bold',
+                borderRadius: 10,
+                '&:hover': {
+                  bgcolor: theme.palette.primary.secondary,
+                  color: 'white'
+                }
+              }}
+            >
+              Learn More About Us
+            </Button>
+          </Box>
+        </Container>
+      </Box>
 
       {/* Call to Action Section */}
       <Box
@@ -212,7 +365,7 @@ const HomeLayout = () => {
               fontWeight: 'bold'
             }}
           >
-            Still hesitating? Let Pet Care take care of it.
+            Ready to give your pet the care they deserve?
           </Typography>
           <Typography
             variant="h5"
@@ -221,12 +374,12 @@ const HomeLayout = () => {
               opacity: 0.9
             }}
           >
-            Personalized healthy meal feature!
+            Comprehensive pet health monitoring and expert AI consultation!
           </Typography>
           <Button
             variant="contained"
             size="large"
-            onClick={() => navigate('/smart-meal-planner')}
+            onClick={() => navigate('/chat')}
             sx={{
               bgcolor: theme.palette.primary.secondary,
               px: 4,
@@ -240,7 +393,7 @@ const HomeLayout = () => {
               borderRadius: 10
             }}
           >
-            Experience now
+            Start Consultation
           </Button>
         </Container>
       </Box>
@@ -268,7 +421,7 @@ const HomeLayout = () => {
                   color: theme.palette.primary.main
                 }}
               >
-                Together with you, nurturing a healthy relationship with food
+                Protecting and nurturing the bond between pets and their owners
               </Typography>
               <Typography
                 variant="body1"
@@ -279,9 +432,10 @@ const HomeLayout = () => {
                   color: theme.palette.text.textSub
                 }}
               >
-                Through well-balanced, nutritious dishes carefully prepared for you,
-                Pet Care hopes to accompany you in cherishing your health and
-                starting your journey of healthy eating – green living.
+                Through comprehensive pet care solutions including health monitoring,
+                adoption services, and expert AI consultation, Fur Shield is committed
+                to ensuring your pets live healthy, happy lives while strengthening
+                the human-animal bond.
               </Typography>
               <Typography
                 variant="h6"
@@ -291,7 +445,7 @@ const HomeLayout = () => {
                   color: theme.palette.primary.main
                 }}
               >
-                Eating is not just to satisfy hunger, but also a way to understand and love yourself.
+                Pet care is not just about health, but also about understanding and loving our animal companions.
               </Typography>
               <Button
                 variant="outlined"
@@ -316,8 +470,8 @@ const HomeLayout = () => {
             <Grid size={{ xs: 12, md: 6 }}>
               <Box
                 component="img"
-                src="https://images.unsplash.com/photo-1543353071-873f17a7a088?q=80&w=2070&auto=format&fit=crop"
-                alt="About Pet Care"
+                src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=2070&auto=format&fit=crop"
+                alt="Happy pets with their owners"
                 sx={{
                   width: '100%',
                   height: 'auto',

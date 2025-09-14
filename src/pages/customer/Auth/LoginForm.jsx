@@ -52,7 +52,7 @@ function LoginForm() {
 
     switch (user.role) {
     case USER_ROLE.PET_OWNER:
-      return '/profile'
+      return '/pet-owner-settings'
     case USER_ROLE.VET:
       return '/vet-settings'
     case USER_ROLE.SHELTER:

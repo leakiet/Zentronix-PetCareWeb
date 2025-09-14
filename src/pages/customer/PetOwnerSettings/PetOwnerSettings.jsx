@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -15,11 +15,6 @@ import PetProfilesTab from './PetProfilesTab/PetProfilesTab'
 import OrderHistoryTab from './OrderHistoryTab'
 import AppointmentTab from './AppointmentTab'
 import TabPanel from './TabPanel'
-import {
-  fetchBreedsAPI,
-  fetPetsByCustomerId
-} from '~/apis'
-import { toast } from 'react-toastify'
 import { selectCurrentCustomer } from '~/redux/user/customerSlice'
 import { useSelector } from 'react-redux'
 
@@ -33,68 +28,8 @@ function a11yProps(index) {
 
 export default function PetOwnerSettings() {
   const [tabValue, setTabValue] = useState(0)
-  const [pets, setPets] = useState([])
-  const [breeds, setBreeds] = useState([])
-  const [documents] = useState([
-    {
-      id: 1,
-      petId: 1,
-      name: 'Vaccination Certificate 2024.pdf',
-      uploadDate: '2024-01-15',
-      size: '245 KB',
-      type: 'certificate'
-    },
-    {
-      id: 2,
-      petId: 1,
-      name: 'Blood Test Results.pdf',
-      uploadDate: '2024-02-20',
-      size: '180 KB',
-      type: 'lab_result'
-    }
-  ])
-  const [insurancePolicies] = useState([
-    {
-      id: 1,
-      petId: 1,
-      provider: 'PetSure Insurance',
-      policyNumber: 'PS-2024-001234',
-      coverage: 'Comprehensive - Accidents, Illness & Wellness',
-      deductible: 250,
-      endDate: '2025-12-31'
-    }
-  ])
-  const [orders] = useState([])
   const [appointments, setAppointments] = useState([])
   const currentCustomer = useSelector(selectCurrentCustomer)
-
-  useEffect(() => {
-    const fetchBreeds = async () => {
-      try {
-        const breeds = await fetchBreedsAPI()
-        setBreeds(breeds)
-      } catch {
-        toast.error('Failed to fetch breeds. Please try again later.')
-      }
-    }
-
-    fetchBreeds()
-  }, [])
-
-  useEffect(() => {
-    const fetchPets = async () => {
-      try {
-        if (currentCustomer) {
-          const pets = await fetPetsByCustomerId(currentCustomer.id)
-          setPets(pets)
-        }
-      } catch {
-        toast.error('Failed to fetch pets. Please try again later.')
-      }
-    }
-
-    fetchPets()
-  }, [currentCustomer])
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue)
@@ -148,27 +83,19 @@ export default function PetOwnerSettings() {
             {/* Tab 1: Pet Profiles */}
             <TabPanel value={tabValue} index={0}>
               <PetProfilesTab
-                pets={pets}
-                documents={documents}
-                insurancePolicies={insurancePolicies}
-                // New props for API functions
-                breeds={breeds}
                 currentCustomer={currentCustomer}
-                setPets={setPets}
               />
             </TabPanel>
 
             {/* Tab 2: Order History */}
             <TabPanel value={tabValue} index={1}>
-              <OrderHistoryTab
-                orders={orders}
-              />
+              <OrderHistoryTab />
             </TabPanel>
 
             {/* Tab 3: Appointments */}
             <TabPanel value={tabValue} index={2}>
               <AppointmentTab
-                pets={pets}
+                pets={[]}
                 appointments={appointments}
                 onBookAppointment={handleBookAppointment}
               />
