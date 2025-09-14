@@ -629,6 +629,7 @@ const ScheduleLayout = () => {
                               sx={{
                                 cursor: 'pointer',
                                 transition: 'all 0.3s ease',
+                                height: '100%',
                                 '&:hover': {
                                   transform: 'translateY(-4px)',
                                   boxShadow: 3
