@@ -332,6 +332,11 @@ export const createClinicInfoAPI = async (data) => {
   return response.data
 }
 
+export const getClinicInfoALlAPI = async () => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/apis/v1/clinic-info/all`)
+  return response.data
+}
+
 export const updateClinicInfoAPI = async (id, data) => {
   const response = await authorizedAxiosInstance.put(`${API_ROOT}/apis/v1/clinic-info/${id}`, data)
   return response.data

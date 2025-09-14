@@ -25,9 +25,9 @@ const AdoptionCard = ({ listing }) => {
         },
         background: theme.palette.primary.card,
         overflow: 'hidden',
-        cursor: 'pointer' // Thêm cursor pointer để chỉ ra có thể click
+        cursor: 'pointer'
       }}
-      onClick={handleDetailsClick} // Thêm onClick để navigate khi click vào card
+      onClick={handleDetailsClick}
     >
       <CardMedia
         component="img"
@@ -62,11 +62,11 @@ const AdoptionCard = ({ listing }) => {
             Address: {listing.shelter?.address?.street || ''} {listing.shelter?.address?.ward || ''} {listing.shelter?.address?.city || ''} {listing.shelter?.address?.latitude || ''} {listing.shelter?.address?.longitude || ''}
           </Typography>
 
-          <Chip
+          {/* <Chip
             label={listing.adoptionStatus}
             color={listing.adoptionStatus === 'AVAILABLE' ? 'success' : 'default'}
             sx={{ mb: 2, fontWeight: 'bold' }}
-          />
+          /> */}
         </Box>
 
         {/* <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

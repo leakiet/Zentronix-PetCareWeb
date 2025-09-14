@@ -71,6 +71,7 @@ function App() {
       <Route path="/cart" element={<CartLayout />} />
       <Route path="/adoption" element={<AdoptionLayout />} />
       <Route path="/adoption/:id" element={<AdoptionDetail />} />
+      <Route path="/schedule" element={<ScheduleLayout />} />
 
       {/* <Route path="/appointment" element={<AppointmentFlow/>} /> */}
 
@@ -83,7 +84,6 @@ function App() {
       {/* pet owner Settings - Only for PET_OWNER */}
       <Route element={<PetOwnerRoute user={currentCustomer} />}>
         <Route path="/pet-owner-settings" element={<PetOwnerSettings />} />
-        <Route path="/schedule" element={<ScheduleLayout />} />
         <Route path="/checkout" element={<Checkout />} />
       </Route>
 
