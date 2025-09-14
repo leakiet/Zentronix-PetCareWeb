@@ -107,55 +107,50 @@ const DrawerAppBar = ({ drawerOpen, toggleDrawer }) => {
             </Box>
           </Box>
 
-          {/* Navigation Items */}
-          <DrawerAppBarItem
-            toggleDrawer={toggleDrawer}
-            navItemStyle={navItemStyle}
-            label="Home"
-            path="/"
-          />
+          <List>
+            {/* Navigation Items */}
+            <DrawerAppBarItem
+              toggleDrawer={toggleDrawer}
+              navItemStyle={navItemStyle}
+              label="Products"
+              path="/menu"
+            />
 
-          <DrawerAppBarItem
-            toggleDrawer={toggleDrawer}
-            navItemStyle={navItemStyle}
-            label="Products"
-            path="/menu"
-          />
+            <DrawerAppBarItem
+              toggleDrawer={toggleDrawer}
+              navItemStyle={navItemStyle}
+              label="Schedule"
+              path="/schedule"
+            />
 
-          <DrawerAppBarItem
-            toggleDrawer={toggleDrawer}
-            navItemStyle={navItemStyle}
-            label="About Us"
-            path="/about-us"
-          />
+            <DrawerAppBarItem
+              toggleDrawer={toggleDrawer}
+              navItemStyle={navItemStyle}
+              label="Adoption"
+              path="/adoption"
+            />
 
-          <DrawerAppBarItem
-            toggleDrawer={toggleDrawer}
-            navItemStyle={navItemStyle}
-            label="Contact"
-            path="/contact"
-          />
+            <DrawerAppBarItem
+              toggleDrawer={toggleDrawer}
+              navItemStyle={navItemStyle}
+              label="About Us"
+              path="/about-us"
+            />
 
-          <DrawerAppBarItem
-            toggleDrawer={toggleDrawer}
-            navItemStyle={navItemStyle}
-            label="FAQ"
-            path="/faq"
-          />
+            <DrawerAppBarItem
+              toggleDrawer={toggleDrawer}
+              navItemStyle={navItemStyle}
+              label="Contact"
+              path="/contact"
+            />
 
-          <DrawerAppBarItem
-            toggleDrawer={toggleDrawer}
-            navItemStyle={navItemStyle}
-            label="Schedule"
-            path="/schedule"
-          />
-
-          <DrawerAppBarItem
-            toggleDrawer={toggleDrawer}
-            navItemStyle={navItemStyle}
-            label="Adoption"
-            path="/adoption"
-          />
+            <DrawerAppBarItem
+              toggleDrawer={toggleDrawer}
+              navItemStyle={navItemStyle}
+              label="FAQ"
+              path="/faq"
+            />
+          </List>
         </List>
 
         {/* Profile Actions Section */}

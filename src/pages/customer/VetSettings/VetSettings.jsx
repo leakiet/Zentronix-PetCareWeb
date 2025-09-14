@@ -156,7 +156,7 @@ function VetSettings() {
         const newClinic = await createClinicInfoAPI(clinicData)
         setClinicInfo(newClinic)
         toast.success('Clinic information created successfully!')
-
+        navigate('/vet-appointments')
         localStorage.setItem(`clinic_info_${currentCustomer.id}`, 'true')
       }
     } catch (error) {

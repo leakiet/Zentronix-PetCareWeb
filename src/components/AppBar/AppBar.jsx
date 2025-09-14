@@ -103,11 +103,11 @@ function ResponsiveAppBar() {
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', alignItems: 'center' }}>
             <NavItem to="/menu" label="PRODUCTS" handleCloseNavMenu={handleCloseNavMenu} />
+            <NavItem to="/schedule" label="SCHEDULE" handleCloseNavMenu={handleCloseNavMenu} />
+            <NavItem to="/adoption" label="ADOPTION" handleCloseNavMenu={handleCloseNavMenu} />
             <NavItem to="/about-us" label="ABOUT US" handleCloseNavMenu={handleCloseNavMenu} />
             <NavItem to="/contact" label="CONTACT" handleCloseNavMenu={handleCloseNavMenu} />
             <NavItem to="/faq" label="FAQ" handleCloseNavMenu={handleCloseNavMenu} />
-            <NavItem to="/schedule" label="SCHEDULE" handleCloseNavMenu={handleCloseNavMenu} />
-            <NavItem to="/adoption" label="ADOPTION" handleCloseNavMenu={handleCloseNavMenu} />
           </Box>
           <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
