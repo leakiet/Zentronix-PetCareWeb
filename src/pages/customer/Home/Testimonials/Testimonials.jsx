@@ -20,9 +20,8 @@ const Testimonials = () => {
             color: theme.palette.primary.main
           }}
         >
-What do customers say about Fur Shield?
+          What do customers say about Fur Shield?
         </Typography>
-
         <Typography
           variant="h6"
           sx={{
@@ -71,13 +70,13 @@ What do customers say about Fur Shield?
                   right: -10,
                   bottom: -10,
                   fontSize: '2rem',
-                  color: theme.palette.primary.secondary, 
+                  color: theme.palette.primary.secondary,
                   fontWeight: 'bold'
                 }
               }}>
-                Fur Shield's AI health monitoring saved my dog's life! The system alerted me to potential health issues
+                Fur Shield&apos;s AI health monitoring saved my dog&apos;s life! The system alerted me to potential health issues
                 before they became serious. The detailed reports and personalized recommendations are incredibly helpful
-                for keeping my pets healthy.
+                for keeping my pets&apos; healthy.
               </Typography>
             </Card>
           </Grid>
@@ -119,7 +118,7 @@ What do customers say about Fur Shield?
                   fontWeight: 'bold'
                 }
               }}>
-                I found my perfect companion through Fur Shield's adoption platform! The detailed pet profiles,
+                I found my perfect companion through Fur Shield&apos;s adoption platform! The detailed pet profiles,
                 health records, and matching system made the process so easy. Their team was incredibly supportive
                 throughout the entire adoption journey. Highly recommend!
               </Typography>
@@ -163,9 +162,9 @@ What do customers say about Fur Shield?
                   fontWeight: 'bold'
                 }
               }}>
-                Fur Shield's emergency veterinary service saved my cat's life during a critical situation!
+                Fur Shield&apos;s emergency veterinary service saved my cat&apos;s life during a critical situation!
                 Their 24/7 support and quick response time made all the difference. The veterinary network
-                is excellent and the AI consultation feature helps me monitor my pets' health proactively.
+                is excellent and the AI consultation feature helps me monitor my pets&apos; health proactively.
               </Typography>
             </Card>
           </Grid>

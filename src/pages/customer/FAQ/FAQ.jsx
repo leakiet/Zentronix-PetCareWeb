@@ -51,7 +51,7 @@ const FAQ = () => {
         {
           id: 'general-2',
           question: 'How does the AI consultation work?',
-          answer: 'Our AI consultation system analyzes your pet\'s symptoms, behavior patterns, and health data to provide instant recommendations. While AI provides initial guidance, all critical health concerns are escalated to certified veterinarians for professional medical advice.'
+          answer: 'Our AI consultation system analyzes your pet&apos;s symptoms, behavior patterns, and health data to provide instant recommendations. While AI provides initial guidance, all critical health concerns are escalated to certified veterinarians for professional medical advice.'
         },
         {
           id: 'general-3',
@@ -77,7 +77,7 @@ const FAQ = () => {
         {
           id: 'health-3',
           question: 'How often should I update my pet\'s health data?',
-          answer: 'We recommend updating your pet\'s health data daily for the most accurate monitoring. The system will alert you if any concerning patterns are detected and suggest when veterinary consultation is needed.'
+          answer: 'We recommend updating your pet&apos;s health data daily for the most accurate monitoring. The system will alert you if any concerning patterns are detected and suggest when veterinary consultation is needed.'
         }
       ]
     },
@@ -177,7 +177,7 @@ const FAQ = () => {
               mb: 3
             }}
           >
-            Got Questions? We've Got Answers
+            Got Questions? We&apos;ve Got Answers
           </Typography>
           <Typography
             variant="body1"
@@ -189,7 +189,7 @@ const FAQ = () => {
               mb: 4
             }}
           >
-            Find answers to the most common questions about Fur Shield's pet care services, from health monitoring to adoption support.
+            Find answers to the most common questions about Fur Shield&apos;s pet care services, from health monitoring to adoption support.
           </Typography>
 
           {/* Search Bar */}
@@ -269,7 +269,7 @@ const FAQ = () => {
           {filteredFaqs.length === 0 && (
             <Box sx={{ textAlign: 'center', py: 8 }} data-aos="fade-up">
               <Typography variant="h5" sx={{ color: theme.palette.text.textSub, mb: 2 }}>
-                No results found for "{searchTerm}"
+                No results found for &quot;{searchTerm}&quot;
               </Typography>
               <Typography variant="body1" sx={{ color: theme.palette.text.textSub }}>
                 Try adjusting your search terms or browse our categories above.
@@ -293,7 +293,7 @@ const FAQ = () => {
               Still Need Help?
             </Typography>
             <Typography variant="body1" sx={{ mb: 4, opacity: 0.9, fontSize: '1.1rem' }}>
-              Can't find the answer you're looking for? Our support team is here to help you with any questions about your pet's care.
+              Can&apos;t find the answer you&apos;re looking for? Our support team is here to help you with any questions about your pet&apos;s care.
             </Typography>
             <Grid container spacing={3} justifyContent="center">
               <Grid size={{ xs: 12, md: 4 }}>

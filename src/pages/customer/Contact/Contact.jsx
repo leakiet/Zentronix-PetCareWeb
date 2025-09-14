@@ -111,7 +111,7 @@ const Contact = () => {
               fontSize: '1.2rem'
             }}
           >
-            Have questions about your pet's health? Need adoption advice? Our team of experts is here to help you provide the best care for your furry friends.
+            Have questions about your pet&apos;s health? Need adoption advice? Our team of experts is here to help you provide the best care for your furry friends.
           </Typography>
         </Box>
 

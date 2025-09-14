@@ -21,7 +21,7 @@ const AppointmentForm = ({ selectedVet, onBack, onSubmit, initialData }) => {
     reviewCount: 88,
     location: 'Mock Vet Clinic',
     distance: '3 km',
-    price: '$50-100',
+    price: '1,250,000 - 2,500,000 VND',
     specialties: ['Vaccination', 'Dentistry']
   }
 

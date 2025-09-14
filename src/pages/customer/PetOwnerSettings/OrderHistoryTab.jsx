@@ -27,11 +27,13 @@ import { fetchOrdersByPetOwnerAPI } from '~/apis'
 function OrderHistoryTab() {
   const [orders, setOrders] = useState([])
   const [filteredOrders, setFilteredOrders] = useState([])
+  const [displayedOrders, setDisplayedOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [statusFilter, setStatusFilter] = useState('all')
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
+  const [itemsToShow, setItemsToShow] = useState(3)
   const currentCustomer = useSelector(selectCurrentCustomer)
 
   useEffect(() => {
@@ -45,8 +47,15 @@ function OrderHistoryTab() {
         setLoading(true)
         setError(null)
         const response = await fetchOrdersByPetOwnerAPI(currentCustomer.id)
-        setOrders(response || [])
-        setFilteredOrders(response || [])
+        // Sort orders by newest first
+        const sortedOrders = (response || []).sort((a, b) => {
+          const dateA = a.orderDate ? new Date(a.orderDate) : new Date(0)
+          const dateB = b.orderDate ? new Date(b.orderDate) : new Date(0)
+          return dateB - dateA // Newest first
+        })
+        setOrders(sortedOrders)
+        setFilteredOrders(sortedOrders)
+        setItemsToShow(3) // Reset pagination when new data loads
       } catch {
         setError('Failed to load order history. Please try again.')
       } finally {
@@ -87,12 +96,23 @@ function OrderHistoryTab() {
     }
 
     setFilteredOrders(filtered)
+    setItemsToShow(3) // Reset pagination when filters change
   }, [orders, statusFilter, dateFrom, dateTo])
+
+  // Update displayed orders based on pagination
+  useEffect(() => {
+    setDisplayedOrders(filteredOrders.slice(0, itemsToShow))
+  }, [filteredOrders, itemsToShow])
 
   const handleClearFilters = () => {
     setStatusFilter('all')
     setDateFrom('')
     setDateTo('')
+    setItemsToShow(3) // Reset pagination when clearing filters
+  }
+
+  const handleViewMore = () => {
+    setItemsToShow(prev => prev + 3) // Load 3 more orders
   }
   const getStatusIcon = (status) => {
     switch (status.toLowerCase()) {
@@ -207,11 +227,11 @@ function OrderHistoryTab() {
       ) : (
         <>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Showing {filteredOrders.length} of {orders.length} orders
+            Showing {displayedOrders.length} of {filteredOrders.length} orders
           </Typography>
 
           <Grid container spacing={2}>
-            {filteredOrders.map((order) => (
+            {displayedOrders.map((order) => (
               <Grid size={{ xs: 12 }} key={order.id}>
                 <Card sx={{ mb: 2 }}>
                   <CardContent sx={{ p: 3 }}>
@@ -245,11 +265,11 @@ function OrderHistoryTab() {
                     {/* Items Section */}
                     <Box sx={{ mb: 2 }}>
                       <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1, color: 'primary.main' }}>
-                        Items ({order.orderItems?.length || 0})
+                        Number of Items ({order.orderItems?.length || 0})
                       </Typography>
                       <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', pb: 1 }}>
                         {order.orderItems?.map((item) => (
-                          <Card key={item.id} variant="outlined" sx={{ minWidth: 200, flexShrink: 0 }}>
+                          <Card key={item.id} variant="outlined" sx={{ minWidth: 300, flexShrink: 0 }}>
                             <CardContent sx={{ p: 2 }}>
                               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                                 {item.productImage && (
@@ -258,8 +278,8 @@ function OrderHistoryTab() {
                                     src={item.productImage}
                                     alt={item.productName}
                                     sx={{
-                                      width: 40,
-                                      height: 40,
+                                      width: 80,
+                                      height: 80,
                                       objectFit: 'cover',
                                       borderRadius: 1,
                                       border: '1px solid #e0e0e0'
@@ -289,7 +309,7 @@ function OrderHistoryTab() {
                                   Qty: {item.quantity}
                                 </Typography>
                                 <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-                                  ${(item.totalPrice)?.toFixed(2)}
+                                  {item.totalPrice?.toFixed(2)} VND
                                 </Typography>
                               </Box>
                             </CardContent>
@@ -304,7 +324,7 @@ function OrderHistoryTab() {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
                       <Box>
                         <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-                          Total: ${order.totalAmount?.toFixed(2) || '0.00'}
+                          Total: {order.totalAmount?.toFixed(2) || '0.00'} VND
                         </Typography>
                         {order.shippingAddress && (
                           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
@@ -323,6 +343,27 @@ function OrderHistoryTab() {
               </Grid>
             ))}
           </Grid>
+
+          {/* View More Button */}
+          {displayedOrders.length < filteredOrders.length && (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+              <Button
+                variant="outlined"
+                onClick={handleViewMore}
+                sx={{
+                  borderRadius: 3,
+                  borderColor: 'primary.main',
+                  color: 'primary.main',
+                  '&:hover': {
+                    borderColor: 'primary.dark',
+                    bgcolor: 'primary.light'
+                  }
+                }}
+              >
+                View More Orders
+              </Button>
+            </Box>
+          )}
         </>
       )}
     </Box>

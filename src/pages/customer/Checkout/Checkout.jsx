@@ -89,12 +89,6 @@ function Checkout() {
     fetchProvinces()
   }, [])
 
-  // Redirect if not logged in
-  if (!currentCustomer) {
-    navigate('/login')
-    return null
-  }
-
   // Redirect if cart is empty
   if (cartItems.length === 0) {
     navigate('/menu')
@@ -240,7 +234,7 @@ function Checkout() {
     // Show confirm modal
     openConfirmModal(
       'Confirm Order',
-      `Are you sure you want to place this order for $${totalPrice?.toFixed(2)}? This action cannot be undone.`,
+      `Are you sure you want to place this order for ${totalPrice?.toFixed(2)} VND? This action cannot be undone.`,
       'Place Order',
       async () => {
         setIsLoading(true)
@@ -297,33 +291,37 @@ function Checkout() {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ py: 3 }}>
       <Typography
         variant="h3"
-        gutterBottom
-        align="center"
         sx={{
-          mb: 4,
-          fontWeight: 700,
-          textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          fontWeight: 'bold',
+          color: 'primary.main',
+          mb: 1.5,
+          backgroundColor: 'primary.main',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          textAlign: 'left'
         }}
       >
         Checkout
       </Typography>
 
+      <Divider sx={{ mb: 4, borderColor: 'primary.main', borderWidth: 1.5 }} />
+
       <Grid container spacing={4}>
         {/* Customer Information & Shipping Address */}
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Paper elevation={3} sx={{ p: 3, mb: 3, height: '560px', borderRadius: 2 }}>
-            <Typography variant="h6" gutterBottom>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Paper elevation={3} sx={{ p: 3, mb: 3, height: '560px', borderRadius: 4, border: '1px solid', borderColor: 'primary.light' }}>
+            <Typography variant="h6" gutterBottom sx={{ color: 'primary.main' }}>
               👤 Customer Information
             </Typography>
-            <Box sx={{ mb: 3, p: 2, bgcolor: '#f8f9fa', borderRadius: 1 }}>
+            <Box sx={{ mb: 3, p: 2, bgcolor: 'white', borderRadius: 3, border: '1.5px solid', borderColor: 'primary.main' }}>
               <Typography
                 variant="h6"
                 sx={{
                   fontWeight: 600,
-                  color: '#424242',
+                  color: 'primary.dark',
                   mb: 1
                 }}
               >
@@ -332,7 +330,7 @@ function Checkout() {
               <Typography
                 variant="body1"
                 sx={{
-                  color: '#616161',
+                  color: 'primary.dark',
                   mb: 0.5,
                   display: 'flex',
                   alignItems: 'center',
@@ -344,7 +342,7 @@ function Checkout() {
               <Typography
                 variant="body1"
                 sx={{
-                  color: '#616161',
+                  color: 'primary.dark',
                   mb: 0.5,
                   display: 'flex',
                   alignItems: 'center',
@@ -357,7 +355,7 @@ function Checkout() {
                 <Typography
                   variant="body1"
                   sx={{
-                    color: '#616161',
+                    color: 'primary.dark',
                     display: 'flex',
                     alignItems: 'center',
                     gap: 1
@@ -370,7 +368,7 @@ function Checkout() {
 
             <Divider sx={{ my: 2 }} />
 
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
               📍 Shipping Address
             </Typography>
 
@@ -396,24 +394,20 @@ function Checkout() {
                   variant="outlined"
                   size="small"
                   onClick={() => setIsEditingAddress(true)}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 2, borderRadius: 3, borderColor: 'primary.main', color: 'primary.main', '&:hover': { borderColor: 'primary.dark', bgcolor: 'primary.light' } }}
                 >
                   Enter Different Address
                 </Button>
 
                 {(!currentCustomer.address?.street && !currentCustomer.address?.ward && !currentCustomer.address?.city &&
                   !currentCustomer.street && !currentCustomer.ward && !currentCustomer.city) && (
-                  <Alert severity="warning" sx={{ mt: 1 }}>
+                    <Alert severity="warning" sx={{ mt: 1 }}>
                       No shipping address found. Please update your profile or enter a different address.
-                  </Alert>
-                )}
+                    </Alert>
+                  )}
               </Box>
             ) : (
               <Box>
-                <Typography variant="body2" sx={{ mb: 2, fontWeight: 'bold' }}>
-                  Enter New Address:
-                </Typography>
-
                 {/* Province/City Selection */}
                 <Box sx={{ marginBottom: '1em' }}>
                   <Autocomplete
@@ -469,11 +463,12 @@ function Checkout() {
                   <Box sx={{
                     marginBottom: '1em',
                     padding: '0.5em',
-                    backgroundColor: '#e3f2fd',
-                    borderRadius: 1,
-                    border: '1px solid #2196f3'
+                    backgroundColor: 'primary.light',
+                    borderRadius: 3,
+                    border: '1px solid',
+                    borderColor: 'primary.main'
                   }}>
-                    <Typography variant="caption" sx={{ color: '#1976d2', fontWeight: 'bold' }}>
+                    <Typography variant="caption" sx={{ color: 'primary.dark', fontWeight: 'bold' }}>
                       🔄 Verifying address...
                     </Typography>
                   </Box>
@@ -483,11 +478,12 @@ function Checkout() {
                   <Box sx={{
                     marginBottom: '1em',
                     padding: '0.5em',
-                    backgroundColor: '#e8f5e8',
-                    borderRadius: 1,
-                    border: '1px solid #4caf50'
+                    backgroundColor: 'success.light',
+                    borderRadius: 3,
+                    border: '1px solid',
+                    borderColor: 'success.main'
                   }}>
-                    <Typography variant="caption" sx={{ color: '#2e7d32', fontWeight: 'bold' }}>
+                    <Typography variant="caption" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
                       ✅ Address verified
                     </Typography>
                   </Box>
@@ -497,23 +493,25 @@ function Checkout() {
                   <Box sx={{
                     marginBottom: '1em',
                     padding: '0.5em',
-                    backgroundColor: '#ffebee',
-                    borderRadius: 1,
-                    border: '1px solid #f44336'
+                    backgroundColor: 'error.light',
+                    borderRadius: 3,
+                    border: '1px solid',
+                    borderColor: 'error.main'
                   }}>
-                    <Typography variant="caption" sx={{ color: '#c62828', fontWeight: 'bold' }}>
+                    <Typography variant="caption" sx={{ color: 'error.dark', fontWeight: 'bold' }}>
                       ❌ Address verification failed
                     </Typography>
                   </Box>
                 )}
 
-                <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                <Box sx={{ display: 'flex', gap: 1, mb: 2, alignItems: 'center' }}>
                   {addressVerificationStatus !== 'verified' ? (
                     <Button
                       variant="contained"
                       size="small"
                       onClick={handleVerifyAddress}
                       disabled={isLoading || !selectedProvince || !customAddress.street}
+                      sx={{ borderRadius: 3, bgcolor: 'primary.main', '&:hover': { bgcolor: 'primary.dark' } }}
                     >
                       {isLoading ? 'Verifying...' : 'Verify Address'}
                     </Button>
@@ -523,6 +521,7 @@ function Checkout() {
                       size="small"
                       onClick={handleUseVerifiedAddress}
                       color="success"
+                      sx={{ borderRadius: 3 }}
                     >
                       Use This Address
                     </Button>
@@ -544,9 +543,27 @@ function Checkout() {
                       })
                       setAddressVerificationStatus('')
                     }}
+                    sx={{ borderRadius: 3, borderColor: 'primary.main', color: 'primary.main', '&:hover': { borderColor: 'primary.dark', bgcolor: 'primary.light' } }}
                   >
                     Cancel
                   </Button>
+
+                  {/* Inline verification status */}
+                  {addressVerificationStatus === 'verifying' && (
+                    <Typography variant="caption" sx={{ color: 'primary.dark', fontWeight: 'bold', ml: 2 }}>
+                      🔄 Verifying address...
+                    </Typography>
+                  )}
+                  {addressVerificationStatus === 'verified' && (
+                    <Typography variant="caption" sx={{ color: 'success.dark', fontWeight: 'bold', ml: 2 }}>
+                      ✅ Address verified
+                    </Typography>
+                  )}
+                  {addressVerificationStatus === 'failed' && (
+                    <Typography variant="caption" sx={{ color: 'error.dark', fontWeight: 'bold', ml: 2 }}>
+                      ❌ Address verification failed
+                    </Typography>
+                  )}
                 </Box>
 
                 {addressVerificationStatus === 'verified' && (
@@ -560,34 +577,34 @@ function Checkout() {
         </Grid>
 
         {/* Order Summary */}
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Paper elevation={3} sx={{ p: 3, height: '560px' }}>
-            <Typography variant="h6" gutterBottom>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Paper elevation={3} sx={{ p: 3, height: '560px', borderRadius: 4, border: '1px solid', borderColor: 'primary.light' }}>
+            <Typography variant="h6" gutterBottom sx={{ color: 'primary.main' }}>
               Order Summary
             </Typography>
 
             {/* Cart Items */}
             <Box sx={{ mb: 3 }}>
               {cartItems.map((item) => (
-                <Card key={item.cartId} sx={{ mb: 2, display: 'flex' }}>
+                <Card key={item.cartId} sx={{ mb: 2, display: 'flex', borderRadius: 3, border: '1px solid', borderColor: 'primary.light' }}>
                   <CardMedia
                     component="img"
-                    sx={{ width: 80, height: 80, objectFit: 'cover' }}
+                    sx={{ width: 80, height: 80, objectFit: 'cover', borderRadius: '12px 0 0 12px' }}
                     image={item.image || '/placeholder-image.jpg'}
                     alt={item.name}
                   />
                   <CardContent sx={{ flex: 1, py: 1 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: 'primary.dark' }}>
                       {item.name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Quantity: {item.quantity}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Price: ${item.price?.toFixed(2)}
+                      Price: {item.price?.toFixed(2)} VND
                     </Typography>
-                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                      Total: ${item.totalPrice?.toFixed(2)}
+                    <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                      Total: {item.totalPrice?.toFixed(2)} VND
                     </Typography>
                   </CardContent>
                 </Card>
@@ -600,7 +617,7 @@ function Checkout() {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
               <Typography variant="h6">Total Amount:</Typography>
               <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                ${totalPrice?.toFixed(2)}
+                {totalPrice?.toFixed(2)} VND
               </Typography>
             </Box>
 
@@ -627,12 +644,6 @@ function Checkout() {
                 />
               </RadioGroup>
             </FormControl>
-
-            {paymentMethod === 'ONLINE' && (
-              <Alert severity="info" sx={{ mt: 2 }}>
-                Online payment feature is coming soon. For now, orders will be processed as COD.
-              </Alert>
-            )}
           </Paper>
         </Grid>
       </Grid>
@@ -642,17 +653,20 @@ function Checkout() {
         <Button
           variant="outlined"
           onClick={() => navigate('/menu')}
-          size="large"
+          size="small"
           sx={{
-            px: 4,
-            py: 1.5,
-            borderRadius: 2,
-            fontSize: '1.1rem',
+            p: 1,
+            borderRadius: 3,
+            fontSize: '0.9rem',
             fontWeight: 'bold',
             borderWidth: 2,
+            borderColor: 'primary.main',
+            color: 'primary.main',
             '&:hover': {
               borderWidth: 2,
-              transform: 'translateY(-1px)'
+              transform: 'translateY(-1px)',
+              borderColor: 'primary.dark',
+              bgcolor: 'primary.light'
             },
             transition: 'all 0.2s ease-in-out'
           }}
@@ -669,13 +683,12 @@ function Checkout() {
             (!currentCustomer.address?.street && !currentCustomer.street && !isEditingAddress) ||
             (isEditingAddress && addressVerificationStatus !== 'verified')
           }
-          size="medium"
+          size="small"
           sx={{
-            minWidth: 160,
-            px: 3,
-            py: 1,
-            borderRadius: 2,
-            fontSize: '1rem',
+            minWidth: 140,
+            p: 1,
+            borderRadius: 3,
+            fontSize: '0.9rem',
             fontWeight: 'bold',
             boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)',
             '&:hover': {
@@ -690,14 +703,14 @@ function Checkout() {
             transition: 'all 0.2s ease-in-out'
           }}
         >
-          {isLoading ? 'Placing Order...' : `Place Order - $${totalPrice?.toFixed(2)}`}
+          {isLoading ? 'Placing Order...' : `Place Order - ${totalPrice?.toFixed(2)} VND`}
         </Button>
       </Box>
 
       {(!currentCustomer.address?.street && !currentCustomer.address?.ward && !currentCustomer.address?.city &&
         !currentCustomer.street && !currentCustomer.ward && !currentCustomer.city && !isEditingAddress) && (
         <Alert severity="warning" sx={{ mt: 2 }}>
-            Please update your shipping address in your profile or enter a different address above.
+          Please update your shipping address in your profile or enter a different address above.
         </Alert>
       )}
 
