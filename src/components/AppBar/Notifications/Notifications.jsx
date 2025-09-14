@@ -13,9 +13,16 @@ import NotificationsIcon from '@mui/icons-material/Notifications'
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import DoneIcon from '@mui/icons-material/Done'
 import NotInterestedIcon from '@mui/icons-material/NotInterested'
+import EventIcon from '@mui/icons-material/Event'
 import { useChatWebSocket } from '~/hooks/useChatWebSocket'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectCurrentNotifications, addNotification, fetchNotificationsByShelterIdAPI, getRequestsByOwnerIdAPI } from '~/redux/notifications/notificationsSlice'
+import {
+  selectCurrentNotifications,
+  addNotification,
+  fetchNotificationsByShelterIdAPI,
+  getRequestsByOwnerIdAPI,
+  getAppointmentNotificationsByUserIdAPI
+} from '~/redux/notifications/notificationsSlice'
 import { selectCurrentCustomer } from '~/redux/user/customerSlice'
 
 const ADOPTION_REQUEST_STATUS = {
@@ -47,20 +54,44 @@ function Notifications() {
       navigate(`/shelter-settings/${item.adoptionListing.id}`)
     } else if (user?.role === 'PET_OWNER' && item.adoptionListing?.id) {
       navigate(`/adoption/${item.adoptionListing.id}`)
+    } else if (user?.role === 'PET_OWNER' && item.type?.includes('APPOINTMENT')) {
+      navigate('/schedule')
+    } else if (user?.role === 'VET' && item.type?.includes('APPOINTMENT')) {
+      navigate('/vet-settings')
     }
   }
 
   const handleWebSocketMessage = useCallback((message) => {
-    const newNotification = {
-      id: Date.now(),
-      type: 'ADOPTION_REQUEST',
-      user: message.user,
-      adoptionListing: message.adoptionListing,
-      message: message.message,
-      status: message.status || ADOPTION_REQUEST_STATUS.PENDING,
-      distance: message.distance,
-      createdAt: moment()
+    console.log('Received WebSocket message:', message)
+
+    let newNotification = {}
+
+    if (message.type === 'APPOINTMENT_RESCHEDULED' ||
+        message.type === 'APPOINTMENT_STATUS_UPDATE' ||
+        message.type === 'APPOINTMENT_COMPLETED' ||
+        message.type === 'NEW_APPOINTMENT') {
+      newNotification = {
+        id: `appointment_${message.appointmentId}_${Date.now()}`, // Unique ID
+        type: message.type,
+        message: message.message,
+        appointmentId: message.appointmentId,
+        createdAt: moment().toISOString()
+      }
+    } else {
+      // Existing adoption notification logic
+      newNotification = {
+        id: `adoption_${message.requestId || Date.now()}`, // Unique ID
+        type: 'ADOPTION_REQUEST',
+        user: message.user,
+        adoptionListing: message.adoptionListing,
+        message: message.message,
+        status: message.status || ADOPTION_REQUEST_STATUS.PENDING,
+        distance: message.distance,
+        createdAt: moment().toISOString()
+      }
     }
+
+    console.log('Adding notification:', newNotification)
     dispatch(addNotification(newNotification))
   }, [dispatch])
 
@@ -73,9 +104,13 @@ function Notifications() {
         dispatch(fetchNotificationsByShelterIdAPI(user.id))
       } else if (user.role === 'PET_OWNER') {
         dispatch(getRequestsByOwnerIdAPI(user.id))
+        dispatch(getAppointmentNotificationsByUserIdAPI(user.id))
+      } else if (user.role === 'VET') {
+        dispatch(getAppointmentNotificationsByUserIdAPI(user.id))
       }
     }
   }, [dispatch, user])
+
 
   return (
     <Box>
@@ -114,7 +149,7 @@ function Notifications() {
                 minWidth: 200,
                 maxWidth: 360,
                 overflowY: 'auto',
-                cursor: user?.role === 'SHELTER' ? 'pointer' : 'default'
+                cursor: 'pointer'
               }}
               onClick={() => handleNotificationClick(item)}
             >
@@ -127,26 +162,42 @@ function Notifications() {
                 gap: 1
               }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <GroupAddIcon fontSize="small" />
+                  {(item.type === 'APPOINTMENT_RESCHEDULED' ||
+                    item.type === 'APPOINTMENT_STATUS_UPDATE' ||
+                    item.type === 'APPOINTMENT_UPDATE' ||
+                    item.type === 'NEW_APPOINTMENT') && <EventIcon fontSize="small" />}
+                  {item.type === 'APPOINTMENT_COMPLETED' && <DoneIcon fontSize="small" />}
+                  {item.type === 'ADOPTION_REQUEST' && <GroupAddIcon fontSize="small" />}
+
                   <Box>
-                    {user?.role === 'SHELTER' ? (
-                      <span><strong>{item.user?.fullName}</strong> wants to adopt <strong>{item.adoptionListing?.petName}</strong> ({item.adoptionListing?.breed?.name}, {item.adoptionListing?.age} years old). Message: {item.message} (Distance: {item.distance})</span>
+                    {item.type?.includes('APPOINTMENT') ? (
+                      <span>{item.message}</span>
                     ) : (
-                      <span>Your adoption request for <strong>{item.adoptionListing?.petName}</strong> ({item.adoptionListing?.breed?.name}, {item.adoptionListing?.age} years old). Message: {item.message} (Distance: {item.distance})</span>
+                      <span>
+                        {user?.role === 'SHELTER' ? (
+                          <><strong>{item.user?.fullName}</strong> wants to adopt <strong>{item.adoptionListing?.petName}</strong> ({item.adoptionListing?.breed?.name}, {item.adoptionListing?.age} years old). Message: {item.message} (Distance: {item.distance})</>
+                        ) : (
+                          <>Your adoption request for <strong>{item.adoptionListing?.petName}</strong> ({item.adoptionListing?.breed?.name}, {item.adoptionListing?.age} years old). Message: {item.message} (Distance: {item.distance})</>
+                        )}
+                      </span>
                     )}
                   </Box>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
-                  {item.status === ADOPTION_REQUEST_STATUS.ACCEPTED && (
-                    <Chip icon={<DoneIcon />} label="Accepted" color="success" size="small" />
-                  )}
-                  {item.status === ADOPTION_REQUEST_STATUS.REJECTED && (
-                    <Chip icon={<NotInterestedIcon />} label="Rejected" size="small" />
-                  )}
-                  {item.status === ADOPTION_REQUEST_STATUS.PENDING && (
-                    <Chip label="Pending" size="small" />
-                  )}
-                </Box>
+
+                {item.status && !item.type?.includes('APPOINTMENT') && (
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
+                    {item.status === ADOPTION_REQUEST_STATUS.ACCEPTED && (
+                      <Chip icon={<DoneIcon />} label="Accepted" color="success" size="small" />
+                    )}
+                    {item.status === ADOPTION_REQUEST_STATUS.REJECTED && (
+                      <Chip icon={<NotInterestedIcon />} label="Rejected" size="small" />
+                    )}
+                    {item.status === ADOPTION_REQUEST_STATUS.PENDING && (
+                      <Chip label="Pending" size="small" />
+                    )}
+                  </Box>
+                )}
+
                 <Box sx={{ textAlign: 'right' }}>
                   <Typography variant="span" sx={{ fontSize: '13px' }}>
                     {moment(item.createdAt).format('llll')}
